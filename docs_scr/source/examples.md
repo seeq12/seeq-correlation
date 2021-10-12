@@ -181,7 +181,7 @@ statistically significant effect.
 <br>
 <table border="0">
  <tr>
-    <td><img alt="image" src="_static/EMNCyclingDatasetMatrixLabeled.png"></td>
+    <td><img alt="image" src="_static/PredictionWithAlignedData.JPG"></td>
  </tr>
  <tr>
     <td>Figure 18. Comparison of prediction models using time-shifted signals (red) and raw, non-shifted signals 
@@ -242,7 +242,7 @@ coefficient confirms the accuracy gained by first removing the drift.
 <br>
 <table border="0">
  <tr>
-    <td><img alt="image" src="_static/RxtrProcessMatrix.png"></td>
+    <td><img alt="image" src="_static/RxtrFeedRatioMatrix.png"></td>
  </tr>
  <tr>
     <td>Figure 21. Correlation analysis results contrasting Product Yield to Feed Ratio with and without removing drift.
@@ -290,7 +290,7 @@ moves inversely with respect to inventory after a ~10 minute time delay!
 <br>
 <table border="0">
  <tr>
-    <td><img alt="image" src="_static/EMNCyclingDatasetMatrixLabeled.png"></td>
+    <td><img alt="image" src="_static/ImprovedCorrelationWithFilter.png"></td>
  </tr>
  <tr>
     <td>Figure 24. Correlation heatmap including the raw and smoothed product flow signals for comparison.

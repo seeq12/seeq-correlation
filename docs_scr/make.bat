@@ -16,7 +16,7 @@ if "%1" == "github" (
     %SPHINXBUILD% -M html %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
     robocopy %BUILDDIR%/html ../docs /E > nul
     robocopy %SOURCEDIR% ../docs .nojekyll /E > nul
-    echo.Generated files copied to ../gh-pages
+    echo.Generated files copied to ../docs
     goto end
 )
 
