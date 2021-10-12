@@ -21,5 +21,5 @@ help:
 
 github:
   @make html
-  @cp -a _build/html/. ../gh-pages
-  @cp -a _source/.nokekyll ../gh-pages
+  @cp -a _build/html/. ../docs
+  @cp -a _source/.nokekyll ../docs
