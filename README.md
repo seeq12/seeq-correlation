@@ -11,6 +11,13 @@ in Seeq Workbench.
 
 ----
 
+# Documentation
+
+The documentation for **seeq-correlation** can be found 
+[**here**](https://seeq12.github.io/seeq-correlation/index.html).
+
+----
+
 # User Guide
 
 [**seeq-correlation User Guide**](https://seeq12.github.io/seeq-correlation/user_guide.html)
@@ -18,11 +25,6 @@ provides a more in-depth explanation of correlation analysis and how seeq-correl
 of analyses using **seeq-correlation** can be found in the
 section [Use Cases](https://seeq12.github.io/seeq-correlation/examples.html).
 
-----
-
-# Documentation
-
-[Documentation for **seeq-correlation**](https://seeq12.github.io/seeq-correlation/documentation.html).
 
 -----
 
