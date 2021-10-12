@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cross-Correlation Calculations &mdash; seeq-correlation 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Preprocessing" href="preprocessor.html" />
+    <link rel="prev" title="Backend Calculations" href="backend_calculations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> seeq-correlation
+            <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Use Cases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="docstrings.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="add_on_installation.html">Add-on Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="backend_calculations.html">Backend Calculations</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cross-Correlation Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessor.html">Data Preprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="seeq_server_interactions.html">Seeq Interactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_interface.html">User Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citation.html">Citation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">seeq-correlation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="docstrings.html">Code Documentation</a> &raquo;</li>
+          <li><a href="backend_calculations.html">Backend Calculations</a> &raquo;</li>
+      <li>Cross-Correlation Calculations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/cross_correlations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-seeq.addons.correlation._cross_correlations">
+<span id="cross-correlation-calculations"></span><h1>Cross-Correlation Calculations<a class="headerlink" href="#module-seeq.addons.correlation._cross_correlations" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="seeq.addons.correlation._cross_correlations.cross_corr_matrix_lagged">
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._cross_correlations.</span></span><span class="sig-name descname"><span class="pre">cross_corr_matrix_lagged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_serialized</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_cross_correlations.html#cross_corr_matrix_lagged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._cross_correlations.cross_corr_matrix_lagged" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the matrix of lags and coefficients for best cross correlation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_serialized</strong> (<em>bytes</em>) – A pickled pd.DataFrame with the signals to cross correlate.</p></li>
+<li><p><strong>lags</strong> (<em>float</em>) – Maximum number of lags to shift the signals.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>(lags, coefficients)</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function requires the input pd.DataFrame to be pickled to take
+advantage of the caching functionality.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seeq.addons.correlation._cross_correlations.cross_corr_matrix_raw">
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._cross_correlations.</span></span><span class="sig-name descname"><span class="pre">cross_corr_matrix_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_serialized</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_cross_correlations.html#cross_corr_matrix_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._cross_correlations.cross_corr_matrix_raw" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the matrix of correlation coefficients for the set of signals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_serialized</strong> (<em>bytes</em>) – A pickled pd.DataFrame with the signals to cross correlate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>coefficients_matrix</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function requires the input pd.DataFrame to be pickled to take
+advantage of the caching functionality.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seeq.addons.correlation._cross_correlations.lags_coeffs">
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._cross_correlations.</span></span><span class="sig-name descname"><span class="pre">lags_coeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_output_unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_cross_correlations.html#lags_coeffs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._cross_correlations.lags_coeffs" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the lags to maximize correlations between signals and the
+cross-correlation coefficients of the shifted signals. If max_time_shift
+is None, the lags are zero (raw data correlations with no time shift).
+This function also returns the sampling period of the signals, either
+inferring from the dataframe or using the property value attached to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) – A DataFrame that contains a set of signals as columns and date-time as
+the index. This function does not call the data preprocessor. Thus,
+make sure the data frame contains cleansed data</p></li>
+<li><p><strong>max_time_shift</strong> (<em>{'auto'</em><em>, </em><em>str</em><em>, </em><em>None}</em><em>, </em><em>default 'auto' Maximum time</em>) – (e.g. ’15s’, or ‘1min’)  that the signals are allowed to slide in
+order to maximize cross-correlation. For times specified as a str,
+normal time units are accepted.If ‘auto’ is selected, a default
+maximum time shift is calculated based on the number of samples.
+If None, the raw signals are used and no time shifts are calculated.</p></li>
+<li><p><strong>time_output_unit</strong> (<em>{'auto'</em><em>, </em><em>str} default 'auto'</em>) – Specifies the time unit used to display the time shifts. Valid units
+are the ones accepted by pd.Timedelta</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>lags</strong> (<em>array_like, 2d</em>) – Lags to maximize cross correlations. Not to be confused with time
+shifts. This lags used the opposite sign as the typical convention.</p></li>
+<li><p><strong>coeffs</strong> (<em>array_like, 2d</em>) – Cross-correlation coefficients for the lagged signals</p></li>
+<li><p><strong>sampling</strong> (<em>pd.Timedelta</em>) – A pd.Timedelta with the grid of the data in the input DataFrame</p></li>
+<li><p><strong>time_unit</strong> (<em>str</em>) – A str of a valid pd.Timedelta unit in which the</p></li>
+<li><p><strong>maxlags</strong> (<em>int</em>) – Numbers of maximum allowable lags to maximize cross correlations</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Get the cross-correlation coefficients and lag delays to maximize
+cross-correlations for a given DataFrame allowing for automatic guess of
+maximum time shifts</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seeq</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">correlation</span><span class="o">.</span><span class="n">lags_coeffs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get the cross-correlation coefficients for a given DataFrame using the
+raw data (no time shift allowed)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seeq</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">correlation</span><span class="o">.</span><span class="n">lags_coeffs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;sec&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="backend_calculations.html" class="btn btn-neutral float-left" title="Backend Calculations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="preprocessor.html" class="btn btn-neutral float-right" title="Data Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Seeq Corporation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

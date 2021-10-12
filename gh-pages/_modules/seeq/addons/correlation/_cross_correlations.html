@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>seeq.addons.correlation._cross_correlations &mdash; seeq-correlation 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
+            <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docstrings.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citation.html">Citation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">seeq-correlation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>seeq.addons.correlation._cross_correlations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for seeq.addons.correlation._cross_correlations</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">dask</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">pandas.tseries.frequencies</span> <span class="kn">import</span> <span class="n">to_offset</span>
+<span class="c1"># There is a bug that prevents to correctly memorize a pandas.DataFrame</span>
+<span class="c1"># Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)</span>
+<span class="kn">from</span> <span class="nn">memoization</span> <span class="kn">import</span> <span class="n">cached</span>
+<span class="kn">from</span> <span class="nn">._utils</span> <span class="kn">import</span> <span class="n">_cache_max_items</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_validate_df</span>
+
+
+<span class="k">def</span> <span class="nf">_maxlags</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">sampling</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">max_time_shift</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">4.</span><span class="p">)))</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">max_time_shift</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">max_time_shift</span><span class="p">)</span> <span class="o">/</span> <span class="n">sampling</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="lags_coeffs"><a class="viewcode-back" href="../../../../cross_correlations.html#seeq.addons.correlation._cross_correlations.lags_coeffs">[docs]</a><span class="k">def</span> <span class="nf">lags_coeffs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the lags to maximize correlations between signals and the</span>
+<span class="sd">    cross-correlation coefficients of the shifted signals. If max_time_shift</span>
+<span class="sd">    is None, the lags are zero (raw data correlations with no time shift).</span>
+<span class="sd">    This function also returns the sampling period of the signals, either</span>
+<span class="sd">    inferring from the dataframe or using the property value attached to it</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        A DataFrame that contains a set of signals as columns and date-time as</span>
+<span class="sd">        the index. This function does not call the data preprocessor. Thus,</span>
+<span class="sd">        make sure the data frame contains cleansed data</span>
+<span class="sd">    max_time_shift: {&#39;auto&#39;, str, None}, default &#39;auto&#39; Maximum time</span>
+<span class="sd">         (e.g. &#39;15s&#39;, or &#39;1min&#39;)  that the signals are allowed to slide in</span>
+<span class="sd">         order to maximize cross-correlation. For times specified as a str,</span>
+<span class="sd">         normal time units are accepted.If &#39;auto&#39; is selected, a default</span>
+<span class="sd">         maximum time shift is calculated based on the number of samples.</span>
+<span class="sd">         If None, the raw signals are used and no time shifts are calculated.</span>
+<span class="sd">    time_output_unit: {&#39;auto&#39;, str} default &#39;auto&#39;</span>
+<span class="sd">        Specifies the time unit used to display the time shifts. Valid units</span>
+<span class="sd">        are the ones accepted by pd.Timedelta</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lags: array_like, 2d</span>
+<span class="sd">        Lags to maximize cross correlations. Not to be confused with time</span>
+<span class="sd">        shifts. This lags used the opposite sign as the typical convention.</span>
+<span class="sd">    coeffs: array_like, 2d</span>
+<span class="sd">        Cross-correlation coefficients for the lagged signals</span>
+<span class="sd">    sampling: pd.Timedelta</span>
+<span class="sd">        A pd.Timedelta with the grid of the data in the input DataFrame</span>
+<span class="sd">    time_unit: str</span>
+<span class="sd">        A str of a valid pd.Timedelta unit in which the</span>
+<span class="sd">    maxlags: int</span>
+<span class="sd">        Numbers of maximum allowable lags to maximize cross correlations</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Get the cross-correlation coefficients and lag delays to maximize</span>
+<span class="sd">    cross-correlations for a given DataFrame allowing for automatic guess of</span>
+<span class="sd">    maximum time shifts</span>
+
+<span class="sd">    &gt;&gt;&gt; seeq.addons.correlation.lags_coeffs(df, max_time_shift=&#39;auto&#39;, time_output_unit=&#39;auto&#39;)</span>
+
+<span class="sd">    Get the cross-correlation coefficients for a given DataFrame using the</span>
+<span class="sd">    raw data (no time shift allowed)</span>
+
+<span class="sd">    &gt;&gt;&gt; seeq.addons.correlation.lags_coeffs(df, max_time_shift=None, time_output_unit=&#39;sec&#39;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_validate_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">grid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">to_offset</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">infer_freq</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)))</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+    <span class="n">sampling</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">grid</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid</span><span class="si">}</span><span class="s1">s&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">grid_old</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">grid</span>
+        <span class="n">sampling_old</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sampling</span> <span class="o">!=</span> <span class="n">sampling_old</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid</span><span class="si">}</span><span class="s1">s&#39;</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;DataFrame had a grid property of </span><span class="si">{</span><span class="n">grid_old</span><span class="si">}</span><span class="s2"> which is different from the inferred grid period&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;of </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="s2">. The grid property has been overwritten. Please double check DataFrame &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;for data integrity&quot;</span><span class="p">)</span>
+
+    <span class="n">maxlags</span> <span class="o">=</span> <span class="n">_maxlags</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">sampling</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">maxlags</span><span class="p">:</span>
+        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">cross_corr_matrix_raw</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+        <span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lags</span><span class="p">,</span> <span class="n">coeffs</span> <span class="o">=</span> <span class="n">cross_corr_matrix_lagged</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">lags</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">maxlags</span><span class="p">))</span>
+
+    <span class="n">time_unit</span> <span class="o">=</span> <span class="n">sampling_in_specified_units</span><span class="p">(</span><span class="n">lags</span><span class="p">,</span> <span class="n">sampling</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="p">)</span>
+    <span class="n">sampling_time</span> <span class="o">=</span> <span class="n">sampling</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">time_unit</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lags</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">,</span> <span class="n">sampling_time</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">,</span> <span class="n">maxlags</span></div>
+
+
+<span class="k">def</span> <span class="nf">sampling_in_specified_units</span><span class="p">(</span><span class="n">lags</span><span class="p">,</span> <span class="n">sampling</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">time_output_unit</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="n">max_abs_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lags</span> <span class="o">*</span> <span class="n">sampling</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>  <span class="c1"># this is in seconds</span>
+        <span class="k">if</span> <span class="n">max_abs_shift</span> <span class="o">&gt;</span> <span class="mi">86400</span><span class="p">:</span>
+            <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;days&#39;</span>
+        <span class="k">elif</span> <span class="n">max_abs_shift</span> <span class="o">&gt;</span> <span class="mi">3600</span><span class="p">:</span>
+            <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;hours&#39;</span>
+        <span class="k">elif</span> <span class="n">max_abs_shift</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">:</span>
+            <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;minutes&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;seconds&#39;</span>
+
+    <span class="k">if</span> <span class="n">time_output_unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;week&#39;</span><span class="p">,</span> <span class="s1">&#39;weeks&#39;</span><span class="p">]:</span>
+        <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;weeks&#39;</span>
+    <span class="k">if</span> <span class="n">time_output_unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;days&#39;</span><span class="p">]:</span>
+        <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;days&#39;</span>
+    <span class="k">if</span> <span class="n">time_output_unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;hr&#39;</span><span class="p">,</span> <span class="s1">&#39;hrs&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">,</span> <span class="s1">&#39;hours&#39;</span><span class="p">]:</span>
+        <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;hours&#39;</span>
+    <span class="k">if</span> <span class="n">time_output_unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;minute&#39;</span><span class="p">,</span> <span class="s1">&#39;minutes&#39;</span><span class="p">]:</span>
+        <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;minutes&#39;</span>
+    <span class="k">if</span> <span class="n">time_output_unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;sec&#39;</span><span class="p">,</span> <span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="s1">&#39;seconds&#39;</span><span class="p">]:</span>
+        <span class="n">time_output_unit</span> <span class="o">=</span> <span class="s1">&#39;seconds&#39;</span>
+
+    <span class="k">return</span> <span class="n">time_output_unit</span>
+
+
+<span class="k">def</span> <span class="nf">array_shifter</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">lag</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">lag</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arr</span><span class="p">[:</span><span class="o">-</span><span class="n">lag</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">lag</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="n">lag</span><span class="p">:]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arr</span>
+
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">cross_corr_target</span><span class="p">(</span><span class="n">lags</span><span class="p">,</span> <span class="n">pair</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function calculates the lag that gives the best correlation between</span>
+<span class="sd">    two signals. The second item in the pair of signals is the one that is</span>
+<span class="sd">    slided in time.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lags: float</span>
+<span class="sd">        Max number of lags that signal B can be shifted.</span>
+<span class="sd">    pair: tuple</span>
+<span class="sd">        Two arrays of signals.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        (lags, coefficients): tuple</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">cross_corr_lagged</span><span class="p">(</span><span class="n">first_signal</span><span class="p">,</span> <span class="n">second_signal</span><span class="p">,</span> <span class="n">lag</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">first_signal_adj</span> <span class="o">=</span> <span class="n">array_shifter</span><span class="p">(</span><span class="n">first_signal</span><span class="p">,</span> <span class="o">-</span><span class="n">lag</span><span class="p">)</span>
+        <span class="n">second_signal_lagged</span> <span class="o">=</span> <span class="n">array_shifter</span><span class="p">(</span><span class="n">second_signal</span><span class="p">,</span> <span class="n">lag</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">first_signal_adj</span><span class="p">,</span> <span class="n">second_signal_lagged</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">signal_a</span> <span class="o">=</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">signal_b</span> <span class="o">=</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">coeffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">cross_corr_lagged</span><span class="p">(</span><span class="n">signal_a</span><span class="p">,</span> <span class="n">signal_b</span><span class="p">,</span> <span class="n">lag</span><span class="o">=</span><span class="n">lag</span><span class="p">)</span> <span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">lags</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">lags</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))]</span>
+    <span class="n">max_corr_lag</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">lags</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">lags</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coeffs</span><span class="p">)))]</span>
+    <span class="n">max_corr_coeff</span> <span class="o">=</span> <span class="n">coeffs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coeffs</span><span class="p">)))]</span>
+
+    <span class="k">return</span> <span class="n">max_corr_lag</span><span class="p">,</span> <span class="n">max_corr_coeff</span>
+
+
+<div class="viewcode-block" id="cross_corr_matrix_raw"><a class="viewcode-back" href="../../../../cross_correlations.html#seeq.addons.correlation._cross_correlations.cross_corr_matrix_raw">[docs]</a><span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cross_corr_matrix_raw</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the matrix of correlation coefficients for the set of signals.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_serialized: bytes</span>
+<span class="sd">        A pickled pd.DataFrame with the signals to cross correlate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        coefficients_matrix: np.array</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    ------</span>
+<span class="sd">    This function requires the input pd.DataFrame to be pickled to take</span>
+<span class="sd">    advantage of the caching functionality.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cross_corr_matrix_lagged"><a class="viewcode-back" href="../../../../cross_correlations.html#seeq.addons.correlation._cross_correlations.cross_corr_matrix_lagged">[docs]</a><span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cross_corr_matrix_lagged</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the matrix of lags and coefficients for best cross correlation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_serialized: bytes</span>
+<span class="sd">        A pickled pd.DataFrame with the signals to cross correlate.</span>
+<span class="sd">    lags: float</span>
+<span class="sd">        Maximum number of lags to shift the signals.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        (lags, coefficients): tuple</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    ------</span>
+<span class="sd">    This function requires the input pd.DataFrame to be pickled to take</span>
+<span class="sd">    advantage of the caching functionality.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">)</span>
+    <span class="n">paramlist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">paramlist</span><span class="p">]</span>
+
+    <span class="n">cross_shifted_dask</span> <span class="o">=</span> <span class="p">[</span><span class="n">cross_corr_target</span><span class="p">(</span><span class="n">lags</span><span class="p">,</span> <span class="n">pair</span><span class="p">)</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">]</span>
+    <span class="n">cross_shifted</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">cross_shifted_dask</span><span class="p">)</span>
+
+    <span class="n">max_lags_shifted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cross_shifted</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="n">max_coeff_shifted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cross_shifted</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">max_lags_shifted</span><span class="p">,</span> <span class="n">max_coeff_shifted</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Seeq Corporation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
