@@ -1,6 +1,6 @@
 [![N|Solid](https://www.seeq.com/sites/default/files/seeq-logo-navbar-small.png)](https://www.seeq.com)
 
-[![N|Scheme](LargeMatrixExample.png)](https://www.seeq.com)
+[![N|Scheme](LargeMatrixExample.png)](https://seeq12.github.io/seeq-correlation/index.html)
 
 ----
 
