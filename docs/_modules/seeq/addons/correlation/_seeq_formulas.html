@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>seeq.addons.correlation._seeq_formulas &mdash; seeq-correlation 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
+            <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docstrings.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citation.html">Citation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">seeq-correlation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>seeq.addons.correlation._seeq_formulas</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for seeq.addons.correlation._seeq_formulas</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">from</span> <span class="nn">seeq</span> <span class="kn">import</span> <span class="n">sdk</span>
+<span class="kn">from</span> <span class="nn">seeq.sdk.rest</span> <span class="kn">import</span> <span class="n">ApiException</span>
+
+<span class="n">pearson_formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    $condition = periods($window, $period)</span>
+<span class="sd">    $s1 = $signal1.setUnits(&#39;&#39;)</span>
+<span class="sd">    $s2 = $signal2.setUnits(&#39;&#39;)</span>
+<span class="sd">    // intermediate calculations</span>
+<span class="sd">    $s1_sq = $s1^2</span>
+<span class="sd">    $s2_sq = $s2^2</span>
+<span class="sd">    $s1s2_product = ($s1 * $s2)</span>
+<span class="sd">    $N = $s1.aggregate(count(), $condition, middleKey(), 0h)</span>
+<span class="sd">    // Pearson&#39;s coefficient</span>
+<span class="sd">    $numerator = $N * $s1s2_product.aggregate(sum(), $condition, middleKey(), 0h) - $s1.aggregate(sum(), $condition, </span>
+<span class="sd">    middleKey(), 0h) * $s2.aggregate(sum(), $condition, middleKey(), 0h)</span>
+<span class="sd">    $denominator = sqrt(($N * $s1_sq.aggregate(sum(), $condition, middleKey(), 0h) - ($s1.aggregate(sum(), $condition, </span>
+<span class="sd">    middleKey(), 0h))^2) * ($N * $s2_sq.aggregate(sum(), $condition, middleKey(), 0h) - ($s2.aggregate(sum(), </span>
+<span class="sd">    $condition, middleKey(), 0h))^2))</span>
+<span class="sd">    ($numerator / $denominator).aggregate(average(), $condition, middleKey())</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">pearson_timeshifted_formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    $s1_o = $signal.setUnits(&#39;&#39;)</span>
+<span class="sd">    $s2 = $goal.setUnits(&#39;&#39;)</span>
+<span class="sd">    </span>
+<span class="sd">    $Wind = periods($window, $period)</span>
+<span class="sd">    $Wind.tosamples( $cap -&gt; {</span>
+<span class="sd">        // get the time shift to maximize cross-correlation</span>
+<span class="sd">        $time_shift = $signal.correlationOffset($goal, group($cap), -$maxOffset , $maxOffset, $correlation_threshold)</span>
+<span class="sd">        // shift the signal</span>
+<span class="sd">        $s1 = $s1_o.move($time_shift)</span>
+<span class="sd">        $s1_sq = $s1^2</span>
+<span class="sd">        $s2_sq = $s2^2</span>
+<span class="sd">        $s1s2_product = ($s1 * $s2)</span>
+<span class="sd">        $N = $s1.count($cap)</span>
+<span class="sd">        // Pearson&#39;s coefficient</span>
+<span class="sd">        $numerator = $N * $s1s2_product.sum($cap) - $s1.sum($cap) * $s2.sum($cap)</span>
+<span class="sd">        $denominator = sqrt(($N * $s1_sq.sum($cap) - ($s1.sum($cap))^2) * ($N * $s2_sq.sum($cap) - ($s2.sum($cap))^2))</span>
+<span class="sd">        $pearson = ($numerator / $denominator)</span>
+<span class="sd">        sample($cap.middleKey(),$pearson)},$window)</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">time_shifts_formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    $Wind = periods($window, $period)</span>
+<span class="sd">    $Wind.tosamples( $cap -&gt; {</span>
+<span class="sd">        $value = $signal.correlationOffset($goal,group($cap), -$maxOffset, $maxOffset, $correlation_threshold)</span>
+<span class="sd">        sample($cap.middleKey(),$value)},$window)</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create the User Defined Formula Functions</span>
+<span class="n">signal_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;signal&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1.toSignal()&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">signal_input1</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;signal1&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1.toSignal()&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">signal_input2</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;signal2&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1.toSignal()&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">goal_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;goal&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1.toSignal()&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">window_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;window&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1h&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">period_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1h&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">corr_thrs_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;correlation_threshold&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">maxtimeshift_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaParameterInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;maxOffset&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;1h&#39;</span><span class="p">,</span> <span class="n">unbound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">formulas_info</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;correlationCoefficient&#39;</span><span class="p">,</span>
+         <span class="n">formula</span><span class="o">=</span><span class="n">pearson_formula</span><span class="p">,</span>
+         <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input1</span><span class="p">,</span> <span class="n">signal_input2</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">],</span>
+         <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+             <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">             &lt;p&gt;Calculates the rolling window Pearson&#39;s correlation coefficients between two signals. </span>
+<span class="sd">            One correlation coefficient is calculated for the data contained within each &lt;code&gt;window&lt;/code&gt; of time. </span>
+<span class="sd">            The &lt;code&gt;period&lt;/code&gt; dictates the step the &lt;code&gt;window&lt;/code&gt; is moved (or rolled) for the next </span>
+<span class="sd">            coefficient calculation.&lt;/p&gt;</span>
+<span class="sd">            &quot;&quot;&quot;</span><span class="p">),</span>
+         <span class="n">examples</span><span class="o">=</span><span class="p">[</span>
+             <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleInputV1</span><span class="p">(</span>
+                 <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Calculate the Pearson&#39;s correlation coefficients between &lt;code&gt;$signal1&lt;/code&gt; and &quot;</span>
+                             <span class="s2">&quot;&lt;code&gt;$signal2&lt;/code&gt; during a 24 hour interval and move the window every 6 hours&quot;</span><span class="p">,</span>
+                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelations_correlationCoefficient($signal1, $signal2, 24h, 6h)&#39;</span><span class="p">)</span>
+         <span class="p">]</span>
+         <span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;correlationCoefficientWithTimeShifts&#39;</span><span class="p">,</span>
+         <span class="n">formula</span><span class="o">=</span><span class="n">pearson_timeshifted_formula</span><span class="p">,</span>
+         <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input</span><span class="p">,</span> <span class="n">goal_input</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">,</span> <span class="n">corr_thrs_input</span><span class="p">,</span> <span class="n">maxtimeshift_input</span><span class="p">],</span>
+         <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+             <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">             &lt;p&gt;Calculates the rolling window maximum Pearson&#39;s correlation coefficients between two sliding signals. </span>
+<span class="sd">             For each &lt;code&gt;window&lt;/code&gt;, the time shift that maximizes the cross-correlation between the two </span>
+<span class="sd">             signals is determined first. Then, the samples inside the window are time shifted </span>
+<span class="sd">             (the &lt;code&gt;goal&lt;/code&gt; signal is kept fixed and the other &lt;code&gt;window&lt;/code&gt; is shifted). Finally, </span>
+<span class="sd">             the maximum correlation coefficient coefficient for the &lt;code&gt;window&lt;/code&gt; is calculated and its value </span>
+<span class="sd">             becomes one sample of the output signal. The process repeats after rolling the window a given </span>
+<span class="sd">             &lt;code&gt;period&lt;/code&gt;.&lt;/p&gt;  </span>
+<span class="sd">             &lt;p&gt;This formula uses the &lt;sq-link href=&quot;/formulas/docs/Seeq/correlationOffset&quot;&gt; </span>
+<span class="sd">             &lt;a href=&quot;&quot; ng-click=&quot;$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)&quot; </span>
+<span class="sd">             ng-transclude=&quot;&quot;&gt;correlationOffset() &lt;/a&gt;&lt;/sq-link&gt; formula to calculate the time shifts for each window. </span>
+<span class="sd">             See &lt;sq-link href=&quot;/formulas/docs/Seeq/correlationOffset&quot;&gt; </span>
+<span class="sd">             &lt;a href=&quot;&quot; ng-click=&quot;$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)&quot; </span>
+<span class="sd">             ng-transclude=&quot;&quot;&gt;correlationOffset() &lt;/a&gt;&lt;/sq-link&gt;  </span>
+<span class="sd">             for more information on the &lt;code&gt;maxOffset&lt;/code&gt; and &lt;code&gt;correlation_threshold&lt;/code&gt; parameters&lt;/p&gt;  </span>
+<span class="sd">             &lt;p&gt;&lt;i&gt;Note: The &lt;strong&gt;correlationCoefficientWithTimeShifts&lt;/strong&gt; assumes the &lt;code&gt;minOffset&lt;/code&gt; in  </span>
+<span class="sd">             &lt;sq-link href=&quot;/formulas/docs/Seeq/correlationOffset&quot;&gt; </span>
+<span class="sd">             &lt;a href=&quot;&quot; ng-click=&quot;$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)&quot; </span>
+<span class="sd">             ng-transclude=&quot;&quot;&gt;correlationOffset() &lt;/a&gt;&lt;/sq-link&gt; to be equal to &lt;code&gt;-maxOffset&lt;/code&gt;.&lt;/i&gt;&lt;/p&gt;</span>
+<span class="sd">         &quot;&quot;&quot;</span><span class="p">),</span>
+         <span class="n">examples</span><span class="o">=</span><span class="p">[</span>
+             <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleInputV1</span><span class="p">(</span>
+                 <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Calculate the maximum Pearson&#39;s correlation coefficients between &lt;code&gt;$signal&lt;/code&gt; &quot;</span>
+                             <span class="s2">&quot;and &lt;code&gt;$goal&lt;/code&gt; in 24 h intervals that step every 6 hours, if &lt;code&gt;$signal&lt;/code&gt;&quot;</span>
+                             <span class="s2">&quot; is allowed to shift in time with respect to &lt;code&gt;$goal&lt;/code&gt;&quot;</span><span class="p">,</span>
+                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)&#39;</span><span class="p">)</span>
+         <span class="p">],</span>
+         <span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;timeShifts&#39;</span><span class="p">,</span>
+         <span class="n">formula</span><span class="o">=</span><span class="n">time_shifts_formula</span><span class="p">,</span>
+         <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input</span><span class="p">,</span> <span class="n">goal_input</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">,</span> <span class="n">corr_thrs_input</span><span class="p">,</span> <span class="n">maxtimeshift_input</span><span class="p">],</span>
+         <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+             <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">             &lt;p&gt;Calculates the rolling window  </span>
+<span class="sd">             &lt;sq-link href=&quot;/formulas/docs/Seeq/correlationOffset&quot;&gt; </span>
+<span class="sd">             &lt;a href=&quot;&quot; ng-click=&quot;$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)&quot; </span>
+<span class="sd">             ng-transclude=&quot;&quot;&gt;correlationOffset() &lt;/a&gt;&lt;/sq-link&gt; between &lt;code&gt;signal&lt;/code&gt; and &lt;code&gt;goal&lt;/code&gt; </span>
+<span class="sd">             That is, the time shift that maximizes the cross-correlation between the two signals is determined for </span>
+<span class="sd">             each &lt;code&gt;window&lt;/code&gt; using the &lt;sq-link href=&quot;/formulas/docs/Seeq/correlationOffset&quot;&gt; </span>
+<span class="sd">             &lt;a href=&quot;&quot; ng-click=&quot;$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)&quot; </span>
+<span class="sd">             ng-transclude=&quot;&quot;&gt;correlationOffset() </span>
+<span class="sd">             &lt;/a&gt;&lt;/sq-link&gt; formula. The process repeats after rolling the window a given &lt;code&gt;period&lt;/code&gt;.&lt;/p&gt; </span>
+<span class="sd">            &quot;&quot;&quot;</span>
+         <span class="p">),</span>
+         <span class="n">examples</span><span class="o">=</span><span class="p">[</span>
+             <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleInputV1</span><span class="p">(</span>
+                 <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+                     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                     Calculate the dynamic time shifts to maximize cross-correlation between &lt;code&gt;$signal&lt;/code&gt; </span>
+<span class="sd">                     and &lt;code&gt;$goal&lt;/code&gt; in 24 h intervals  every 6 hours, if &lt;code&gt;$signal&lt;/code&gt; is allowed </span>
+<span class="sd">                     to shift in time with respect to &lt;code&gt;$goal&lt;/code&gt;</span>
+<span class="sd">                     &quot;&quot;&quot;</span>
+                 <span class="p">),</span>
+                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelations_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)&#39;</span><span class="p">)</span>
+         <span class="p">],</span>
+         <span class="p">)</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="correlation_udfs"><a class="viewcode-back" href="../../../../seeq_server_interactions.html#seeq.addons.correlation._seeq_formulas.correlation_udfs">[docs]</a><span class="k">def</span> <span class="nf">correlation_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function creates Cross Correlation package of User Defined Functions</span>
+<span class="sd">    in the Seeq server. Once installed, these formula functions can be used</span>
+<span class="sd">    either standalone in the Seeq server, or called by the Correlation</span>
+<span class="sd">    Analysis Add-On for more interactive calculations</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    api_client: spy.client, default None</span>
+<span class="sd">        Authenticated Seeq client</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    package.id: str</span>
+<span class="sd">        The ID of the Seeq UDF package</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">package_name</span> <span class="o">=</span> <span class="s1">&#39;CrossCorrelations&#39;</span>
+    <span class="n">creator_name</span> <span class="o">=</span> <span class="s1">&#39;Alberto Rivas&#39;</span>
+    <span class="n">creator_contact_info</span> <span class="o">=</span> <span class="s1">&#39;applied.research@seeq.com&#39;</span>
+    <span class="n">formulas_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pkg</span> <span class="o">=</span> <span class="n">formulas_api</span><span class="o">.</span><span class="n">get_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">package_name</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overwriting CrossCorrelation package&quot;</span><span class="p">)</span>
+            <span class="n">formulas_api</span><span class="o">.</span><span class="n">delete_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ApiException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;not found&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+
+    <span class="c1"># Create the Formula Package</span>
+    <span class="n">package_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaPackageInputV1</span><span class="p">(</span><span class="n">creator_name</span><span class="o">=</span><span class="n">creator_name</span><span class="p">,</span> <span class="n">creator_contact_info</span><span class="o">=</span><span class="n">creator_contact_info</span><span class="p">)</span>
+    <span class="n">package_output</span> <span class="o">=</span> <span class="n">formulas_api</span><span class="o">.</span><span class="n">put_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">package_input</span><span class="p">)</span>
+
+    <span class="c1"># Create the individual formulas</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas_info</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating formula </span><span class="si">{</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">create_udf_formulas</span><span class="p">(</span><span class="n">formulas_api</span><span class="p">,</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">],</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Create the formula docs</span>
+    <span class="n">formula_pkg_docs</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">formulas_api</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">package_output</span><span class="o">.</span><span class="n">id</span></div>
+
+
+<span class="k">def</span> <span class="nf">create_udf_formulas</span><span class="p">(</span><span class="n">formulas_api</span><span class="p">,</span> <span class="n">pkg_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">udf_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FunctionInputV1</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">pkg_name</span><span class="p">,</span>
+                                    <span class="n">name</span><span class="o">=</span><span class="n">function_name</span><span class="p">,</span>
+                                    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;UserDefinedFormulaFunction&#39;</span><span class="p">,</span>
+                                    <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
+                                    <span class="n">parameters</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+    <span class="n">formulas_api</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">udf_input</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">formula_pkg_docs</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">formulas_api</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">):</span>
+    <span class="c1"># Create formula docs</span>
+    <span class="n">index_title</span> <span class="o">=</span> <span class="s1">&#39;Cross Correlation&#39;</span>
+    <span class="n">index_description</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the cross-correlations between two signals and allows signals to time shift to maximize the </span>
+<span class="sd">        cross-correlation</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">index_doc_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocInputV1</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">index_title</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">index_description</span><span class="p">,</span>
+        <span class="n">search_keywords</span><span class="o">=</span><span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocKeywordListInputV1</span><span class="p">(</span><span class="n">keywords</span><span class="o">=</span><span class="p">[</span>
+            <span class="s1">&#39;cross-correlation&#39;</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">,</span> <span class="s1">&#39;Pearson&#39;</span><span class="p">,</span> <span class="s1">&#39;offset&#39;</span><span class="p">,</span> <span class="s1">&#39;time shifts&#39;</span><span class="p">]))</span>
+    <span class="n">formulas_api</span><span class="o">.</span><span class="n">put_formula_doc</span><span class="p">(</span>
+        <span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span>
+        <span class="n">doc_name</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="n">index_doc_input</span><span class="p">)</span>
+
+    <span class="c1"># Create the docs for each formula</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas_info</span><span class="p">:</span>
+        <span class="n">formula_docs</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">],</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+                     <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleListInputV1</span><span class="p">(</span><span class="n">examples</span><span class="o">=</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;examples&#39;</span><span class="p">]),</span> <span class="n">formulas_api</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">formula_docs</span><span class="p">(</span><span class="n">pkg_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">examples</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleListInputV1</span><span class="p">,</span>
+                 <span class="n">formulas_api</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">):</span>
+    <span class="c1"># Examples are the best way to demonstrate using the UDF.</span>
+    <span class="n">doc_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocInputV1</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+                                      <span class="n">examples</span><span class="o">=</span><span class="n">examples</span><span class="p">)</span>
+    <span class="n">formulas_api</span><span class="o">.</span><span class="n">put_formula_doc</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">pkg_name</span><span class="p">,</span>
+                                 <span class="n">doc_name</span><span class="o">=</span><span class="n">function_name</span><span class="p">,</span>
+                                 <span class="n">body</span><span class="o">=</span><span class="n">doc_input</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">signals_from_formula</span><span class="p">(</span><span class="n">signal1_id</span><span class="p">,</span> <span class="n">signal_ref_id</span><span class="p">,</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="n">formula_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_signal_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">api_client</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">api_client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">signals_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">SignalsApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">formula_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;formula_type can&#39;t be None&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">formula_type</span> <span class="o">==</span> <span class="s1">&#39;pearson&#39;</span><span class="p">:</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            CrossCorrelations_correlationCoefficient($signal, $goal, $window, $period)</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">signal_name_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Correlation Coefficient:&quot;</span>
+        <span class="n">signal_name_middle</span> <span class="o">=</span> <span class="s2">&quot;||&quot;</span>
+
+    <span class="k">elif</span> <span class="n">formula_type</span> <span class="o">==</span> <span class="s1">&#39;time_shifts&#39;</span><span class="p">:</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $time_unit = &#39;</span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;output_time_unit&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;</span>
+<span class="s2">            CrossCorrelations_timeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
+<span class="s2">            $max_time_shift).convertUnits($time_unit)</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">signal_name_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Time Shifts: &quot;</span>
+        <span class="n">signal_name_middle</span> <span class="o">=</span> <span class="s2">&quot;||aligned_to||&quot;</span>
+    <span class="k">elif</span> <span class="n">formula_type</span> <span class="o">==</span> <span class="s1">&#39;pearson_with_time_shifts&#39;</span><span class="p">:</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
+<span class="s2">            $max_time_shift)</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">signal_name_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Correlation with Dynamic Time Shifting: &quot;</span>
+        <span class="n">signal_name_middle</span> <span class="o">=</span> <span class="s2">&quot;||&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;formula name &#39;</span><span class="si">{</span><span class="n">formula_type</span><span class="si">}</span><span class="s2">&#39; is not a valid option&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">output_signal_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">signal1_name</span> <span class="o">=</span> <span class="n">signals_api</span><span class="o">.</span><span class="n">get_signal</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">signal1_id</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">signal2_name</span> <span class="o">=</span> <span class="n">signals_api</span><span class="o">.</span><span class="n">get_signal</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">signal_ref_id</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">output_signal_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">signal_name_prefix</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">signal1_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">signal_name_middle</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">signal2_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_signal_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                   <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
+                   <span class="n">formulaParameters</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;signal=</span><span class="si">{</span><span class="n">signal1_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                                      <span class="sa">f</span><span class="s2">&quot;goal=</span><span class="si">{</span><span class="n">signal_ref_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
+                   <span class="n">scopedTo</span><span class="o">=</span><span class="n">workbook_id</span>
+                   <span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">signals_api</span><span class="o">.</span><span class="n">create_signal_with_http_info</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">payload</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">r</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Seeq Corporation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

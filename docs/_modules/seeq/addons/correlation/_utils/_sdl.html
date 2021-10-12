@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>seeq.addons.correlation._utils._sdl &mdash; seeq-correlation 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../../_static/seeq-favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> seeq-correlation
+            <img src="../../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../examples.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../docstrings.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citation.html">Citation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">seeq-correlation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      <li>seeq.addons.correlation._utils._sdl</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for seeq.addons.correlation._utils._sdl</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">seeq</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">seeq</span> <span class="kn">import</span> <span class="n">spy</span><span class="p">,</span> <span class="n">sdk</span>
+<span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">urlunparse</span><span class="p">,</span> <span class="n">unquote</span><span class="p">,</span> <span class="n">parse_qs</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">add_datalab_project_ace</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_user_group</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">print_red</span>
+
+<span class="n">DATA_LAB_PROJECT_ID_REGEX</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;.*/data-lab/([0-9A-F]</span><span class="si">{8}</span><span class="s1">-[0-9A-F]</span><span class="si">{4}</span><span class="s1">-[0-9A-F]</span><span class="si">{4}</span><span class="s1">-[0-9A-F]</span><span class="si">{4}</span><span class="s1">-[0-9A-F]</span><span class="si">{12}</span><span class="s1">).*&#39;</span>
+
+
+<div class="viewcode-block" id="pull_only_signals"><a class="viewcode-back" href="../../../../../seeq_server_interactions.html#seeq.addons.correlation._utils._sdl.pull_only_signals">[docs]</a><span class="k">def</span> <span class="nf">pull_only_signals</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pull only the signals shown in the display pane of a Seeq Analysis</span>
+<span class="sd">    Worksheet. The time range used for the pull will be taken from the</span>
+<span class="sd">    display range in the worksheet. Conditions will be disregarded.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url: str</span>
+<span class="sd">        The url of a Seeq worksheet. On</span>
+<span class="sd">    grid: str</span>
+<span class="sd">        The grid of the data pull used in spy.pull</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pd. DataFrame</span>
+<span class="sd">        A dataframe with signal data of the worksheet</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">worksheet</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_analysis_worksheet_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">&#39;Start&#39;</span><span class="p">]</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">&#39;End&#39;</span><span class="p">]</span>
+
+    <span class="n">search_df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">estimate_sample_period</span><span class="o">=</span><span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">search_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">search_signals_df</span> <span class="o">=</span> <span class="n">search_df</span><span class="p">[</span><span class="n">search_df</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Signal&#39;</span><span class="p">)]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">search_signals_df</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="n">status</span><span class="o">=</span><span class="n">spy</span><span class="o">.</span><span class="n">Status</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">unquoted_url</span> <span class="o">=</span> <span class="n">unquote</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">unquoted_url</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_worksheet_url</span><span class="p">(</span><span class="n">jupyter_notebook_url</span><span class="p">):</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_url</span><span class="p">(</span><span class="n">jupyter_notebook_url</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">/workbook/</span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;workbookId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/worksheet/</span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;worksheetId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">get_workbook_worksheet_workstep_ids</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">workbook_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">worksheet_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">workstep_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s1">&#39;workbookId&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">workbook_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;workbookId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;worksheetId&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">worksheet_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;worksheetId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;workstepId&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">workstep_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;workstepId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="n">worksheet_id</span><span class="p">,</span> <span class="n">workstep_id</span>
+
+
+<span class="k">def</span> <span class="nf">get_worksheet_url_from_ids</span><span class="p">(</span><span class="n">workbook_id</span><span class="p">,</span> <span class="n">worksheet_id</span><span class="p">):</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/api&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">worksheet_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">/workbook/</span><span class="si">{</span><span class="n">workbook_id</span><span class="si">}</span><span class="s2">/worksheet/</span><span class="si">{</span><span class="n">worksheet_id</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">spy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_analysis_worksheet_from_url</span><span class="p">(</span><span class="n">worksheet_url</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sanitize_sdl_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">project_id_search</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DATA_LAB_PROJECT_ID_REGEX</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The SDL_url should have the format &quot;</span>
+                         <span class="sa">f</span><span class="s2">&quot;https://my.seeq.com/data-lab/6AB49411-917E-44CC-BA19-5EE0F903100C/ but got </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">project_id_search</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid URL. Could not find data-lab project ID. Got URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">project_id_search</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">urlunparse</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="nb">id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">id</span>
+
+
+<span class="k">def</span> <span class="nf">get_datalab_project_id</span><span class="p">(</span><span class="n">target_url</span><span class="p">,</span> <span class="n">items_api</span><span class="p">):</span>
+    <span class="n">project_id_search</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DATA_LAB_PROJECT_ID_REGEX</span><span class="p">,</span> <span class="n">target_url</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">project_id_search</span><span class="p">:</span>
+        <span class="n">data_lab_project_id</span> <span class="o">=</span> <span class="n">project_id_search</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">items_api</span><span class="o">.</span><span class="n">get_item_and_all_properties</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">data_lab_project_id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">data_lab_project_id</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">print_red</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">check_spy_version</span><span class="p">():</span>
+    <span class="n">server_version</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">server_version</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ver</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">__version__</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">ver</span> <span class="o">=</span> <span class="n">seeq</span><span class="o">.</span><span class="n">__version__</span>
+    <span class="k">if</span> <span class="n">server_version</span> <span class="o">&gt;</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R</span><span class="si">{</span><span class="n">ver</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The SPy module version doesn&#39;t match the Seeq server version. &quot;</span>
+                           <span class="sa">f</span><span class="s2">&quot;Please update the SPy module to version ~=</span><span class="si">{</span><span class="n">spy</span><span class="o">.</span><span class="n">server_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">addon_tool_management</span><span class="p">(</span><span class="n">my_tool_config</span><span class="p">):</span>
+    <span class="n">system_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">SystemApi</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">users_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">UsersApi</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">user_groups_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">UserGroupsApi</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">items_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">ItemsApi</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">check_spy_version</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">system_api</span><span class="p">,</span> <span class="s1">&#39;get_add_on_tools&#39;</span><span class="p">):</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="n">system_api</span><span class="o">.</span><span class="n">get_add_on_tools</span><span class="p">()</span><span class="o">.</span><span class="n">add_on_tools</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="n">system_api</span><span class="o">.</span><span class="n">get_external_tools</span><span class="p">()</span><span class="o">.</span><span class="n">external_tools</span>
+
+    <span class="c1"># Define add-on tools to be added</span>
+    <span class="c1"># ?workbookId={workbookId}&amp;worksheetId={worksheetId}&amp;workstepId={workstepId}&amp;seeqVersion={seeqVersion}</span>
+    <span class="c1"># First, do no harm.</span>
+    <span class="c1"># This extracts the tools that are already there.</span>
+    <span class="c1"># You can then either modify an item or add to this list.</span>
+    <span class="n">tools_config</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">:</span>
+        <span class="n">tools_config</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;iconClass&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">icon_class</span><span class="p">,</span>
+            <span class="s2">&quot;targetUrl&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">target_url</span><span class="p">,</span>
+            <span class="s2">&quot;linkType&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">link_type</span><span class="p">,</span>
+            <span class="s2">&quot;windowDetails&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">window_details</span><span class="p">,</span>
+            <span class="s2">&quot;sortKey&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">sort_key</span><span class="p">,</span>
+            <span class="s2">&quot;reuseWindow&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">reuse_window</span><span class="p">,</span>
+            <span class="s2">&quot;permissions&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(),</span>
+                <span class="s2">&quot;users&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        <span class="n">tool_acl</span> <span class="o">=</span> <span class="n">items_api</span><span class="o">.</span><span class="n">get_access_control</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ace</span> <span class="ow">in</span> <span class="n">tool_acl</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+            <span class="n">identity</span> <span class="o">=</span> <span class="n">ace</span><span class="o">.</span><span class="n">identity</span>
+            <span class="k">if</span> <span class="n">identity</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span>
+                <span class="n">tools_config</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;permissions&quot;</span><span class="p">][</span><span class="s2">&quot;users&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">identity</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;usergroup&quot;</span><span class="p">:</span>
+                <span class="n">tools_config</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;permissions&quot;</span><span class="p">][</span><span class="s2">&quot;groups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">identity</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># If the tool is in the list, update it</span>
+    <span class="k">if</span> <span class="n">my_tool_config</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools_config</span><span class="p">]:</span>
+        <span class="n">list_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools_config</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">my_tool_config</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="n">tools_config</span><span class="p">[</span><span class="n">list_index</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">my_tool_config</span><span class="p">)</span>
+    <span class="c1"># if the tool is not in the list, add it</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tools_config</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_tool_config</span><span class="p">)</span>
+
+    <span class="c1"># Delete all existing add-on tools (only deletes the tools, not what they point to)</span>
+    <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">system_api</span><span class="p">,</span> <span class="s1">&#39;delete_add_on_tool&#39;</span><span class="p">):</span>
+            <span class="n">system_api</span><span class="o">.</span><span class="n">delete_add_on_tool</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">system_api</span><span class="o">.</span><span class="n">delete_external_tool</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="c1"># Add add-on tools and assign add-on tool and data lab permissions to groups and users</span>
+
+    <span class="k">for</span> <span class="n">tool_with_permissions</span> <span class="ow">in</span> <span class="n">tools_config</span><span class="p">:</span>
+        <span class="c1"># Create add-on tool</span>
+        <span class="n">tool</span> <span class="o">=</span> <span class="n">tool_with_permissions</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">tool</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;permissions&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">system_api</span><span class="p">,</span> <span class="s1">&#39;create_add_on_tool&#39;</span><span class="p">):</span>
+            <span class="n">tool_id</span> <span class="o">=</span> <span class="n">system_api</span><span class="o">.</span><span class="n">create_add_on_tool</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">tool</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">tool_type</span> <span class="o">=</span> <span class="s1">&#39;Add-on&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tool_id</span> <span class="o">=</span> <span class="n">system_api</span><span class="o">.</span><span class="n">create_external_tool</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">tool</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">tool_type</span> <span class="o">=</span> <span class="s1">&#39;External&#39;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">tool</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">tool_type</span><span class="si">}</span><span class="s1"> Tool ID - </span><span class="si">{</span><span class="n">tool_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">data_lab_project_id</span> <span class="o">=</span> <span class="n">get_datalab_project_id</span><span class="p">(</span><span class="n">tool</span><span class="p">[</span><span class="s2">&quot;targetUrl&quot;</span><span class="p">],</span> <span class="n">items_api</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data_lab_project_id</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target Data Lab Project ID - </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">data_lab_project_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TargetUrl does not reference a Data Lab project&quot;</span><span class="p">)</span>
+
+        <span class="c1"># assign group permissions to add-on tool and data lab project</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">tool_with_permissions</span><span class="p">[</span><span class="s2">&quot;permissions&quot;</span><span class="p">][</span><span class="s2">&quot;groups&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">get_user_group</span><span class="p">(</span><span class="n">group_name</span><span class="p">,</span> <span class="n">user_groups_api</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
+                <span class="n">ace_input</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;identityId&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;read&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}}</span>
+                <span class="c1"># Add permissions to add-on tool item</span>
+                <span class="n">items_api</span><span class="o">.</span><span class="n">add_access_control_entry</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">tool_id</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">ace_input</span><span class="p">)</span>
+                <span class="c1"># Add permissions to data lab project if target URL references one</span>
+                <span class="n">ace_input</span><span class="p">[</span><span class="s1">&#39;permissions&#39;</span><span class="p">][</span><span class="s1">&#39;write&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Data lab project also needs write permission</span>
+                <span class="n">add_datalab_project_ace</span><span class="p">(</span><span class="n">data_lab_project_id</span><span class="p">,</span> <span class="n">ace_input</span><span class="p">,</span> <span class="n">items_api</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Groups:&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">groups</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+
+        <span class="c1"># assign user permissions to add-on tool and data lab project</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">tool_with_permissions</span><span class="p">[</span><span class="s2">&quot;permissions&quot;</span><span class="p">][</span><span class="s2">&quot;users&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">user_name</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+            <span class="n">user_</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">(</span><span class="n">user_name</span><span class="p">,</span> <span class="n">users_api</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">user_</span><span class="p">:</span>
+                <span class="n">ace_input</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;identityId&#39;</span><span class="p">:</span> <span class="n">user_</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;read&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}}</span>
+                <span class="n">items_api</span><span class="o">.</span><span class="n">add_access_control_entry</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">tool_id</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">ace_input</span><span class="p">)</span>
+                <span class="c1"># Add permissions to data lab project if target URL references one</span>
+                <span class="n">ace_input</span><span class="p">[</span><span class="s1">&#39;permissions&#39;</span><span class="p">][</span><span class="s1">&#39;write&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Data lab project also needs write permission</span>
+                <span class="n">add_datalab_project_ace</span><span class="p">(</span><span class="n">data_lab_project_id</span><span class="p">,</span> <span class="n">ace_input</span><span class="p">,</span> <span class="n">items_api</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Users:&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">users</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Seeq Corporation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
