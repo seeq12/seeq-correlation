@@ -19,7 +19,7 @@ Welcome to seeq-correlation's documentation
    Changelog <changelog.md>
    License <license.md>
    Citation <citation.md>
-
+   View on GitHub <https://github.com/seeq12/seeq-correlation>
 
 Indices and tables
 ==================
@@ -27,5 +27,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-* :ref:`View on GitHub <https://github.com/seeq12/seeq-correlation>`_
+
 
