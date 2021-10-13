@@ -19,7 +19,7 @@ Welcome to seeq-correlation's documentation
    Changelog <changelog.md>
    License <license.md>
    Citation <citation.md>
-   View on GitHub <https://github.com/seeq12/seeq-correlation>
+   View on GitHub <github.md>
 
 Indices and tables
 ==================
