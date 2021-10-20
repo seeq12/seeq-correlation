@@ -27,9 +27,9 @@ with open("seeq/addons/correlation/_version.py", "r+") as f:
 setup_args = dict(
     name='seeq-correlation',
     version=version_scope['__version__'],
-    author="Alberto Rivas",
-    author_email="alberto.rivas@seeq.com",
-    # license="No license offered",
+    author="Seeq Corporation",
+    author_email="applied.research@seeq.com",
+    license='Apache License 2.0',
     platforms=["Linux", "Windows"],
     description="Correlation analysis of time series data in Seeq",
     long_description=long_description,

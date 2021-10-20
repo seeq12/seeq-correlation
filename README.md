@@ -139,8 +139,6 @@ The change log can be found [**here**](https://seeq12.github.io/seeq-correlation
 
 Code related issues (e.g. bugs, feature requests) can be created in the
 [issue tracker](https://github.com/seeq12/seeq-correlation/issues)
-Any other general comments or questions (non-code related) can be emailed to
-[Seeq](mailto:applied.research@seeq.com?subject=[seeq-correlation]%20General%20Question)
 
 Maintainer: Alberto Rivas
 
