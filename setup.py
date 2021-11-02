@@ -39,7 +39,7 @@ setup_args = dict(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'dask[complete]>=2.18.1',
+        'dask[complete]>=2021.10.0',
         'ipyvuetify>=1.5.1',
         'matplotlib>=3.1.3',
         'memoization>=0.2.2',
@@ -53,7 +53,7 @@ setup_args = dict(
     ],
     classifiers=[
         "Programming Language :: Python :: 3.7",
-        # "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.7',
