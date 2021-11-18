@@ -1,4 +1,4 @@
-[![N|Solid](https://www.seeq.com/sites/default/files/seeq-logo-navbar-small.png)](https://www.seeq.com)
+[![N|Solid](	https://www.seeq.com/sites/default/files/seeq-content/seeq-logo-blue-web-33h.svg)](https://www.seeq.com)
 
 [![N|Scheme](LargeMatrixExample.png)](https://seeq12.github.io/seeq-correlation/index.html)
 
