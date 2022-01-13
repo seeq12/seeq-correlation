@@ -339,7 +339,7 @@ def _create_worksheet(df, target, max_time_shift='auto', metadata=None, workbook
     workbookID, worksheetID = get_workbook(workbook, worksheet, datasource)
 
     # noinspection PyProtectedMember
-    pd_start, pd_end = spy._common.validate_start_and_end(df.index[0], df.index[-1])
+    pd_start, pd_end = spy._login.validate_start_and_end(df.index[0], df.index[-1])
     start_time = pd_start.tz_convert('utc').isoformat().replace('+00:00', 'Z')
     end_time = pd_end.tz_convert('utc').isoformat().replace('+00:00', 'Z')
 

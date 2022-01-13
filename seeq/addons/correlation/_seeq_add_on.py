@@ -1,5 +1,4 @@
 from IPython.display import HTML, display, clear_output, Javascript
-import ipywidgets as widgets
 import ipyvuetify as v
 import pandas as pd
 import numpy as np
@@ -12,7 +11,7 @@ import warnings
 import plotly.graph_objects as go
 from seeq import spy
 from ._utils import get_worksheet_url, pull_only_signals, get_workbook_worksheet_workstep_ids, create_condition
-from ._utils import _user_guide
+from ._utils import _user_guide, _github_issues
 from . import default_preprocessing_wrapper
 from . import _heatmap_plot, lags_coeffs, worksheet_with_lagged_signals, worksheet_corrs_and_time_shifts
 
@@ -1000,7 +999,7 @@ class HamburgerMenu(v.Menu):
         self.hamburger_button = v.AppBarNavIcon(v_on='menuData.on')
         self.help_button = v.ListItem(value='help',
                                       ripple=True,
-                                      href='mailto: applied.research@seeq.com?subject=Correlation Feedback',
+                                      href=_github_issues,
                                       target="_blank",
                                       children=[v.ListItemAction(class_='mr-2 ml-0',
                                                                  children=[v.Icon(color='#212529',
