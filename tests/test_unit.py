@@ -120,6 +120,7 @@ def test_heatmap_wrapper():
 @pytest.mark.utils
 def test_cache_management():
     utils.clear_cache_all()
+    # correlation.cross_corr_matrix_lagged.cache_clear()
     # noinspection PyProtectedMember
     correlation.cross_corr_matrix_lagged(pickle.dumps(test_common.df), lags=100)
     # noinspection PyProtectedMember

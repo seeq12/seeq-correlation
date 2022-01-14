@@ -2,7 +2,11 @@ import sys
 import os
 from setuptools import find_packages
 from pkgutil import iter_modules
-import seeq.addons.correlation as correlation
+from pathlib import Path
+
+PACKAGE_DIR = Path(__file__).resolve().parent.parent.parent
+PACKAGE = 'correlation'
+NAMESPACE = 'seeq.addons'
 
 
 def _clear_cache(foo):
@@ -31,8 +35,8 @@ def clear_cache_all():
     Inspects the seeq.addons.causality module and clears the cache of all objects
 
     """
-    modules = find_all_modules(correlation)
-    package_foos = find_all_functions(modules, correlation)
+    modules = find_all_modules(PACKAGE_DIR)
+    package_foos = find_all_functions(modules, PACKAGE)
     for foo in package_foos:
         try:
             foo.cache_clear()
@@ -41,12 +45,13 @@ def clear_cache_all():
             pass
 
 
-def find_all_modules(package_obj):
+def find_all_modules(package_dir):
     modules = set()
+    packages = find_packages(package_dir)
     # noinspection PyProtectedMember
-    for pkg in find_packages(package_obj._directory):
+    for pkg in packages:
         # noinspection PyProtectedMember
-        pkgpath = os.path.join(package_obj._directory, os.path.normpath(pkg.replace('.', '/')))
+        pkgpath = os.path.join(package_dir, os.path.normpath(pkg.replace('.', '/')))
         if sys.version_info.major == 2 or (sys.version_info.major == 3 and sys.version_info.minor < 6):
             for _, name, ispkg in iter_modules([pkgpath]):
                 if not ispkg:
@@ -58,13 +63,13 @@ def find_all_modules(package_obj):
     return modules
 
 
-def find_all_functions(modules, package_obj):
+def find_all_functions(modules, package_name):
     all_foos = []
 
     for module in modules:
-        imported = __import__('.'.join([package_obj.__name__, module]), fromlist=[''])
+        imported = __import__('.'.join([NAMESPACE, module]), fromlist=[''])
         foos = [v for k, v in imported.__dict__.items() if callable(v)]
         all_foos.extend(foos)
 
-    package_foos = [x for x in all_foos if package_obj.__name__ in x.__module__]
+    package_foos = [x for x in all_foos if package_name in x.__module__]
     return package_foos
