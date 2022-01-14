@@ -10,8 +10,8 @@ import pickle
 import warnings
 import plotly.graph_objects as go
 from seeq import spy
-from ._utils import get_worksheet_url, pull_only_signals, get_workbook_worksheet_workstep_ids, create_condition
-from ._utils import _user_guide, _github_issues
+from .utils import get_worksheet_url, pull_only_signals, get_workbook_worksheet_workstep_ids, create_condition
+from seeq.addons.correlation._config import _user_guide, _github_issues
 from . import default_preprocessing_wrapper
 from . import _heatmap_plot, lags_coeffs, worksheet_with_lagged_signals, worksheet_corrs_and_time_shifts
 

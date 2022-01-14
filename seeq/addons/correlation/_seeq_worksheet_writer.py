@@ -2,7 +2,7 @@ import warnings
 import pandas as pd
 from IPython.core.display import display, HTML
 from seeq import spy, sdk
-from ._utils import create_condition, create_workstep_signals
+from .utils import create_condition, create_workstep_signals
 from . import default_preprocessing_wrapper
 from . import lags_coeffs, signals_from_formula
 

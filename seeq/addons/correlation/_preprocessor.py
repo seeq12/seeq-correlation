@@ -7,7 +7,7 @@ import warnings
 from memoization import cached
 # There is a bug that prevents to correctly memorize a pandas.DataFrame
 # Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)
-from ._utils import _cache_max_items
+from ._config import _cache_max_items
 
 
 def _reformat_time_delta(time_delta: pd.Timedelta) -> str:

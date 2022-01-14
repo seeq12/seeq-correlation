@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from distutils import dir_util
 import shutil
-from ._utils import validate_argument_types
+from .utils import validate_argument_types
 
 correlation_dir = Path(__file__).resolve().parent
 

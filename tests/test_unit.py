@@ -5,6 +5,7 @@ import plotly.graph_objs as go
 import pytest
 import seaborn as sns
 from seeq.addons import correlation
+from seeq.addons.correlation import utils, _config
 from . import test_common
 
 
@@ -114,3 +115,35 @@ def test_heatmap_wrapper():
     table = correlation.heatmap(test_common.df, max_time_shift='1h', output_values='time_shifts', output_type='table')
     assert isinstance(table, pd.DataFrame)
 
+
+@pytest.mark.unit
+@pytest.mark.utils
+def test_cache_management():
+    utils.clear_cache_all()
+    # noinspection PyProtectedMember
+    correlation.cross_corr_matrix_lagged(pickle.dumps(test_common.df), lags=100)
+    # noinspection PyProtectedMember
+    cache_info = correlation.cross_corr_matrix_lagged.cache_info()
+    assert cache_info.hits == 0
+    assert cache_info.misses == 1
+    assert cache_info.current_size == 1
+    # noinspection PyProtectedMember
+    assert cache_info.max_size == _config._cache_max_items
+
+    # call the function again and test it hit the cache this time
+    # noinspection PyProtectedMember
+    correlation.cross_corr_matrix_lagged(pickle.dumps(test_common.df), lags=100)
+    # noinspection PyProtectedMember
+    cache_info = correlation.cross_corr_matrix_lagged.cache_info()
+    assert cache_info.hits == 1
+    assert cache_info.misses == 1
+    assert cache_info.current_size == 1
+
+    # call the function again and change one parameter
+    # noinspection PyProtectedMember
+    correlation.cross_corr_matrix_lagged(pickle.dumps(test_common.df), lags=101)
+    # noinspection PyProtectedMember
+    cache_info = correlation.cross_corr_matrix_lagged.cache_info()
+    assert cache_info.hits == 1
+    assert cache_info.misses == 2
+    assert cache_info.current_size == 2

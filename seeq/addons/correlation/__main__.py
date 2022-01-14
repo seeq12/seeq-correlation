@@ -10,7 +10,7 @@ from seeq.spy._errors import *
 # noinspection PyProtectedMember
 from seeq.spy import _url
 from ._copy import copy
-from ._utils import get_user, get_user_group
+from .utils import get_user, get_user_group
 from . import correlation_udfs
 
 NB_EXTENSIONS = ['widgetsnbextension', 'plotlywidget', 'ipyvuetify', 'ipyvue']
