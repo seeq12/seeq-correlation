@@ -120,9 +120,9 @@ def test_heatmap_wrapper():
 @pytest.mark.utils
 def test_cache_management():
     utils.clear_cache_all()
-    # correlation.cross_corr_matrix_lagged.cache_clear()
+    pickled_df = pickle.dumps(test_common.df)
     # noinspection PyProtectedMember
-    correlation.cross_corr_matrix_lagged(pickle.dumps(test_common.df), lags=100)
+    correlation.cross_corr_matrix_lagged(pickled_df, lags=100)
     # noinspection PyProtectedMember
     cache_info = correlation.cross_corr_matrix_lagged.cache_info()
     assert cache_info.hits == 0
@@ -133,7 +133,7 @@ def test_cache_management():
 
     # call the function again and test it hit the cache this time
     # noinspection PyProtectedMember
-    correlation.cross_corr_matrix_lagged(pickle.dumps(test_common.df), lags=100)
+    correlation.cross_corr_matrix_lagged(pickled_df, lags=100)
     # noinspection PyProtectedMember
     cache_info = correlation.cross_corr_matrix_lagged.cache_info()
     assert cache_info.hits == 1
@@ -142,7 +142,7 @@ def test_cache_management():
 
     # call the function again and change one parameter
     # noinspection PyProtectedMember
-    correlation.cross_corr_matrix_lagged(pickle.dumps(test_common.df), lags=101)
+    correlation.cross_corr_matrix_lagged(pickled_df, lags=101)
     # noinspection PyProtectedMember
     cache_info = correlation.cross_corr_matrix_lagged.cache_info()
     assert cache_info.hits == 1
