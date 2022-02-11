@@ -4,7 +4,6 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 import pickle
-import copy
 import warnings
 from memoization import cached
 # There is a bug that prevents to correctly memorize a pandas.DataFrame
@@ -13,10 +12,15 @@ from ._config import _cache_max_items
 
 DATAFRAME_METADATA_CONTAINER_FROM_SPY = 'spy'
 DATAFRAME_PREPROCESSING_CONTAINER = 'preprocessing'
+FUNC_PROP = 'func'
 GRID_PROP = 'grid'
 SUMMARY_PROP = 'summary'
 QUERY_DF_PROP = 'query_df'
 KWARGS_PROP = 'kwargs'
+START_PROP = 'start'
+END_PROP = 'end'
+TZ_PROP = 'tz_convert'
+STATUS_PROP = 'status'
 
 
 def _reformat_time_delta(time_delta: pd.Timedelta) -> str:
@@ -48,10 +52,19 @@ def _validate_df(df):
         delattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY)
 
     if not hasattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY):
-        grid = getattr(df, GRID_PROP) if hasattr(df, GRID_PROP) else None
-        query_df = getattr(df, QUERY_DF_PROP) if hasattr(df, QUERY_DF_PROP) else None
-        kwargs = getattr(df, KWARGS_PROP) if hasattr(df, KWARGS_PROP) else None
-        properties = types.SimpleNamespace(grid=grid, query_df=query_df, kwargs=kwargs)
+        df_spy_properties = {
+            'grid': getattr(df, GRID_PROP) if hasattr(df, GRID_PROP) else None,
+            'query_df': getattr(df, QUERY_DF_PROP) if hasattr(df, QUERY_DF_PROP) else None,
+            'kwargs': getattr(df, KWARGS_PROP) if hasattr(df, KWARGS_PROP) else None,
+            'func': getattr(df, FUNC_PROP) if hasattr(df, FUNC_PROP) else None,
+            'start': getattr(df, START_PROP) if hasattr(df, START_PROP) else None,
+            'end': getattr(df, END_PROP) if hasattr(df, END_PROP) else None,
+            'tz_convert': getattr(df, TZ_PROP) if hasattr(df, TZ_PROP) else None,
+            'status': getattr(df, STATUS_PROP) if hasattr(df, STATUS_PROP) else None,
+
+            }
+
+        properties = types.SimpleNamespace(**df_spy_properties)
         setattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY, properties)
         # noinspection PyProtectedMember
         if DATAFRAME_METADATA_CONTAINER_FROM_SPY not in df._metadata:

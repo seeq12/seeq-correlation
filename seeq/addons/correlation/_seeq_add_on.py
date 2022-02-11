@@ -577,8 +577,8 @@ class CorrelationHeatmap:
         self.update_display()
 
     def get_start_end_times(self):
-        self.start_time = self.current_df.start.tz_convert('utc').isoformat().replace('+00:00', 'Z')
-        self.end_time = self.current_df.end.tz_convert('utc').isoformat().replace('+00:00', 'Z')
+        self.start_time = self.current_df.spy.start.tz_convert('utc').isoformat().replace('+00:00', 'Z')
+        self.end_time = self.current_df.spy.end.tz_convert('utc').isoformat().replace('+00:00', 'Z')
 
     def signal_pairs_selected(self):
         self.signals_dict = self.current_df.spy.query_df.set_index('New Name').to_dict('index')
