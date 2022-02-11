@@ -16,15 +16,8 @@ from . import correlation_udfs
 NB_EXTENSIONS = ['widgetsnbextension', 'plotlywidget', 'ipyvuetify', 'ipyvue']
 DEPLOYMENT_FOLDER = 'deployment'
 CORRELATION_NOTEBOOK = "correlation_analysis_master.ipynb"
-
-
-def permissions_defaults(permissions_group: list, permissions_users: list):
-    if permissions_group is None:
-        permissions_group = ['Everyone']
-
-    if permissions_users is None:
-        permissions_users = []
-    return permissions_group, permissions_users
+DEFAULT_GROUP = ['Everyone']
+DEFAULT_USERS = []
 
 
 def install_app(sdl_url_, *, sort_key='a', permissions_group: list = None, permissions_users: list = None):
@@ -53,7 +46,8 @@ def install_app(sdl_url_, *, sort_key='a', permissions_group: list = None, permi
         Workbench
     """
 
-    permissions_group, permissions_users = permissions_defaults(permissions_group, permissions_users)
+    permissions_group = permissions_group if permissions_group else DEFAULT_GROUP
+    permissions_users = permissions_users if permissions_users else DEFAULT_USERS
     add_on_details = {
         "Name": 'Correlation Analysis',
         "Description": "Determine cross correlations and time shifts to maximize correlations among signals",

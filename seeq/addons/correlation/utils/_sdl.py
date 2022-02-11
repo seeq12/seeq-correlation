@@ -35,7 +35,15 @@ def pull_only_signals(url, grid='auto'):
                   status=spy.Status(quiet=True))
     if df.empty:
         return pd.DataFrame()
-    df.columns = df.query_df['Name']
+
+    if hasattr(df, 'spy'):
+        df.columns = df.spy.query_df['Name']
+    elif hasattr(df, 'query_df'):
+        df.columns = df.query_df['Name']
+    else:
+        raise AttributeError(
+            "A call to `spy.pull` was successful but the response object does not contain the `spy.query_df` property "
+            "required for `seeq.addons.correlation")
     return df
 
 

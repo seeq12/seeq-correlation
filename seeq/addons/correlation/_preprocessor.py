@@ -1,3 +1,5 @@
+import types
+import copy
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import numpy as np
@@ -8,6 +10,13 @@ from memoization import cached
 # There is a bug that prevents to correctly memorize a pandas.DataFrame
 # Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)
 from ._config import _cache_max_items
+
+DATAFRAME_METADATA_CONTAINER_FROM_SPY = 'spy'
+DATAFRAME_PREPROCESSING_CONTAINER = 'preprocessing'
+GRID_PROP = 'grid'
+SUMMARY_PROP = 'summary'
+QUERY_DF_PROP = 'query_df'
+KWARGS_PROP = 'kwargs'
 
 
 def _reformat_time_delta(time_delta: pd.Timedelta) -> str:
@@ -33,17 +42,22 @@ def _validate_df(df):
     non_numeric_cols = list(df.columns[list(np.where(~np.array(col_types))[0])])
     if not all(item for item in col_types):
         raise ValueError(f"All columns in dataframe must be numeric. Check columns={non_numeric_cols}")
-    try:
-        df.grid
-    except AttributeError as e:
-        df.grid = None
-        # noinspection PyProtectedMember
-        if 'grid' not in df._metadata:
-            # noinspection PyProtectedMember
-            df._metadata += ['grid']
-        warnings.warn(str(e) + ". An attempt to infer the sampling frequency will be made")
 
-    if not df.grid:
+    if not hasattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY):
+        grid = getattr(df, GRID_PROP) if hasattr(df, GRID_PROP) else None
+        query_df = getattr(df, QUERY_DF_PROP) if hasattr(df, QUERY_DF_PROP) else None
+        kwargs = getattr(df, KWARGS_PROP) if hasattr(df, KWARGS_PROP) else None
+        properties = types.SimpleNamespace(grid=grid, query_df=query_df, kwargs=kwargs)
+        setattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY, properties)
+        # noinspection PyProtectedMember
+        if DATAFRAME_METADATA_CONTAINER_FROM_SPY not in df._metadata:
+            # noinspection PyProtectedMember
+            df._metadata.append(DATAFRAME_METADATA_CONTAINER_FROM_SPY)
+
+    namespace = getattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY)
+    if not namespace.grid:
+        warnings.warn(
+            "'DataFrame' object has 'spy.grid=None'. An attempt to infer the sampling frequency will be made")
         if not pd.infer_freq(df.index):
             raise ValueError("Sampling period could not be inferred. "
                              "It looks like the dataframe does not have a uniform grid. Try pulling the data using"
@@ -68,13 +82,13 @@ def attach_summary(df, summary):
     Returns
     -------
     df: pandas.DataFrame
-        The input DataFrame with a preprocessing_summary attached as metadata.
+        The input DataFrame with a preprocessing container attached as metadata.
 
 
     Notes
     ------
     This function modifies the input DataFrame by adding or updating the
-    `preprocessing_summary` property.
+    `preprocessing.summary` property.
 
     """
     if len(df.columns) > len(summary):
@@ -82,8 +96,9 @@ def attach_summary(df, summary):
     else:
         columns = summary.index
     try:
-        if df.preprocessing_summary is not None:
-            summary_df = copy.deepcopy(df.preprocessing_summary)
+        namespace = getattr(df, DATAFRAME_PREPROCESSING_CONTAINER)
+        if namespace.summary is not None:
+            summary_df = copy.deepcopy(namespace.summary)
             cols = list(summary_df.columns)
         else:
             summary_df = pd.DataFrame(columns=[], index=columns)
@@ -108,11 +123,13 @@ def attach_summary(df, summary):
     new_summary.fillna('-', inplace=True)
 
     # noinspection PyProtectedMember
-    if 'preprocessing_summary' not in df._metadata:
+    if DATAFRAME_PREPROCESSING_CONTAINER not in df._metadata:
         # noinspection PyProtectedMember
-        df._metadata += ['preprocessing_summary']
+        df._metadata.append(DATAFRAME_PREPROCESSING_CONTAINER)
+
     # cols helps to keep the order of the columns
-    df.preprocessing_summary = new_summary[cols]
+    summary_namespace = types.SimpleNamespace(summary=new_summary[cols])
+    setattr(df, DATAFRAME_PREPROCESSING_CONTAINER, summary_namespace)
 
 
 @cached(max_size=_cache_max_items)
@@ -227,6 +244,7 @@ def _pickled_non_numeric(df_serialized, auto_remove):
 @cached(max_size=_cache_max_items)
 def _pickled_duplicated_column_names(df_serialized):
     df = pickle.loads(df_serialized)
+    _validate_df(df)
     if df.empty:
         return pd.DataFrame()
     cols = pd.Series(df.columns)
@@ -235,10 +253,11 @@ def _pickled_duplicated_column_names(df_serialized):
         cols[cols[cols == dup].index.values.tolist()] = [dup + '.' + str(i) if i != 0 else dup for i in
                                                          range(sum(cols == dup))]
 
-    if hasattr(df, 'query_df'):
-        if df.query_df is not None:
-            if list(df.columns) == list(df.query_df['Name'].values):
-                df.query_df['New Name'] = cols
+    if hasattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY):
+        namespace = getattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY)
+        if namespace.query_df is not None:
+            if list(df.columns) == list(namespace.query_df['Name'].values):
+                namespace.query_df['New Name'] = cols
 
     # rename the columns with the cols list.
     df.columns = cols
@@ -252,28 +271,30 @@ def _pickled_sampling_info(df_serialized, sampling_ratio_threshold, remove=False
         keyword = 'removed'
 
     df = pickle.loads(df_serialized)
+    _validate_df(df)
     if df.empty:
         return pd.DataFrame()
 
     dff = copy.deepcopy(df)
-    if hasattr(dff, 'kwargs'):
-        if dff.kwargs is None or 'items' not in dff.kwargs or 'New Name' not in dff.query_df.columns:
+    if hasattr(dff, DATAFRAME_METADATA_CONTAINER_FROM_SPY):
+        namespace = getattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY)
+        if namespace.kwargs is None or 'items' not in namespace.kwargs or 'New Name' not in namespace.query_df.columns:
             return dff
-        if 'Estimated Sample Period' not in dff.kwargs['items']:
+        if 'Estimated Sample Period' not in namespace.kwargs['items']:
             return dff
-        summary_sampling_period = pd.DataFrame(data=dff.kwargs['items']['Estimated Sample Period'].values,
+        summary_sampling_period = pd.DataFrame(data=namespace.kwargs['items']['Estimated Sample Period'].values,
                                                columns=['Original Sampling Period'],
-                                               index=dff.query_df['New Name'].values)
+                                               index=namespace.query_df['New Name'].values)
         summary_sampling_period['Original Sampling Period'] = summary_sampling_period['Original Sampling Period'].apply(
             _reformat_time_delta)
         attach_summary(dff, summary_sampling_period)
-        if hasattr(dff, 'grid'):
-            if dff.grid is None:
+        if hasattr(namespace, GRID_PROP):
+            if namespace.grid is None:
                 return dff
-            grid = pd.Timedelta(dff.grid)
+            grid = pd.Timedelta(namespace.grid)
             ratio_sampling_periods = pd.DataFrame(
-                data=dff.kwargs['items']['Estimated Sample Period'].values / grid,
-                columns=['Ratio of sampling periods (raw/gridded)'], index=dff.query_df['New Name'].values)
+                data=namespace.kwargs['items']['Estimated Sample Period'].values / grid,
+                columns=['Ratio of sampling periods (raw/gridded)'], index=namespace.query_df['New Name'].values)
             remove_signals = ratio_sampling_periods['Ratio of sampling periods (raw/gridded)'][
                 (ratio_sampling_periods['Ratio of sampling periods (raw/gridded)'] > sampling_ratio_threshold) |
                 (ratio_sampling_periods['Ratio of sampling periods (raw/gridded)'] < 1 / sampling_ratio_threshold)
@@ -313,7 +334,7 @@ def standardization(df):
     Notes
     ------
     A summary of how this function modified or tagged signals in the dataframe
-    can be accessed in the property `scaled_df.preprocessing_summary`.
+    can be accessed in the property `scaled_df.preprocessing.summary`.
 
     """
 
@@ -343,7 +364,7 @@ def interpolate_nans(df, consecutivenans=0.05):
     Notes
     ------
     A summary of how this function modified or tagged signals in the dataframe
-    can be accessed in the property `interpolated_df.preprocessing_summary`.
+    can be accessed in the property `interpolated_df.preprocessing.summary`.
 
     """
 
@@ -369,7 +390,7 @@ def remove_flat_lines(df):
     Notes
     ------
     A summary of how this function modified or tagged signals in the dataframe
-    can be accessed in the property `df_out.preprocessing_summary`
+    can be accessed in the property `df_out.preprocessing.summary`
 
     """
 
@@ -399,7 +420,7 @@ def remove_signals_with_missing_data(df, percent_nan=0.4):
     Notes
     ------
     A summary of how this function modified or tagged signals in the dataframe
-    can be accessed in the property `dff.preprocessing_summary`.
+    can be accessed in the property `dff.preprocessing.summary`.
 
     """
 
@@ -427,7 +448,7 @@ def remove_non_numeric(df, auto_remove=True):
     Notes
     ------
     A summary of how this function modified or tagged signals in the dataframe
-    can be accessed in the property `dff.preprocessing_summary`.
+    can be accessed in the property `dff.preprocessing.summary`.
 
     """
 
@@ -516,9 +537,11 @@ def default_preprocessing_wrapper(df, consecutivenans=0.04, percent_nan=0.0, rem
     Notes
     ------
     A summary of how this function modified or tagged signals in the dataframe can be accessed in
-    the property `dff.preprocessing_summary`
+    the property `dff.preprocessing.summary`
 
     """
+
+    df = copy.deepcopy(df)
 
     df = duplicated_column_names(df)
     df = remove_non_numeric(df)

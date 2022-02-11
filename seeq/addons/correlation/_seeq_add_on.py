@@ -581,7 +581,7 @@ class CorrelationHeatmap:
         self.end_time = self.current_df.end.tz_convert('utc').isoformat().replace('+00:00', 'Z')
 
     def signal_pairs_selected(self):
-        self.signals_dict = self.current_df.query_df.set_index('New Name').to_dict('index')
+        self.signals_dict = self.current_df.spy.query_df.set_index('New Name').to_dict('index')
         self.signal_pairs_ids = []
         bool_df = self.get_boolean_df().copy()
         bool_df.columns = [self.signals_dict[x]['ID'] for x in bool_df.columns]
@@ -596,7 +596,7 @@ class CorrelationHeatmap:
             self.signal_pairs_ids.extend(pair_ids)
 
     def worksheet_input_params(self):
-        self.signals_dict = self.current_df.query_df.set_index('New Name').to_dict('index')
+        self.signals_dict = self.current_df.spy.query_df.set_index('New Name').to_dict('index')
         self.signal_ids = [self.signals_dict[x]['ID'] for x in self.current_signals]
         self.signal_names = [self.signals_dict[x]['Name'] for x in self.current_signals]
         self.time_shifts = self.time_shifts_df[self.current_signals].loc[
@@ -879,7 +879,7 @@ class CreateSignalsMenu(v.Dialog):
         if self.parent.export_disabled:
             self.export_disabled()
             return
-        if not hasattr(self.parent.current_df, 'query_df'):
+        if not hasattr(self.parent.current_df.spy, 'query_df'):
             self.parent.info_message = "The current signals do not have a corresponding Seeq ID. " \
                                        "Cannot create shifted signals."
             self.parent.info_style = "color: #ff5252 !important;"
