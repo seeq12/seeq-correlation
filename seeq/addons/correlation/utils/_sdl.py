@@ -36,7 +36,7 @@ def pull_only_signals(url, grid='auto'):
     if df.empty:
         return pd.DataFrame()
 
-    if hasattr(df, 'spy'):
+    if hasattr(df, 'spy') and hasattr(df.spy, 'query_df'):
         df.columns = df.spy.query_df['Name']
     elif hasattr(df, 'query_df'):
         df.columns = df.query_df['Name']

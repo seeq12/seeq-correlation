@@ -43,6 +43,10 @@ def _validate_df(df):
     if not all(item for item in col_types):
         raise ValueError(f"All columns in dataframe must be numeric. Check columns={non_numeric_cols}")
 
+    if hasattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY) and \
+            getattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY) is None:
+        delattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY)
+
     if not hasattr(df, DATAFRAME_METADATA_CONTAINER_FROM_SPY):
         grid = getattr(df, GRID_PROP) if hasattr(df, GRID_PROP) else None
         query_df = getattr(df, QUERY_DF_PROP) if hasattr(df, QUERY_DF_PROP) else None
