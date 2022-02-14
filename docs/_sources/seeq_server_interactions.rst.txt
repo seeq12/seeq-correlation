@@ -1,7 +1,7 @@
 Seeq Interactions
 ------------------
 
-.. automodule:: seeq.addons.correlation._utils._sdl
+.. automodule:: seeq.addons.correlation.utils._sdl
    :members:
    :show-inheritance:
 

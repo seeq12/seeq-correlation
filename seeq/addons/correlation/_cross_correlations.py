@@ -9,7 +9,7 @@ from pandas.tseries.frequencies import to_offset
 # There is a bug that prevents to correctly memorize a pandas.DataFrame
 # Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)
 from memoization import cached
-from ._utils import _cache_max_items
+from ._config import _cache_max_items
 from . import _validate_df
 
 
@@ -79,16 +79,16 @@ def lags_coeffs(df, max_time_shift, time_output_unit):
     grid: float = pd.to_timedelta(to_offset(pd.infer_freq(df.index))).total_seconds()
     sampling = pd.Timedelta(f'{grid}s')
 
-    if not df.grid:
-        df.grid = f'{grid}s'
+    if not df.spy.grid:
+        df.spy.grid = f'{grid}s'
     else:
-        grid_old = df.grid
-        sampling_old = pd.Timedelta(df.grid)
+        grid_old = df.spy.grid
+        sampling_old = pd.Timedelta(df.spy.grid)
         if sampling != sampling_old:
-            df.grid = f'{grid}s'
+            df.spy.grid = f'{grid}s'
             warnings.warn(
                 f"DataFrame had a grid property of {grid_old} which is different from the inferred grid period"
-                f"of {df.grid}. The grid property has been overwritten. Please double check DataFrame "
+                f"of {df.spy.grid}. The grid property has been overwritten. Please double check DataFrame "
                 f"for data integrity")
 
     maxlags = _maxlags(df, sampling, max_time_shift)

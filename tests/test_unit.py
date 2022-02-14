@@ -5,6 +5,7 @@ import plotly.graph_objs as go
 import pytest
 import seaborn as sns
 from seeq.addons import correlation
+from seeq.addons.correlation import utils, _config
 from . import test_common
 
 
@@ -80,11 +81,9 @@ def test_correlation_heatmap():
 @pytest.mark.plots
 @pytest.mark.unit
 def test_pair_plot():
-    target = 'signal1'
     df = test_common.df[:100].copy()
     # noinspection PyProtectedMember
     lags, coeffs = correlation.cross_corr_matrix_lagged(pickle.dumps(df), lags=5)
-    idx = list(df.columns).index(target)
 
     # noinspection PyProtectedMember
     figure = correlation._pairplot._contour_matrix_diag_hist_static(pickle.dumps(df))
@@ -114,3 +113,36 @@ def test_heatmap_wrapper():
     table = correlation.heatmap(test_common.df, max_time_shift='1h', output_values='time_shifts', output_type='table')
     assert isinstance(table, pd.DataFrame)
 
+
+@pytest.mark.unit
+@pytest.mark.utils
+def test_cache_management():
+    utils.clear_cache_all()
+    pickled_df = pickle.dumps(test_common.df)
+    # noinspection PyProtectedMember
+    correlation.cross_corr_matrix_lagged(pickled_df, lags=100)
+    # noinspection PyProtectedMember
+    cache_info = correlation.cross_corr_matrix_lagged.cache_info()
+    assert cache_info.hits == 0
+    assert cache_info.misses == 1
+    assert cache_info.current_size == 1
+    # noinspection PyProtectedMember
+    assert cache_info.max_size == _config._cache_max_items
+
+    # call the function again and test it hit the cache this time
+    # noinspection PyProtectedMember
+    correlation.cross_corr_matrix_lagged(pickled_df, lags=100)
+    # noinspection PyProtectedMember
+    cache_info = correlation.cross_corr_matrix_lagged.cache_info()
+    assert cache_info.hits == 1
+    assert cache_info.misses == 1
+    assert cache_info.current_size == 1
+
+    # call the function again and change one parameter
+    # noinspection PyProtectedMember
+    correlation.cross_corr_matrix_lagged(pickled_df, lags=101)
+    # noinspection PyProtectedMember
+    cache_info = correlation.cross_corr_matrix_lagged.cache_info()
+    assert cache_info.hits == 1
+    assert cache_info.misses == 2
+    assert cache_info.current_size == 2

@@ -6,8 +6,8 @@ jupyter~=1.0.0
 matplotlib==3.3.4
 memoization==0.3.2
 myst-parser~=0.15.2
-numpy==1.20.1
-pandas==1.2.3
+numpy>=1.21
+pandas>=1.2.3
 parver==0.3.1
 plotly==4.14.3
 pytest==6.2.4
@@ -16,6 +16,7 @@ python-dateutil==2.8.1
 scikit-learn==0.24.1
 scipy==1.6.1
 seaborn==0.11.1
+seeq
 sklearn==0.0
 sphinx==4.2.0
 sphinx-rtd-theme==1.0.0

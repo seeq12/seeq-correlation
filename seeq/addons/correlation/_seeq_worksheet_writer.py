@@ -1,8 +1,9 @@
 import warnings
 import pandas as pd
-from IPython.core.display import display, HTML
+from IPython import display
+from IPython.core.display import HTML
 from seeq import spy, sdk
-from ._utils import create_condition, create_workstep_signals
+from .utils import create_condition, create_workstep_signals
 from . import default_preprocessing_wrapper
 from . import lags_coeffs, signals_from_formula
 
@@ -201,7 +202,7 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
     if condition_id is None:
         condition_id = create_condition(
             start_time, end_time, workbook_id, api_client,
-            capsule_name=f'Correlation Analysis')
+            capsule_name='Correlation Analysis')
 
     workbook_id, worksheet_id = get_workbook(workbook_id, worksheet_name, datasource)
     existing_worksheet = get_existing_worksheet(workbook_id, worksheet_id, api_client)
@@ -264,7 +265,7 @@ def create_worksheet(df, target, max_time_shift='auto', metadata=None, workbook=
     metadata: pandas.DataFrame, default None
         A dataframe with at least two columns: Name and ID. This dataframe is typically the output of the
         spy.search() function. If the dataframe was obtained with spy.pull,
-        the metadata is already stored in the property 'query_df'. If that is the case this metadata parameter
+        the metadata is already stored in the property 'spy.query_df'. If that is the case this metadata parameter
         might be omitted.
     workbook: {str, None}, default 'Correlation >> Correlation Analysis'
         The path to a workbook (in the form of 'Folder >> Path >> Workbook Name') or an ID that all
@@ -318,16 +319,16 @@ def _create_worksheet(df, target, max_time_shift='auto', metadata=None, workbook
 
     if metadata is None:
         try:
-            if df.query_df is None:
+            if df.spy.query_df is None:
                 raise ValueError(
                     "Metadata not found. Supply metadata as a dataframe with either the 'metadata' parameter "
-                    "or the 'query_df' attribute of the input signals dataframe")
-            metadata = df.query_df
+                    "or the 'spy.query_df' attribute of the input signals dataframe")
+            metadata = df.spy.query_df
 
         except AttributeError as e:
             warnings.warn(str(e) + "Metadata attribute not found for provided dataframe")
             raise AttributeError("Metadata not found. Supply metadata as a dataframe with either the 'metadata' "
-                                 "parameter or the 'query_df' attribute of the input signals dataframe")
+                                 "parameter or the 'spy.query_df' attribute of the input signals dataframe")
 
     if 'ID' not in metadata:
         raise KeyError('ID not found in metadata. Make sure the metadata dataframe includes '
@@ -339,7 +340,10 @@ def _create_worksheet(df, target, max_time_shift='auto', metadata=None, workbook
     workbookID, worksheetID = get_workbook(workbook, worksheet, datasource)
 
     # noinspection PyProtectedMember
-    pd_start, pd_end = spy._common.validate_start_and_end(df.index[0], df.index[-1])
+    if hasattr(spy, 'session'):
+        pd_start, pd_end = spy._login.validate_start_and_end(spy.session, df.index[0], df.index[-1])
+    else:
+        pd_start, pd_end = spy._login.validate_start_and_end(df.index[0], df.index[-1])
     start_time = pd_start.tz_convert('utc').isoformat().replace('+00:00', 'Z')
     end_time = pd_end.tz_convert('utc').isoformat().replace('+00:00', 'Z')
 

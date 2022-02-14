@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from distutils import dir_util
 import shutil
-from ._utils import validate_argument_types
+from .utils import validate_argument_types
 
 correlation_dir = Path(__file__).resolve().parent
 
@@ -72,6 +72,3 @@ def copy(des_folder=None, src_folder=None, *, overwrite_folder=False, overwrite_
     else:
         dir_util.copy_tree(src_folder_path, str(des_folder_path))
         print(f'Copied Correlation notebook to {des_folder_path}')
-
-
-

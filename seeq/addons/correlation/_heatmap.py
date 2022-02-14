@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 # There is a bug that prevents to correctly memorize a pandas.DataFrame
 # Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)
 from memoization import cached
-from ._utils import _cache_max_items
+from ._config import _cache_max_items
 from . import default_preprocessing_wrapper
 from . import lags_coeffs
 
@@ -234,7 +234,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         'bgcolor': 'rgba(0, 0, 0, 0)',
         'color': 'rgba(221, 221, 221, 1)',
         'activecolor': 'rgba(0, 121, 96, 1)'
-    }
+        }
     # this ensures a square plot
     fig.layout.xaxis = {'constrain': 'domain', 'scaleanchor': 'y'}
     fig.layout.yaxis = {'constrain': 'domain'}
