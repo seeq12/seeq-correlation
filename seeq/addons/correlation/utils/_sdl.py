@@ -71,4 +71,3 @@ def get_workbook_worksheet_workstep_ids(url):
     if 'workstepId' in params:
         workstep_id = params['workstepId'][0]
     return workbook_id, worksheet_id, workstep_id
-

@@ -202,7 +202,7 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
     if condition_id is None:
         condition_id = create_condition(
             start_time, end_time, workbook_id, api_client,
-            capsule_name=f'Correlation Analysis')
+            capsule_name='Correlation Analysis')
 
     workbook_id, worksheet_id = get_workbook(workbook_id, worksheet_name, datasource)
     existing_worksheet = get_existing_worksheet(workbook_id, worksheet_id, api_client)

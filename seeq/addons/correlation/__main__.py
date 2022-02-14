@@ -214,7 +214,7 @@ if __name__ == '__main__':
         sdl_url = input("Seeq Data Lab project URL: ")
         project_id = spy.utils.get_data_lab_project_id_from_url(sdl_url)
         if not project_id:
-            raise RuntimeError(f'Could not install "seeq-correlation" because the SDL project ID could not be found')
+            raise RuntimeError('Could not install "seeq-correlation" because the SDL project ID could not be found')
     sdl_url_sanitized = _url.SeeqURL.parse(sdl_url).url
 
     print(f"\nThe Correlation Tool will be installed on the SDL notebook: {sdl_url_sanitized}\n"
