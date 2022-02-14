@@ -1,9 +1,6 @@
 import time
 import json
 import string
-
-from seeq.sdk import WorkstepOutputV1
-
 from seeq import sdk
 from dateutil.parser import parse
 
