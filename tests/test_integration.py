@@ -25,7 +25,7 @@ def setup_module():
 @pytest.mark.backend
 @pytest.mark.integration
 def test_create_worksheet():
-    df_pull = correlation._utils.pull_only_signals(example_data_url, grid='auto')
+    df_pull = correlation.utils.pull_only_signals(example_data_url, grid='auto')
     worksheet_url = correlation._create_worksheet(df_pull, df_pull.columns[0], max_time_shift='auto',
                                                   metadata=None,
                                                   worksheet='From Correlation Results', overwrite=True,
