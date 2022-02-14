@@ -1,6 +1,6 @@
 <p >
   <a href="https://www.seeq.com" rel="nofollow">
-    <img src="https://www.seeq.com/sites/default/files/seeq-content/seeq-logo-blue-web-33h.svg" alt="seeq" width="25%">
+    <img src="https://www.seeq.com/sites/default/files/seeq-content/seeq-logo-blue-web-33h.svg" alt="seeq" width="22%">
   </a>
 </p>
 
