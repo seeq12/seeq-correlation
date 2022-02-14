@@ -139,7 +139,9 @@ def create_udfs(api_client, *, permissions_groups: list = None, permissions_user
     -: None
         The Correlation UDFs will be available in Seeq Workbench
     """
-    permissions_groups, permissions_users = permissions_defaults(permissions_groups, permissions_users)
+
+    permissions_groups = permissions_groups if permissions_groups else DEFAULT_GROUP
+    permissions_users = permissions_users if permissions_users else DEFAULT_USERS
     print("\n\nCreating CrossCorrelation UDFs...")
     user_groups_api = sdk.UserGroupsApi(api_client)
     users_api = sdk.UsersApi(spy.client)
