@@ -54,13 +54,13 @@ def test_create_worksheet_with_tracking_corr_signals():
     wb.worksheet('new')
     spy.workbooks.push(wb, include_inventory=False, quiet=True)
 
-    r = correlation.worksheet_corrs_and_time_shifts(ids, wb.id, "new_worksheet",
-                                                    '2021-04-27T22:30:37.837000Z', '2021-04-29T14:05:06.789000Z',
-                                                    corr_coeff_signals=True, time_shifted_for_correlation=True,
-                                                    window_size='24h', period='6h',
-                                                    suffix='', time_shifts_signals=True, corr_thrs=0.7,
-                                                    output_time_unit='min', max_time_shift='1h',
-                                                    condition_id=None, overwrite=True, api_client=spy.client)
+    correlation.worksheet_corrs_and_time_shifts(ids, wb.id, "new_worksheet",
+                                                '2021-04-27T22:30:37.837000Z', '2021-04-29T14:05:06.789000Z',
+                                                corr_coeff_signals=True, time_shifted_for_correlation=True,
+                                                window_size='24h', period='6h',
+                                                suffix='', time_shifts_signals=True, corr_thrs=0.7,
+                                                output_time_unit='min', max_time_shift='1h',
+                                                condition_id=None, overwrite=True, api_client=spy.client)
 
 
 @pytest.mark.frontend

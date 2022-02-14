@@ -1,6 +1,9 @@
 import time
 import json
 import string
+
+from seeq.sdk import WorkstepOutputV1
+
 from seeq import sdk
 from dateutil.parser import parse
 
@@ -14,7 +17,7 @@ def create_workstep_signals(existing_worksheet, workbook_id, signal_ids, start_t
         workstep_id = existing_worksheet.workstep.split('/')[-1]
         workstep_output = workbooks_api.get_workstep(workbook_id=workbook_id,
                                                      worksheet_id=existing_worksheet.id,
-                                                     workstep_id=workstep_id)  # type: WorkstepOutputV1
+                                                     workstep_id=workstep_id)  # type: WorkstepOutputV1 # noqa: F821
         workstep_input.data = workstep_output.data
 
     if workstep_input.data:

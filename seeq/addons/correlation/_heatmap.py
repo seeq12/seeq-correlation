@@ -234,7 +234,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         'bgcolor': 'rgba(0, 0, 0, 0)',
         'color': 'rgba(221, 221, 221, 1)',
         'activecolor': 'rgba(0, 121, 96, 1)'
-    }
+        }
     # this ensures a square plot
     fig.layout.xaxis = {'constrain': 'domain', 'scaleanchor': 'y'}
     fig.layout.yaxis = {'constrain': 'domain'}

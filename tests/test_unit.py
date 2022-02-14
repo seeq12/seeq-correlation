@@ -81,11 +81,9 @@ def test_correlation_heatmap():
 @pytest.mark.plots
 @pytest.mark.unit
 def test_pair_plot():
-    target = 'signal1'
     df = test_common.df[:100].copy()
     # noinspection PyProtectedMember
     lags, coeffs = correlation.cross_corr_matrix_lagged(pickle.dumps(df), lags=5)
-    idx = list(df.columns).index(target)
 
     # noinspection PyProtectedMember
     figure = correlation._pairplot._contour_matrix_diag_hist_static(pickle.dumps(df))
