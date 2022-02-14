@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._seeq_worksheet_writer &mdash; seeq-correlation 0.1.0 documentation</title>
+  <title>seeq.addons.correlation._seeq_worksheet_writer &mdash; seeq-correlation 0.1.3-dev documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
@@ -29,7 +29,7 @@
             <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.0
+                0.1.3-dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -79,9 +79,10 @@
   <h1>Source code for seeq.addons.correlation._seeq_worksheet_writer</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="kn">from</span> <span class="nn">seeq</span> <span class="kn">import</span> <span class="n">spy</span><span class="p">,</span> <span class="n">sdk</span>
-<span class="kn">from</span> <span class="nn">._utils</span> <span class="kn">import</span> <span class="n">create_condition</span><span class="p">,</span> <span class="n">create_workstep_signals</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">create_condition</span><span class="p">,</span> <span class="n">create_workstep_signals</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">default_preprocessing_wrapper</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lags_coeffs</span><span class="p">,</span> <span class="n">signals_from_formula</span>
 
@@ -280,7 +281,7 @@
     <span class="k">if</span> <span class="n">condition_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">condition_id</span> <span class="o">=</span> <span class="n">create_condition</span><span class="p">(</span>
             <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="n">api_client</span><span class="p">,</span>
-            <span class="n">capsule_name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Correlation Analysis&#39;</span><span class="p">)</span>
+            <span class="n">capsule_name</span><span class="o">=</span><span class="s1">&#39;Correlation Analysis&#39;</span><span class="p">)</span>
 
     <span class="n">workbook_id</span><span class="p">,</span> <span class="n">worksheet_id</span> <span class="o">=</span> <span class="n">get_workbook</span><span class="p">(</span><span class="n">workbook_id</span><span class="p">,</span> <span class="n">worksheet_name</span><span class="p">,</span> <span class="n">datasource</span><span class="p">)</span>
     <span class="n">existing_worksheet</span> <span class="o">=</span> <span class="n">get_existing_worksheet</span><span class="p">(</span><span class="n">workbook_id</span><span class="p">,</span> <span class="n">worksheet_id</span><span class="p">,</span> <span class="n">api_client</span><span class="p">)</span>
@@ -343,7 +344,7 @@
 <span class="sd">    metadata: pandas.DataFrame, default None</span>
 <span class="sd">        A dataframe with at least two columns: Name and ID. This dataframe is typically the output of the</span>
 <span class="sd">        spy.search() function. If the dataframe was obtained with spy.pull,</span>
-<span class="sd">        the metadata is already stored in the property &#39;query_df&#39;. If that is the case this metadata parameter</span>
+<span class="sd">        the metadata is already stored in the property &#39;spy.query_df&#39;. If that is the case this metadata parameter</span>
 <span class="sd">        might be omitted.</span>
 <span class="sd">    workbook: {str, None}, default &#39;Correlation &gt;&gt; Correlation Analysis&#39;</span>
 <span class="sd">        The path to a workbook (in the form of &#39;Folder &gt;&gt; Path &gt;&gt; Workbook Name&#39;) or an ID that all</span>
@@ -397,16 +398,16 @@
 
     <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">query_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">spy</span><span class="o">.</span><span class="n">query_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">&quot;Metadata not found. Supply metadata as a dataframe with either the &#39;metadata&#39; parameter &quot;</span>
-                    <span class="s2">&quot;or the &#39;query_df&#39; attribute of the input signals dataframe&quot;</span><span class="p">)</span>
-            <span class="n">metadata</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query_df</span>
+                    <span class="s2">&quot;or the &#39;spy.query_df&#39; attribute of the input signals dataframe&quot;</span><span class="p">)</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">spy</span><span class="o">.</span><span class="n">query_df</span>
 
         <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;Metadata attribute not found for provided dataframe&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Metadata not found. Supply metadata as a dataframe with either the &#39;metadata&#39; &quot;</span>
-                                 <span class="s2">&quot;parameter or the &#39;query_df&#39; attribute of the input signals dataframe&quot;</span><span class="p">)</span>
+                                 <span class="s2">&quot;parameter or the &#39;spy.query_df&#39; attribute of the input signals dataframe&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s1">&#39;ID&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;ID not found in metadata. Make sure the metadata dataframe includes &#39;</span>
@@ -418,7 +419,10 @@
     <span class="n">workbookID</span><span class="p">,</span> <span class="n">worksheetID</span> <span class="o">=</span> <span class="n">get_workbook</span><span class="p">(</span><span class="n">workbook</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">datasource</span><span class="p">)</span>
 
     <span class="c1"># noinspection PyProtectedMember</span>
-    <span class="n">pd_start</span><span class="p">,</span> <span class="n">pd_end</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">_common</span><span class="o">.</span><span class="n">validate_start_and_end</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">):</span>
+        <span class="n">pd_start</span><span class="p">,</span> <span class="n">pd_end</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">_login</span><span class="o">.</span><span class="n">validate_start_and_end</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pd_start</span><span class="p">,</span> <span class="n">pd_end</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">_login</span><span class="o">.</span><span class="n">validate_start_and_end</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">pd_start</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="s1">&#39;utc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">)</span>
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">pd_end</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="s1">&#39;utc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">)</span>
 

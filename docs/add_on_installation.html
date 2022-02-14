@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add-on Installation &mdash; seeq-correlation 0.1.1 documentation</title>
+  <title>Add-on Installation &mdash; seeq-correlation 0.1.3-dev documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
@@ -32,7 +32,7 @@
             <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.1
+                0.1.3-dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -118,22 +118,56 @@ communication</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation.__main__.install_app">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation.__main__.</span></span><span class="sig-name descname"><span class="pre">install_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdl_url_</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permissions_group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permissions_users</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/__main__.html#install_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation.__main__.install_app" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation.__main__.</span></span><span class="sig-name descname"><span class="pre">install_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdl_url_</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permissions_group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permissions_users</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/__main__.html#install_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation.__main__.install_app" title="Permalink to this definition"></a></dt>
 <dd><p>Installs Correlation as an Add-on Tool in Seeq Workbench</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sdl_url</strong> (<em>str</em>) – URL of the SDL container.
-E.g. <a class="reference external" href="https://my.seeq.com/data-lab/6AB49411-917E-44CC-BA19-5EE0F903100C/">https://my.seeq.com/data-lab/6AB49411-917E-44CC-BA19-5EE0F903100C/</a></p></li>
-<li><p><strong>sort_key</strong> (<em>str</em><em>, </em><em>default None</em>) – A string, typically one character letter. The sort_key determines the
-order in which the Add-on Tools are displayed in the tool panel</p></li>
-<li><p><strong>permissions_group</strong> (<em>list</em>) – Names of the Seeq groups that will have access to each tool</p></li>
-<li><p><strong>permissions_users</strong> (<em>list</em>) – Names of Seeq users that will have access to each tool</p></li>
+E.g. <cite>https://my.seeq.com/data-lab/6AB49411-917E-44CC-BA19-5EE0F903100C/</cite></p></li>
+<li><p><strong>sort_key</strong> (<em>str</em><em>, </em><em>default 'a'</em>) – A string, typically one character letter. The sort_key determines the
+order in which the Add-on Tools are displayed in the tool panel.</p></li>
+<li><p><strong>permissions_group</strong> (<em>list</em>) – Names of the Seeq groups that will have access to each tool. If None,
+the “Everyone” group will be used by default.</p></li>
+<li><p><strong>permissions_users</strong> (<em>list</em>) – Names of Seeq users that will have access to each tool. If None, no
+individual users will be given access to the tool.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>-</strong> – Correlation Analysis will appear as Add-on Tool(s) in Seeq
 Workbench</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seeq.addons.correlation.__main__.install_nbextensions">
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation.__main__.</span></span><span class="sig-name descname"><span class="pre">install_nbextensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/__main__.html#install_nbextensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation.__main__.install_nbextensions" title="Permalink to this definition"></a></dt>
+<dd><p>Installs the Jupyter nbextensions required to render the Add-on</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>-</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seeq.addons.correlation.__main__.logging_attempts">
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation.__main__.</span></span><span class="sig-name descname"><span class="pre">logging_attempts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/__main__.html#logging_attempts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation.__main__.logging_attempts" title="Permalink to this definition"></a></dt>
+<dd><p>Allows user to re-enter credentials multiple times in the event of
+authentication failure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_user</strong> (<em>str</em>) – Seeq username that needs to be authenticated</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>-</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>None</p>
