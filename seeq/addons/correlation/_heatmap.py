@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 # There is a bug that prevents to correctly memorize a pandas.DataFrame
 # Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)
 from memoization import cached
-from ._utils import _cache_max_items
+from ._config import _cache_max_items
 from . import default_preprocessing_wrapper
 from . import lags_coeffs
 

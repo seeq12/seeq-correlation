@@ -6,6 +6,8 @@ import setuptools
 # Use the following command from a terminal window to generate the whl with source code
 # python setup.py bdist_wheel
 
+namespace = 'seeq.*'
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
@@ -35,7 +37,7 @@ setup_args = dict(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/seeq12/seeq-correlation",
-    packages=setuptools.find_namespace_packages(include=['seeq.*']),
+    packages=setuptools.find_namespace_packages(include=[namespace]),
     include_package_data=True,
     zip_safe=False,
     install_requires=[

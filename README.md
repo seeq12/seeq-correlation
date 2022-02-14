@@ -42,7 +42,7 @@ matches your Seeq server. For more information on the `seeq` module see [seeq at
 
 If you want to install **seeq-correlation** as a Seeq Add-on Tool, you will need:
 
-- Seeq Data Lab (>= R50.5.0, >=R51.1.0, or >=R52.1.0)
+- Seeq Data Lab (>= R52.1.5, >=R53.0.2, or >=R54)
 - `seeq` module whose version matches the Seeq server version
 - Seeq administrator access
 - Enable Add-on Tools in the Seeq server

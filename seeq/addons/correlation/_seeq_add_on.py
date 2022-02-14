@@ -1,5 +1,4 @@
 from IPython.display import HTML, display, clear_output, Javascript
-import ipywidgets as widgets
 import ipyvuetify as v
 import pandas as pd
 import numpy as np
@@ -11,8 +10,8 @@ import pickle
 import warnings
 import plotly.graph_objects as go
 from seeq import spy
-from ._utils import get_worksheet_url, pull_only_signals, get_workbook_worksheet_workstep_ids, create_condition
-from ._utils import _user_guide
+from .utils import get_worksheet_url, pull_only_signals, get_workbook_worksheet_workstep_ids, create_condition
+from seeq.addons.correlation._config import _user_guide, _github_issues
 from . import default_preprocessing_wrapper
 from . import _heatmap_plot, lags_coeffs, worksheet_with_lagged_signals, worksheet_corrs_and_time_shifts
 
@@ -578,11 +577,11 @@ class CorrelationHeatmap:
         self.update_display()
 
     def get_start_end_times(self):
-        self.start_time = self.current_df.start.tz_convert('utc').isoformat().replace('+00:00', 'Z')
-        self.end_time = self.current_df.end.tz_convert('utc').isoformat().replace('+00:00', 'Z')
+        self.start_time = self.current_df.spy.start.tz_convert('utc').isoformat().replace('+00:00', 'Z')
+        self.end_time = self.current_df.spy.end.tz_convert('utc').isoformat().replace('+00:00', 'Z')
 
     def signal_pairs_selected(self):
-        self.signals_dict = self.current_df.query_df.set_index('New Name').to_dict('index')
+        self.signals_dict = self.current_df.spy.query_df.set_index('New Name').to_dict('index')
         self.signal_pairs_ids = []
         bool_df = self.get_boolean_df().copy()
         bool_df.columns = [self.signals_dict[x]['ID'] for x in bool_df.columns]
@@ -597,7 +596,7 @@ class CorrelationHeatmap:
             self.signal_pairs_ids.extend(pair_ids)
 
     def worksheet_input_params(self):
-        self.signals_dict = self.current_df.query_df.set_index('New Name').to_dict('index')
+        self.signals_dict = self.current_df.spy.query_df.set_index('New Name').to_dict('index')
         self.signal_ids = [self.signals_dict[x]['ID'] for x in self.current_signals]
         self.signal_names = [self.signals_dict[x]['Name'] for x in self.current_signals]
         self.time_shifts = self.time_shifts_df[self.current_signals].loc[
@@ -880,7 +879,7 @@ class CreateSignalsMenu(v.Dialog):
         if self.parent.export_disabled:
             self.export_disabled()
             return
-        if not hasattr(self.parent.current_df, 'query_df'):
+        if not hasattr(self.parent.current_df.spy, 'query_df'):
             self.parent.info_message = "The current signals do not have a corresponding Seeq ID. " \
                                        "Cannot create shifted signals."
             self.parent.info_style = "color: #ff5252 !important;"
@@ -1000,7 +999,7 @@ class HamburgerMenu(v.Menu):
         self.hamburger_button = v.AppBarNavIcon(v_on='menuData.on')
         self.help_button = v.ListItem(value='help',
                                       ripple=True,
-                                      href='mailto: applied.research@seeq.com?subject=Correlation Feedback',
+                                      href=_github_issues,
                                       target="_blank",
                                       children=[v.ListItemAction(class_='mr-2 ml-0',
                                                                  children=[v.Icon(color='#212529',
