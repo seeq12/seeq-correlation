@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://seeq12.github.io/seeq-correlation/index.html" rel="nofollow">
-    <img src="https://seeq12.github.io/seeq-correlation/_static/LargeMatrixExample.png" alt="" width="500">
+    <img src="https://seeq12.github.io/seeq-correlation/_static/LargeMatrixExample.png" alt="">
   </a>
 </p>
 
