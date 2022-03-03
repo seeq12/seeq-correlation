@@ -1,5 +1,9 @@
 # Changelog
 
+v0.1.4
+---
+Exposed `seeq.addons.correlation.utils` functions
+
 v0.1.3
 ---
 Refactored the add-on installation to use `spy.addons.install` instead of local code
