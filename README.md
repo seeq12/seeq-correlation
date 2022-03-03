@@ -1,4 +1,4 @@
-[![Build Status](https://teamcity.seeq-labs.com/app/rest/builds/buildType:(id:AppliedResearch_correlation)/statusIcon)]()
+[![Build Status](https://teamcity.seeq-labs.com/app/rest/builds/buildType:(id:AppliedResearch_correlation)/statusIcon)](https://github.com/seeq12/seeq-correlation/)
 
 <br>
 <p>
