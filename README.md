@@ -1,4 +1,7 @@
-<p >
+[![Build Status](https://teamcity.seeq-labs.com/app/rest/builds/buildType:(id:AppliedResearch_correlation)/statusIcon)]()
+
+<br>
+<p>
   <a href="https://www.seeq.com" rel="nofollow">
     <img src="https://www.seeq.com/sites/default/files/seeq-content/seeq-logo-blue-web-33h.svg" alt="seeq" width="22%">
   </a>
