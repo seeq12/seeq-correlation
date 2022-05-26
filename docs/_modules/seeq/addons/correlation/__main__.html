@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation.__main__ &mdash; seeq-correlation 0.1.4 documentation</title>
+  <title>seeq.addons.correlation.__main__ &mdash; seeq-correlation 0.1.5 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
@@ -29,7 +29,7 @@
             <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.4
+                0.1.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -278,10 +278,16 @@
     <span class="n">user</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">username</span>
     <span class="n">logging_attempts</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
     <span class="n">seeq_url</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">seeq_url</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/api&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">seeq_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">seeq_url</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Seeq base URL [</span><span class="si">{</span><span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/api&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">]: &quot;</span><span class="p">)</span>
+        <span class="n">seeq_url</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Seeq base URL [</span><span class="si">{</span><span class="n">seeq_url_</span><span class="si">}</span><span class="s2">]: &quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">seeq_url</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">seeq_url</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/api&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">seeq_url</span> <span class="o">=</span> <span class="n">seeq_url_</span>
     <span class="n">url_parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">seeq_url</span><span class="p">)</span>
     <span class="n">seeq_url_base</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url_parsed</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">url_parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&quot;</span>
 
