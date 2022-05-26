@@ -199,10 +199,16 @@ if __name__ == '__main__':
     user = args.username
     logging_attempts(user)
     seeq_url = args.seeq_url
+
+    try:
+        seeq_url_ = spy.session.public_url
+    except:
+        seeq_url_ = spy.client.host.replace('/api', "")
+
     if seeq_url is None:
-        seeq_url = input(f"\n Seeq base URL [{spy.client.host.split('/api')[0]}]: ")
+        seeq_url = input(f"\n Seeq base URL [{seeq_url_}]: ")
         if seeq_url == '':
-            seeq_url = spy.client.host.split('/api')[0]
+            seeq_url = seeq_url_
     url_parsed = urlparse(seeq_url)
     seeq_url_base = f"{url_parsed.scheme}://{url_parsed.netloc}"
 
