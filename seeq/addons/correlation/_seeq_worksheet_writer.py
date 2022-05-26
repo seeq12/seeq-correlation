@@ -214,13 +214,7 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
                             condition_id,
                             overwrite,
                             api_client)
-
-    try:
-        seeq_url_ = spy.session.public_url
-    except:
-        seeq_url_ = spy.client.host.replace('/api', "")
-
-    return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
+    return "/".join([spy.client.host.replace('/api', ""), 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
 
 def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_unit, target,
@@ -244,12 +238,7 @@ def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_un
                             overwrite,
                             api_client)
 
-    try:
-        seeq_url_ = spy.session.public_url
-    except:
-        seeq_url_ = spy.client.host.replace('/api', "")
-
-    return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
+    return "/".join([spy.client.host.replace('/api', ""), 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
 
 def create_worksheet(df, target, max_time_shift='auto', metadata=None, workbook=DEFAULT_WORKBOOK_PATH,
