@@ -10,7 +10,7 @@ from seeq.spy._errors import *
 # noinspection PyProtectedMember
 from seeq.spy import _url
 from ._copy import copy
-from .utils import get_user, get_user_group
+from .utils import get_user, get_user_group, get_seeq_url
 from . import correlation_udfs
 
 NB_EXTENSIONS = ['widgetsnbextension', 'plotlywidget', 'ipyvuetify', 'ipyvue']
@@ -198,17 +198,7 @@ if __name__ == '__main__':
         sys.exit(0)
     user = args.username
     logging_attempts(user)
-    seeq_url = args.seeq_url
-
-    try:
-        seeq_url_ = spy.session.public_url
-    except:
-        seeq_url_ = spy.client.host.replace('/api', "")
-
-    if seeq_url is None:
-        seeq_url = input(f"\n Seeq base URL [{seeq_url_}]: ")
-        if seeq_url == '':
-            seeq_url = seeq_url_
+    seeq_url = get_seeq_url()
     url_parsed = urlparse(seeq_url)
     seeq_url_base = f"{url_parsed.scheme}://{url_parsed.netloc}"
 

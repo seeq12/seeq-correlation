@@ -89,7 +89,7 @@
 <span class="c1"># noinspection PyProtectedMember</span>
 <span class="kn">from</span> <span class="nn">seeq.spy</span> <span class="kn">import</span> <span class="n">_url</span>
 <span class="kn">from</span> <span class="nn">._copy</span> <span class="kn">import</span> <span class="n">copy</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_user_group</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_user_group</span><span class="p">,</span> <span class="n">get_seeq_url</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">correlation_udfs</span>
 
 <span class="n">NB_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;widgetsnbextension&#39;</span><span class="p">,</span> <span class="s1">&#39;plotlywidget&#39;</span><span class="p">,</span> <span class="s1">&#39;ipyvuetify&#39;</span><span class="p">,</span> <span class="s1">&#39;ipyvue&#39;</span><span class="p">]</span>
@@ -277,17 +277,7 @@
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">username</span>
     <span class="n">logging_attempts</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-    <span class="n">seeq_url</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">seeq_url</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/api&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">seeq_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">seeq_url</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Seeq base URL [</span><span class="si">{</span><span class="n">seeq_url_</span><span class="si">}</span><span class="s2">]: &quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">seeq_url</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">seeq_url</span> <span class="o">=</span> <span class="n">seeq_url_</span>
+    <span class="n">seeq_url</span> <span class="o">=</span> <span class="n">get_seeq_url</span><span class="p">()</span>
     <span class="n">url_parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">seeq_url</span><span class="p">)</span>
     <span class="n">seeq_url_base</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url_parsed</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">url_parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&quot;</span>
 

@@ -3,7 +3,7 @@ import pandas as pd
 from IPython import display
 from IPython.core.display import HTML
 from seeq import spy, sdk
-from .utils import create_condition, create_workstep_signals
+from .utils import create_condition, create_workstep_signals, get_seeq_url
 from . import default_preprocessing_wrapper
 from . import lags_coeffs, signals_from_formula
 
@@ -215,10 +215,7 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
                             overwrite,
                             api_client)
 
-    try:
-        seeq_url_ = spy.session.public_url
-    except:
-        seeq_url_ = spy.client.host.replace('/api', "")
+    seeq_url_ = get_seeq_url()
 
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
@@ -244,10 +241,7 @@ def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_un
                             overwrite,
                             api_client)
 
-    try:
-        seeq_url_ = spy.session.public_url
-    except:
-        seeq_url_ = spy.client.host.replace('/api', "")
+    seeq_url_ = get_seeq_url()
 
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 

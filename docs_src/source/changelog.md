@@ -1,7 +1,7 @@
 # Changelog
 v0.1.5
 ---
-Added `spy.session.public_url` to URL generation functions
+Added `spy.session.public_url` and `spy.session.private_url` to URL generation functions in utils
 
 v0.1.4
 ---
