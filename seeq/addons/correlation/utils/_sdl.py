@@ -75,8 +75,17 @@ def get_workbook_worksheet_workstep_ids(url):
 
 
 def is_ipv4(string):
+    temp_str = None
     try:
-        ipaddress.IPv4Network(string)
+        temp_str = string.split("https://")[1]
+    except IndexError:
+        try:
+            temp_str = string.split("http://")[1]
+        except IndexError:
+            print('Unrecognisable URL or IP returned by SPy')
+
+    try:
+        ipaddress.IPv4Network(temp_str)
         return True
     except ValueError:
         return False
@@ -85,11 +94,11 @@ def is_ipv4(string):
 def get_seeq_url():
     url_ = None
     if hasattr(spy.session, 'public_url'):
-        if not is_ipv4(spy.session.public_url.split("https://")[1]):
+        if not is_ipv4(spy.session.public_url):
             url_ = spy.session.public_url
         else:
             if hasattr(spy.session, 'private_url'):
-                if not is_ipv4(spy.session.private_url.split("https://")[1]):
+                if not is_ipv4(spy.session.private_url):
                     url_ = spy.session.private_url
                 else:
                     url_ = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
