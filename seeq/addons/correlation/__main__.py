@@ -199,6 +199,10 @@ if __name__ == '__main__':
     user = args.username
     logging_attempts(user)
     seeq_url = get_seeq_url()
+
+    if seeq_url_ is None:
+        seeq_url_ = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
+
     url_parsed = urlparse(seeq_url)
     seeq_url_base = f"{url_parsed.scheme}://{url_parsed.netloc}"
 

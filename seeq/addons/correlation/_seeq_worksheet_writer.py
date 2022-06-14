@@ -216,7 +216,10 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
                             api_client)
 
     seeq_url_ = get_seeq_url()
-
+    
+    if seeq_url_ is None:
+        seeq_url_ = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
+        
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
 
@@ -242,6 +245,9 @@ def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_un
                             api_client)
 
     seeq_url_ = get_seeq_url()
+
+    if seeq_url_ is None:
+        seeq_url_ = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
 
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
