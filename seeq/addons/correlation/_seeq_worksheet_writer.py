@@ -218,7 +218,8 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
     seeq_url_ = get_seeq_url()
     
     if seeq_url_ is None:
-        seeq_url_ = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
+        with open('seeq_server_url.pkl', 'rb') as file_:
+            seeq_url_ = pickle.load(file_)
         
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 

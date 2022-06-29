@@ -200,8 +200,11 @@ if __name__ == '__main__':
     logging_attempts(user)
     seeq_url = get_seeq_url()
 
-    if seeq_url_ is None:
-        seeq_url_ = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
+    if seeq_url is None:
+        seeq_url = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
+
+        with open('seeq_server_url.pkl', 'wb') as file_:
+            pickle.dump(seeq_url, file_)
 
     url_parsed = urlparse(seeq_url)
     seeq_url_base = f"{url_parsed.scheme}://{url_parsed.netloc}"
