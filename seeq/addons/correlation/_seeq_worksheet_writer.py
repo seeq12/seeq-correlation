@@ -1,5 +1,6 @@
 import warnings
 import pandas as pd
+import pickle
 from IPython import display
 from IPython.core.display import HTML
 from seeq import spy, sdk

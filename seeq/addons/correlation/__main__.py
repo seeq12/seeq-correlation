@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 import subprocess
+import pickle
 from getpass import getpass
 from urllib.parse import urlparse
 from seeq import sdk, spy
