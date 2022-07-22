@@ -219,8 +219,11 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
     seeq_url_ = get_seeq_url()
     
     if seeq_url_ is None:
-        with open('seeq_server_url.pkl', 'rb') as file_:
-            seeq_url_ = pickle.load(file_)
+        try:
+            with open('.urlfile/seeq_server_url.pkl', 'rb') as file_:
+                seeq_url_ = pickle.load(file_)
+        except:
+            print("ERROR: Could not find Seeq base URL")
         
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
@@ -249,7 +252,11 @@ def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_un
     seeq_url_ = get_seeq_url()
 
     if seeq_url_ is None:
-        seeq_url_ = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
+        try:
+            with open('.urlfile/seeq_server_url.pkl', 'rb') as file_:
+                seeq_url_ = pickle.load(file_)
+        except:
+            print("ERROR: Could not find Seeq base URL")
 
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
