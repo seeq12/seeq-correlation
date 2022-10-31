@@ -204,7 +204,11 @@ if __name__ == '__main__':
     if seeq_url is None:
         seeq_url = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
 
-        os.mkdir(".urlfile")
+        if os.path.isdir(".urlfile"):
+            pass
+        else:
+            os.mkdir(".urlfile")
+            
         with open('.urlfile/seeq_server_url.pkl', 'wb') as file_:
             pickle.dump(seeq_url, file_)
 
