@@ -32,8 +32,7 @@ def pull_only_signals(url, grid='auto'):
         return pd.DataFrame()
     search_signals_df = search_df[search_df['Type'].str.contains('Signal')]
 
-    df = spy.pull(search_signals_df, start=start, end=end, grid=grid, header='ID', quiet=True,
-                  status=status)
+    df = spy.pull(search_signals_df, start=start, end=end, grid=grid, header='ID', status=status)
     if df.empty:
         return pd.DataFrame()
 
