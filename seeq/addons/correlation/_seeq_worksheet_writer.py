@@ -222,9 +222,8 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
         try:
             with open('.urlfile/seeq_server_url.pkl', 'rb') as file_:
                 seeq_url_ = pickle.load(file_)
-        except FileNotFoundError:
-            raise FileNotFoundError(
-                "Seeq URL could not be found, please create a support ticket")
+        except FileNotFoundError as e:
+            raise (str(e))
         
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
@@ -256,9 +255,8 @@ def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_un
         try:
             with open('.urlfile/seeq_server_url.pkl', 'rb') as file_:
                 seeq_url_ = pickle.load(file_)
-        except FileNotFoundError:
-            raise FileNotFoundError(
-                "Seeq URL could not be found, please create a support ticket")
+        except FileNotFoundError as e:
+            raise (str(e))
 
     return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 

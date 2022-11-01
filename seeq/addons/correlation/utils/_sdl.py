@@ -84,12 +84,15 @@ def is_ipv4(string):
 
 
 def get_seeq_url():
-    if hasattr(spy.session, 'public_url'):
-        if not is_ipv4(spy.session.public_url):
-            return spy.session.public_url
+    if spy.session is None:
+        return None
+    else:
+        if hasattr(spy.session, 'public_url'):
+            if not is_ipv4(spy.session.public_url):
+                return spy.session.public_url
 
-    if hasattr(spy.session, 'private_url'):
-        if not is_ipv4(spy.session.private_url):
-            return spy.session.private_url
+        if hasattr(spy.session, 'private_url'):
+            if not is_ipv4(spy.session.private_url):
+                return spy.session.private_url
 
-    return None
+        return None
