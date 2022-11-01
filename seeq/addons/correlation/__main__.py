@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 import subprocess
+import pickle
 from getpass import getpass
 from urllib.parse import urlparse
 from seeq import sdk, spy
@@ -10,7 +11,7 @@ from seeq.spy._errors import *
 # noinspection PyProtectedMember
 from seeq.spy import _url
 from ._copy import copy
-from .utils import get_user, get_user_group
+from .utils import get_user, get_user_group, get_seeq_url
 from . import correlation_udfs
 
 NB_EXTENSIONS = ['widgetsnbextension', 'plotlywidget', 'ipyvuetify', 'ipyvue']
@@ -198,11 +199,19 @@ if __name__ == '__main__':
         sys.exit(0)
     user = args.username
     logging_attempts(user)
-    seeq_url = args.seeq_url
+    seeq_url = get_seeq_url()
+
     if seeq_url is None:
-        seeq_url = input(f"\n Seeq base URL [{spy.client.host.split('/api')[0]}]: ")
-        if seeq_url == '':
-            seeq_url = spy.client.host.split('/api')[0]
+        seeq_url = input(f"\n Please Input Seeq base URL (eg: https://example.seeq.site): ")
+
+        if os.path.isdir(".urlfile"):
+            pass
+        else:
+            os.mkdir(".urlfile")
+            
+        with open('.urlfile/seeq_server_url.pkl', 'wb') as file_:
+            pickle.dump(seeq_url, file_)
+
     url_parsed = urlparse(seeq_url)
     seeq_url_base = f"{url_parsed.scheme}://{url_parsed.netloc}"
 

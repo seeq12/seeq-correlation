@@ -1,6 +1,7 @@
 import pandas as pd
 from seeq import spy
 from urllib.parse import urlparse, unquote, parse_qs
+import ipaddress
 
 
 def pull_only_signals(url, grid='auto'):
@@ -71,3 +72,26 @@ def get_workbook_worksheet_workstep_ids(url):
     if 'workstepId' in params:
         workstep_id = params['workstepId'][0]
     return workbook_id, worksheet_id, workstep_id
+
+
+def is_ipv4(string):
+    parsed_url = parse_url(string)
+    try:
+        ipaddress.IPv4Network(parsed_url.hostname)
+        return True
+    except ValueError:
+        return False
+
+
+def get_seeq_url():
+    if hasattr(spy.session, 'public_url'):
+        if spy.session.public_url is not None:
+            if not is_ipv4(spy.session.public_url):
+                return spy.session.public_url
+
+    if hasattr(spy.session, 'private_url'):
+        if spy.session.private_url is not None:
+            if not is_ipv4(spy.session.private_url):
+                return spy.session.private_url
+
+    return None
