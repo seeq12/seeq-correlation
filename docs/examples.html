@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Use Cases &mdash; seeq-correlation 0.1.5 documentation</title>
+  <title>Example Use Cases &mdash; seeq-correlation 0.1.6 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -32,7 +33,7 @@
             <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.5
+                0.1.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -87,11 +88,11 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="example-use-cases">
-<h1>Example Use Cases<a class="headerlink" href="#example-use-cases" title="Permalink to this headline"></a></h1>
+<h1>Example Use Cases<a class="headerlink" href="#example-use-cases" title="Permalink to this heading"></a></h1>
 <p>This set of use cases is a small subset of the typical types of analyses that can be conducted using the
 <strong>seeq-correlation</strong> tool.</p>
 <section id="use-case-1-identifying-signal-relationships">
-<h2>Use Case 1. Identifying Signal Relationships<a class="headerlink" href="#use-case-1-identifying-signal-relationships" title="Permalink to this headline"></a></h2>
+<h2>Use Case 1. Identifying Signal Relationships<a class="headerlink" href="#use-case-1-identifying-signal-relationships" title="Permalink to this heading"></a></h2>
 <p>A well-known industrial dataset for an Eastman process (see Figure 8 and 9) contains a significant number of unit
 operations and signals. To gain broad, initial insights into the signal relationships present in the operation,
 correlation analysis is performed on the 3 days of data shown in the trends.</p>
@@ -151,7 +152,7 @@ trends in Figure 11, the highlighted time delay from the green signal to the red
 <br><br>
 </section>
 <section id="use-case-2-large-dataset-exploration">
-<h2>Use Case 2. Large Dataset Exploration<a class="headerlink" href="#use-case-2-large-dataset-exploration" title="Permalink to this headline"></a></h2>
+<h2>Use Case 2. Large Dataset Exploration<a class="headerlink" href="#use-case-2-large-dataset-exploration" title="Permalink to this heading"></a></h2>
 <p>A plant-wide dataset was collected for the process shown in Figure 12. Example data trends for 7 of the signals are
 shown in Figure 13 where a persistent oscillation is clearly seen.</p>
 <br>
@@ -195,7 +196,7 @@ dataset.
 <br><br>
 </section>
 <section id="use-case-3-optimally-aligning-signals-for-prediction-modeling">
-<h2>Use Case 3: Optimally Aligning Signals for Prediction Modeling<a class="headerlink" href="#use-case-3-optimally-aligning-signals-for-prediction-modeling" title="Permalink to this headline"></a></h2>
+<h2>Use Case 3: Optimally Aligning Signals for Prediction Modeling<a class="headerlink" href="#use-case-3-optimally-aligning-signals-for-prediction-modeling" title="Permalink to this heading"></a></h2>
 <p>As a precursor to prediction modeling, correlation analysis can be valuable for aligning signals whose relationships are
 masked by time lags and delays. The aligned signals can then be used to generate improved, more accurate prediction
 models. In this example, the user wants to find out what process variables lead to a high concentration of Component E
@@ -264,7 +265,7 @@ statistically significant effect.</p>
 <br><br>
 </section>
 <section id="use-case-4-quantifying-relationships-and-the-importance-of-preprocessing-the-data">
-<h2>Use Case 4: Quantifying Relationships and the Importance of Preprocessing the Data<a class="headerlink" href="#use-case-4-quantifying-relationships-and-the-importance-of-preprocessing-the-data" title="Permalink to this headline"></a></h2>
+<h2>Use Case 4: Quantifying Relationships and the Importance of Preprocessing the Data<a class="headerlink" href="#use-case-4-quantifying-relationships-and-the-importance-of-preprocessing-the-data" title="Permalink to this heading"></a></h2>
 <p>It is always important to do preprocessing on the data set before it is used in correlation analysis. Preprocessing may
 include removing downtime data, removing data outliers, smoothing signals, removing unnecessary redundant signals, etc.
 The user should always visually inspect the dataset closely prior to launching correlation analysis to ensure that these
@@ -363,7 +364,7 @@ moves inversely with respect to inventory after a ~10 minute time delay!</p>
 <br><br>
 </section>
 <section id="use-case-5-confirming-expected-process-relationships">
-<h2>Use Case 5: Confirming Expected Process Relationships<a class="headerlink" href="#use-case-5-confirming-expected-process-relationships" title="Permalink to this headline"></a></h2>
+<h2>Use Case 5: Confirming Expected Process Relationships<a class="headerlink" href="#use-case-5-confirming-expected-process-relationships" title="Permalink to this heading"></a></h2>
 <p>Consider again the liquid tank process discussed in the <a class="reference external" href="user_guide.html#overview">Overview</a>, but this time there is
 data included for the Flow B Tank Inlet control valve opening, as well as ambient weather measurements for temperature
 and relative humidity (see Figure 25). As a quick check on process operation, the process engineer may want to do a

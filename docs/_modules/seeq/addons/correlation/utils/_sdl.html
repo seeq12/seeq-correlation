@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation.utils._sdl &mdash; seeq-correlation 0.1.5 documentation</title>
+  <title>seeq.addons.correlation.utils._sdl &mdash; seeq-correlation 0.1.6 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../../../../_static/seeq-favicon.ico"/>
@@ -14,6 +14,7 @@
         <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -29,7 +30,7 @@
             <img src="../../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.5
+                0.1.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
@@ -154,31 +155,26 @@
 
 
 <span class="k">def</span> <span class="nf">is_ipv4</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">parse_url</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">ipaddress</span><span class="o">.</span><span class="n">IPv4Network</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+        <span class="n">ipaddress</span><span class="o">.</span><span class="n">IPv4Network</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
 
 <span class="k">def</span> <span class="nf">get_seeq_url</span><span class="p">():</span>
-    <span class="n">url_</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;public_url&#39;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipv4</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="n">url_</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;private_url&#39;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipv4</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
-                    <span class="n">url_</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">url_</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Please Input Seeq base URL (eg: https://example.seeq.site): &quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">url_</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Please Input Seeq base URL (eg:https://example.seeq.site): &quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipv4</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span>
 
-    <span class="k">if</span> <span class="n">url_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">url_</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR Obtaining valid URl&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;private_url&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipv4</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 
            </div>
