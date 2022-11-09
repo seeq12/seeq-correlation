@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Interface &mdash; seeq-correlation 0.1.4 documentation</title>
+  <title>User Interface &mdash; seeq-correlation 0.1.6 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -32,7 +33,7 @@
             <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.4
+                0.1.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -87,7 +88,7 @@
            <div itemprop="articleBody">
              
   <section id="module-seeq.addons.correlation._heatmap">
-<span id="user-interface"></span><h1>User Interface<a class="headerlink" href="#module-seeq.addons.correlation._heatmap" title="Permalink to this headline"></a></h1>
+<span id="user-interface"></span><h1>User Interface<a class="headerlink" href="#module-seeq.addons.correlation._heatmap" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._heatmap.heatmap">
 <span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._heatmap.</span></span><span class="sig-name descname"><span class="pre">heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'coeffs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'plot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_output_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bypass_preprocessing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_heatmap.html#heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._heatmap.heatmap" title="Permalink to this definition"></a></dt>
@@ -217,7 +218,7 @@ data (no time shift allowed)</p>
 
 <span class="target" id="module-seeq.addons.correlation._seeq_add_on"></span><dl class="py class">
 <dt class="sig sig-object py" id="seeq.addons.correlation._seeq_add_on.CorrelationHeatmap">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">CorrelationHeatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdl_notebook_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasource</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeq_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#CorrelationHeatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.CorrelationHeatmap" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">CorrelationHeatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdl_notebook_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasource</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeq_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#CorrelationHeatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.CorrelationHeatmap" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This is the main class for the User Interface of the Correlation Add-on.
 To create an instance, either a Seeq Data Lab project URL with appropriate
@@ -227,24 +228,24 @@ passed, the functionality to push data back to the Seeq server is disabled.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seeq.addons.correlation._seeq_add_on.CreateSignalsMenu">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">CreateSignalsMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#CreateSignalsMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.CreateSignalsMenu" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ipyvuetify.generated.Dialog.Dialog</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">CreateSignalsMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#CreateSignalsMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.CreateSignalsMenu" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></p>
 <p>This class creates an ipyvuetify Dialog window with the options required
 to create correlation and time shifted signals in Seeq</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seeq.addons.correlation._seeq_add_on.HamburgerMenu">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">HamburgerMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#HamburgerMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.HamburgerMenu" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ipyvuetify.generated.Menu.Menu</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">HamburgerMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#HamburgerMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.HamburgerMenu" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code></p>
 <p>This class creates the hamburger menu (with its options) used in the
 top-right corner of the Correlation Add-on.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seeq.addons.correlation._seeq_add_on.ToggleButtons">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">ToggleButtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#ToggleButtons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.ToggleButtons" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ipyvuetify.generated.BtnToggle.BtnToggle</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">ToggleButtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#ToggleButtons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.ToggleButtons" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BtnToggle</span></code></p>
 <p>This is an auxiliary class to generate toggle buttons with a
 specific style and including a tooltip</p>
 </dd></dl>

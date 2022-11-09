@@ -1,9 +1,10 @@
 import warnings
 import pandas as pd
+import pickle
 from IPython import display
 from IPython.core.display import HTML
 from seeq import spy, sdk
-from .utils import create_condition, create_workstep_signals
+from .utils import create_condition, create_workstep_signals, get_seeq_url
 from . import default_preprocessing_wrapper
 from . import lags_coeffs, signals_from_formula
 
@@ -214,7 +215,17 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
                             condition_id,
                             overwrite,
                             api_client)
-    return "/".join([spy.client.host.replace('/api', ""), 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
+
+    seeq_url_ = get_seeq_url()
+    
+    if seeq_url_ is None:
+        try:
+            with open('.urlfile/seeq_server_url.pkl', 'rb') as file_:
+                seeq_url_ = pickle.load(file_)
+        except FileNotFoundError as e:
+            raise (str(e))
+        
+    return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
 
 def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_unit, target,
@@ -238,7 +249,16 @@ def worksheet_with_lagged_signals(signal_ids, signal_names, time_shifts, time_un
                             overwrite,
                             api_client)
 
-    return "/".join([spy.client.host.replace('/api', ""), 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
+    seeq_url_ = get_seeq_url()
+
+    if seeq_url_ is None:
+        try:
+            with open('.urlfile/seeq_server_url.pkl', 'rb') as file_:
+                seeq_url_ = pickle.load(file_)
+        except FileNotFoundError as e:
+            raise (str(e))
+
+    return "/".join([seeq_url_, 'workbook', workbook_id, 'worksheet', existing_worksheet.id])
 
 
 def create_worksheet(df, target, max_time_shift='auto', metadata=None, workbook=DEFAULT_WORKBOOK_PATH,

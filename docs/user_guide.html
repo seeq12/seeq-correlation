@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Guide &mdash; seeq-correlation 0.1.4 documentation</title>
+  <title>User Guide &mdash; seeq-correlation 0.1.6 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -32,7 +33,7 @@
             <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.4
+                0.1.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -92,16 +93,16 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="user-guide">
-<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline"></a></h1>
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading"></a></h1>
 <table border="0">
 <td><img alt="image" src="_static/LargeMatrixExample.png"></td>
 </table>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>A general overview of the motivation for and benefits and functionality of the correlation analysis, as implemented in
 <strong>seeq-correlation</strong> is provided in this section.</p>
 <section id="why-linear-regression-models-for-pairs-of-signals-are-not-always-adequate">
-<h3>Why Linear Regression Models for Pairs of Signals Are Not Always Adequate<a class="headerlink" href="#why-linear-regression-models-for-pairs-of-signals-are-not-always-adequate" title="Permalink to this headline"></a></h3>
+<h3>Why Linear Regression Models for Pairs of Signals Are Not Always Adequate<a class="headerlink" href="#why-linear-regression-models-for-pairs-of-signals-are-not-always-adequate" title="Permalink to this heading"></a></h3>
 <p>Insightful relationships can be difficult to discover in time-series datasets involving large numbers of signals,
 measurement noise, and time lags. Standard prediction modeling often falls short when signal relationships involve time
 lagged process dynamic responses. Consider the tank process shown in the diagram in Figure 1. In this example, the tank
@@ -159,7 +160,7 @@ additional details).</p>
 <br><br>
 </section>
 <section id="the-mechanics-and-benefits-of-seeq-correlation">
-<h3>The Mechanics and Benefits of <strong>seeq-correlation</strong><a class="headerlink" href="#the-mechanics-and-benefits-of-seeq-correlation" title="Permalink to this headline"></a></h3>
+<h3>The Mechanics and Benefits of <strong>seeq-correlation</strong><a class="headerlink" href="#the-mechanics-and-benefits-of-seeq-correlation" title="Permalink to this heading"></a></h3>
 <p>How is the correlation analysis conducted in <strong>seeq-correlation</strong> and how does it overcome the limitations of standard
 linear regression models predicting one signal based on another?</p>
 <p>Correlation analysis is conducted by time shifting each signal relative to the signal is it being compared against, and
@@ -192,7 +193,7 @@ hovering above an individual cell.</p>
 <br><br>
 </section>
 <section id="correlation-analysis-functionality-and-uses">
-<h3>Correlation Analysis Functionality and Uses<a class="headerlink" href="#correlation-analysis-functionality-and-uses" title="Permalink to this headline"></a></h3>
+<h3>Correlation Analysis Functionality and Uses<a class="headerlink" href="#correlation-analysis-functionality-and-uses" title="Permalink to this heading"></a></h3>
 <p>To summarize, while strong correlations do happen almost simultaneously among some signals in manufacturing processes,
 it is also very common to have delayed (dynamic) responses similar to the example above. These dynamic responses occur
 for a variety of reasons: liquid volumes, natural mechanical or transport delays, sampling systems, thermal mass, etc.
@@ -214,11 +215,11 @@ portions of the process</p></li>
 </section>
 </section>
 <section id="how-to-use">
-<h2>How to Use<a class="headerlink" href="#how-to-use" title="Permalink to this headline"></a></h2>
+<h2>How to Use<a class="headerlink" href="#how-to-use" title="Permalink to this heading"></a></h2>
 <p>Correlation analysis is launched from within Seeq Workbench after creating the “dataset” for analysis by adding signals
 to the trends. Correlation analysis is performed on a single worksheet basis and includes all the trended signals.</p>
 <section id="workflow">
-<h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline"></a></h3>
+<h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading"></a></h3>
 <ol>
 <li><p>Add all relevant dataset signals to trend view. Set the time range as desired. The time range should be long enough
 to capture significant variation in the signals, so that any meaningful correlations can be detected.</p></li>
