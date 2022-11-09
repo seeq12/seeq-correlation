@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._seeq_worksheet_writer &mdash; seeq-correlation 0.1.5 documentation</title>
+  <title>seeq.addons.correlation._seeq_worksheet_writer &mdash; seeq-correlation 0.1.6 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
@@ -14,6 +14,7 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -29,7 +30,7 @@
             <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.5
+                0.1.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -79,6 +80,7 @@
   <h1>Source code for seeq.addons.correlation._seeq_worksheet_writer</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
 <span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="kn">from</span> <span class="nn">seeq</span> <span class="kn">import</span> <span class="n">spy</span><span class="p">,</span> <span class="n">sdk</span>
@@ -295,7 +297,14 @@
                             <span class="n">api_client</span><span class="p">)</span>
 
     <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">get_seeq_url</span><span class="p">()</span>
-
+    
+    <span class="k">if</span> <span class="n">seeq_url_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;.urlfile/seeq_server_url.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_</span><span class="p">:</span>
+                <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        
     <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">seeq_url_</span><span class="p">,</span> <span class="s1">&#39;workbook&#39;</span><span class="p">,</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="s1">&#39;worksheet&#39;</span><span class="p">,</span> <span class="n">existing_worksheet</span><span class="o">.</span><span class="n">id</span><span class="p">])</span></div>
 
 
@@ -321,6 +330,13 @@
                             <span class="n">api_client</span><span class="p">)</span>
 
     <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">get_seeq_url</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">seeq_url_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;.urlfile/seeq_server_url.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_</span><span class="p">:</span>
+                <span class="n">seeq_url_</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">seeq_url_</span><span class="p">,</span> <span class="s1">&#39;workbook&#39;</span><span class="p">,</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="s1">&#39;worksheet&#39;</span><span class="p">,</span> <span class="n">existing_worksheet</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
 

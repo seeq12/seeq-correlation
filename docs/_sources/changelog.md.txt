@@ -1,7 +1,11 @@
 # Changelog
-v0.1.5
+v0.1.6
 ---
 Added `spy.session.public_url` and `spy.session.private_url` to URL generation functions in utils
+
+v0.1.5
+---
+Bug fix to `spy.pull` quite arg in `_sdl.py` in utils
 
 v0.1.4
 ---
