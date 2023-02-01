@@ -1,4 +1,8 @@
 # Changelog
+v0.1.7
+---
+Removed depreciated `sklearn` in requirements
+
 v0.1.6
 ---
 Added `spy.session.public_url` and `spy.session.private_url` to URL generation functions in utils
