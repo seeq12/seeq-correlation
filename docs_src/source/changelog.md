@@ -1,4 +1,9 @@
 # Changelog
+v0.1.7
+---
+Removed requirement for nb extention install 'plotlywidget'
+streamlined requirements for 'dask', '[complete] note needed and thus removed
+
 v0.1.6
 ---
 Added `spy.session.public_url` and `spy.session.private_url` to URL generation functions in utils
