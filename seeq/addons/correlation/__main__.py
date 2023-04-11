@@ -14,7 +14,7 @@ from ._copy import copy
 from .utils import get_user, get_user_group, get_seeq_url
 from . import correlation_udfs
 
-NB_EXTENSIONS = ['widgetsnbextension', 'plotlywidget', 'ipyvuetify', 'ipyvue']
+NB_EXTENSIONS = ['widgetsnbextension', 'ipyvuetify', 'ipyvue']
 DEPLOYMENT_FOLDER = 'deployment'
 CORRELATION_NOTEBOOK = "correlation_analysis_master.ipynb"
 DEFAULT_GROUP = ['Everyone']

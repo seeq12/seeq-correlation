@@ -1,4 +1,4 @@
-dask[complete]>=2021.10.0
+dask>=2021.10.0
 ipython==7.31.1
 ipyvuetify==1.6.2
 ipywidgets==7.6.3
