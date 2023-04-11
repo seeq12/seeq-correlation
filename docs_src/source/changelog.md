@@ -1,8 +1,8 @@
 # Changelog
 v0.1.7
 ---
-Removed requirement for nb extention install 'plotlywidget'
-Streamlined requirements for 'dask', '[complete] note needed and thus removed
+Removed requirement for nb extention install `plotlywidget` in `main.py`
+Streamlined requirements for `dask`, complete not needed and thus removed
 
 v0.1.6
 ---
