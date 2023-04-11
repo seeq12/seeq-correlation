@@ -2,7 +2,7 @@
 v0.1.7
 ---
 Removed requirement for nb extention install 'plotlywidget'
-streamlined requirements for 'dask', '[complete] note needed and thus removed
+Streamlined requirements for 'dask', '[complete] note needed and thus removed
 
 v0.1.6
 ---
