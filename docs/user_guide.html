@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Guide &mdash; seeq-correlation 0.1.7 documentation</title>
+  <title>User Guide &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -30,10 +27,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> seeq-correlation
-            <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.7
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -92,7 +88,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="user-guide">
+  <section id="user-guide">
 <h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading"></a></h1>
 <table border="0">
 <td><img alt="image" src="_static/LargeMatrixExample.png"></td>
@@ -136,8 +132,8 @@ necessary analytics tool and is sometimes needed in addition to prediction model
 <p>As you can see in Figure 3, data from a longer time period for the process above shows a relatively weak correlation
 between the inlet and outlet compositions, and a linear prediction model applied to this data gives misleading results.
 Correlation analysis leads to much better results, as shown in Figure 4 where the “Tank Outlet Wt% A” signal has been
-time shifted based on the maximized correlation time shift determined from the correlation application (see <a class="reference external" href="examples.html#use-case-4-quantifying-relationships-and-the-importance-of-preprocessing-the-data"><strong>Use Case
-4</strong></a> below for
+time shifted based on the maximized correlation time shift determined from the correlation application (see <a class="reference internal" href="#examples.html#use-case-4-quantifying-relationships-and-the-importance-of-preprocessing-the-data"><span class="xref myst"><strong>Use Case
+4</strong></span></a> below for
 additional details).</p>
 <br>
 <table border="0">
@@ -220,13 +216,13 @@ portions of the process</p></li>
 to the trends. Correlation analysis is performed on a single worksheet basis and includes all the trended signals.</p>
 <section id="workflow">
 <h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading"></a></h3>
-<ol>
+<ol class="arabic">
 <li><p>Add all relevant dataset signals to trend view. Set the time range as desired. The time range should be long enough
 to capture significant variation in the signals, so that any meaningful correlations can be detected.</p></li>
 <li><p>Do any necessary pre-processing (Question: do we need to avoid gaps in the data such as those that might be found if
 there is a shutdown in between runs?) such as removing outliers, signal smoothing, and other adjustments. It is
-important at this step to properly cleanse the data prior to running the correlation analysis. See <a class="reference external" href="examples.html#use-case-2-large-dataset-exploration"><strong>Use Case
-3</strong></a>
+important at this step to properly cleanse the data prior to running the correlation analysis. See <a class="reference internal" href="#examples.html#use-case-2-large-dataset-exploration"><span class="xref myst"><strong>Use Case
+3</strong></span></a>
 below for additional information.</p></li>
 <li><p>From the Tools tab in Workbench, select External Tools followed by Correlation Analysis.</p></li>
 <li><p>The correlation analysis now proceeds and when it is finished the correlation matrix, the cross-correlations for each
@@ -235,7 +231,7 @@ the correlation between each pair of signals. Of course, time shifts can be turn
 the pairwise correlations with no time shift.</p></li>
 <li><p>From this point, you have many options for displaying and examining the correlation results. Options include (see
 corresponding locations in Figure 6):</p>
-<ol>
+<ol class="arabic">
 <li><p>Turning time shifts on/off (defaults to ON)</p></li>
 <li><p>Specifying the maximum time shift (defaults to auto)</p></li>
 <li><p>Displaying the correlation matrix colors based on coefficients (default) or time shifts</p></li>

@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._seeq_formulas &mdash; seeq-correlation 0.1.7 documentation</title>
+  <title>seeq.addons.correlation._seeq_formulas &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,10 +24,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
-            <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.7
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -83,7 +79,7 @@
 <span class="kn">from</span> <span class="nn">seeq.sdk.rest</span> <span class="kn">import</span> <span class="n">ApiException</span>
 
 <span class="n">pearson_formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    $condition = periods($window, $period)</span>
 <span class="sd">    $s1 = $signal1.setUnits(&#39;&#39;)</span>
 <span class="sd">    $s2 = $signal2.setUnits(&#39;&#39;)</span>
@@ -102,7 +98,7 @@
 <span class="sd">    &quot;&quot;&quot;</span><span class="p">)</span>
 
 <span class="n">pearson_timeshifted_formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    $s1_o = $signal.setUnits(&#39;&#39;)</span>
 <span class="sd">    $s2 = $goal.setUnits(&#39;&#39;)</span>
 <span class="sd">    </span>
@@ -124,7 +120,7 @@
 <span class="sd">    &quot;&quot;&quot;</span><span class="p">)</span>
 
 <span class="n">time_shifts_formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    $Wind = periods($window, $period)</span>
 <span class="sd">    $Wind.tosamples( $cap -&gt; {</span>
 <span class="sd">        $value = $signal.correlationOffset($goal,group($cap), -$maxOffset, $maxOffset, $correlation_threshold)</span>
@@ -146,7 +142,7 @@
          <span class="n">formula</span><span class="o">=</span><span class="n">pearson_formula</span><span class="p">,</span>
          <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input1</span><span class="p">,</span> <span class="n">signal_input2</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">],</span>
          <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-             <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">             </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">             &lt;p&gt;Calculates the rolling window Pearson&#39;s correlation coefficients between two signals. </span>
 <span class="sd">            One correlation coefficient is calculated for the data contained within each &lt;code&gt;window&lt;/code&gt; of time. </span>
 <span class="sd">            The &lt;code&gt;period&lt;/code&gt; dictates the step the &lt;code&gt;window&lt;/code&gt; is moved (or rolled) for the next </span>
@@ -163,7 +159,7 @@
          <span class="n">formula</span><span class="o">=</span><span class="n">pearson_timeshifted_formula</span><span class="p">,</span>
          <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input</span><span class="p">,</span> <span class="n">goal_input</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">,</span> <span class="n">corr_thrs_input</span><span class="p">,</span> <span class="n">maxtimeshift_input</span><span class="p">],</span>
          <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-             <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">             </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">             &lt;p&gt;Calculates the rolling window maximum Pearson&#39;s correlation coefficients between two sliding signals. </span>
 <span class="sd">             For each &lt;code&gt;window&lt;/code&gt;, the time shift that maximizes the cross-correlation between the two </span>
 <span class="sd">             signals is determined first. Then, the samples inside the window are time shifted </span>
@@ -195,7 +191,7 @@
          <span class="n">formula</span><span class="o">=</span><span class="n">time_shifts_formula</span><span class="p">,</span>
          <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input</span><span class="p">,</span> <span class="n">goal_input</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">,</span> <span class="n">corr_thrs_input</span><span class="p">,</span> <span class="n">maxtimeshift_input</span><span class="p">],</span>
          <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-             <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">             </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">             &lt;p&gt;Calculates the rolling window  </span>
 <span class="sd">             &lt;sq-link href=&quot;/formulas/docs/Seeq/correlationOffset&quot;&gt; </span>
 <span class="sd">             &lt;a href=&quot;&quot; ng-click=&quot;$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)&quot; </span>
@@ -210,7 +206,7 @@
          <span class="n">examples</span><span class="o">=</span><span class="p">[</span>
              <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleInputV1</span><span class="p">(</span>
                  <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-                     <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">                     </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                     Calculate the dynamic time shifts to maximize cross-correlation between &lt;code&gt;$signal&lt;/code&gt; </span>
 <span class="sd">                     and &lt;code&gt;$goal&lt;/code&gt; in 24 h intervals  every 6 hours, if &lt;code&gt;$signal&lt;/code&gt; is allowed </span>
 <span class="sd">                     to shift in time with respect to &lt;code&gt;$goal&lt;/code&gt;</span>
@@ -223,7 +219,7 @@
 
 
 <div class="viewcode-block" id="correlation_udfs"><a class="viewcode-back" href="../../../../seeq_server_interactions.html#seeq.addons.correlation._seeq_formulas.correlation_udfs">[docs]</a><span class="k">def</span> <span class="nf">correlation_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function creates Cross Correlation package of User Defined Functions</span>
 <span class="sd">    in the Seeq server. Once installed, these formula functions can be used</span>
 <span class="sd">    either standalone in the Seeq server, or called by the Correlation</span>
@@ -282,7 +278,7 @@
     <span class="c1"># Create formula docs</span>
     <span class="n">index_title</span> <span class="o">=</span> <span class="s1">&#39;Cross Correlation&#39;</span>
     <span class="n">index_description</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the cross-correlations between two signals and allows signals to time shift to maximize the </span>
 <span class="sd">        cross-correlation</span>
 <span class="sd">        &quot;&quot;&quot;</span><span class="p">)</span>
@@ -320,8 +316,8 @@
     <span class="k">if</span> <span class="n">formula_type</span> <span class="o">==</span> <span class="s1">&#39;pearson&#39;</span><span class="p">:</span>
         <span class="n">formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            CrossCorrelations_correlationCoefficient($signal, $goal, $window, $period)</span>
 <span class="s2">        &quot;&quot;&quot;</span>
         <span class="p">)</span>
@@ -331,10 +327,10 @@
     <span class="k">elif</span> <span class="n">formula_type</span> <span class="o">==</span> <span class="s1">&#39;time_shifts&#39;</span><span class="p">:</span>
         <span class="n">formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            $time_unit = &#39;</span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;output_time_unit&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;</span>
 <span class="s2">            CrossCorrelations_timeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
 <span class="s2">            $max_time_shift).convertUnits($time_unit)</span>
@@ -345,10 +341,10 @@
     <span class="k">elif</span> <span class="n">formula_type</span> <span class="o">==</span> <span class="s1">&#39;pearson_with_time_shifts&#39;</span><span class="p">:</span>
         <span class="n">formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
 <span class="s2">            $max_time_shift)</span>
 <span class="s2">        &quot;&quot;&quot;</span>

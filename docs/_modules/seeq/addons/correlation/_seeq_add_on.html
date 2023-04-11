@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._seeq_add_on &mdash; seeq-correlation 0.1.7 documentation</title>
+  <title>seeq.addons.correlation._seeq_add_on &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,10 +24,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
-            <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.7
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -99,7 +95,7 @@
 
 
 <div class="viewcode-block" id="CorrelationHeatmap"><a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._seeq_add_on.CorrelationHeatmap">[docs]</a><span class="k">class</span> <span class="nc">CorrelationHeatmap</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is the main class for the User Interface of the Correlation Add-on.</span>
 <span class="sd">    To create an instance, either a Seeq Data Lab project URL with appropriate</span>
 <span class="sd">    query parameters or pd.DataFrame must be passed. If a pd.DataFrame is</span>
@@ -408,7 +404,7 @@
             <span class="k">return</span>
         <span class="n">lags</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">,</span> <span class="n">sampling_time</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">,</span> <span class="n">maxlags</span> <span class="o">=</span> <span class="n">lags_coeffs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="p">)</span>
         <span class="n">time_shifts</span> <span class="o">=</span> <span class="n">lags</span> <span class="o">*</span> <span class="n">sampling_time</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actual_max_time_shift</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">max_time_shift</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">maxlags</span> <span class="o">*</span> <span class="n">sampling_time</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">time_unit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actual_max_time_shift</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">max_time_shift</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">maxlags</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sampling_time</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">time_unit</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_unit</span> <span class="o">=</span> <span class="n">time_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_unit_display</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Time Shifts&#39;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">Html</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;br&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_unit</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">]</span>
 
@@ -720,7 +716,7 @@
 
 
 <div class="viewcode-block" id="CreateSignalsMenu"><a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._seeq_add_on.CreateSignalsMenu">[docs]</a><span class="k">class</span> <span class="nc">CreateSignalsMenu</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">Dialog</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class creates an ipyvuetify Dialog window with the options required</span>
 <span class="sd">    to create correlation and time shifted signals in Seeq</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -977,7 +973,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">worksheet_input_params</span><span class="p">()</span>
             <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_dropdown</span><span class="o">.</span><span class="n">v_model</span>
             <span class="n">suffix_</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">signal_writing_counter</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">suffix_</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal_writing_counter</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">suffix_</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">signal_writing_counter</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_dropdown</span><span class="o">.</span><span class="n">v_model</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">create_signals</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1030,13 +1026,13 @@
 
 
 <div class="viewcode-block" id="ToggleButtons"><a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._seeq_add_on.ToggleButtons">[docs]</a><span class="k">class</span> <span class="nc">ToggleButtons</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">BtnToggle</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is an auxiliary class to generate toggle buttons with a</span>
 <span class="sd">    specific style and including a tooltip</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buttons_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        buttons_info: list</span>
@@ -1070,7 +1066,7 @@
 
 
 <div class="viewcode-block" id="HamburgerMenu"><a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._seeq_add_on.HamburgerMenu">[docs]</a><span class="k">class</span> <span class="nc">HamburgerMenu</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">Menu</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class creates the hamburger menu (with its options) used in the</span>
 <span class="sd">    top-right corner of the Correlation Add-on.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cross-Correlation Calculations &mdash; seeq-correlation 0.1.7 documentation</title>
+  <title>Cross-Correlation Calculations &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -30,10 +27,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> seeq-correlation
-            <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.7
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,7 +48,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="docstrings.html">Code Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="add_on_installation.html">Add-on Installation</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="backend_calculations.html">Backend Calculations</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Cross-Correlation Calculations</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cross-Correlation Calculations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#seeq.addons.correlation._cross_correlations.cross_corr_matrix_lagged"><code class="docutils literal notranslate"><span class="pre">cross_corr_matrix_lagged()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#seeq.addons.correlation._cross_correlations.cross_corr_matrix_raw"><code class="docutils literal notranslate"><span class="pre">cross_corr_matrix_raw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#seeq.addons.correlation._cross_correlations.lags_coeffs"><code class="docutils literal notranslate"><span class="pre">lags_coeffs()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="preprocessor.html">Data Preprocessing</a></li>
 </ul>
 </li>
@@ -99,16 +100,16 @@
 <span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._cross_correlations.</span></span><span class="sig-name descname"><span class="pre">cross_corr_matrix_lagged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_serialized</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_cross_correlations.html#cross_corr_matrix_lagged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._cross_correlations.cross_corr_matrix_lagged" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the matrix of lags and coefficients for best cross correlation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df_serialized</strong> (<em>bytes</em>) – A pickled pd.DataFrame with the signals to cross correlate.</p></li>
 <li><p><strong>lags</strong> (<em>float</em>) – Maximum number of lags to shift the signals.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>(lags, coefficients)</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
@@ -122,13 +123,13 @@ advantage of the caching functionality.</p>
 <span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._cross_correlations.</span></span><span class="sig-name descname"><span class="pre">cross_corr_matrix_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_serialized</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_cross_correlations.html#cross_corr_matrix_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._cross_correlations.cross_corr_matrix_raw" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the matrix of correlation coefficients for the set of signals.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>df_serialized</strong> (<em>bytes</em>) – A pickled pd.DataFrame with the signals to cross correlate.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>coefficients_matrix</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
@@ -146,7 +147,7 @@ is None, the lags are zero (raw data correlations with no time shift).
 This function also returns the sampling period of the signals, either
 inferring from the dataframe or using the property value attached to it</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df</strong> (<em>pandas.DataFrame</em>) – A DataFrame that contains a set of signals as columns and date-time as
 the index. This function does not call the data preprocessor. Thus,
@@ -160,7 +161,7 @@ If None, the raw signals are used and no time shifts are calculated.</p></li>
 are the ones accepted by pd.Timedelta</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>lags</strong> (<em>array_like, 2d</em>) – Lags to maximize cross correlations. Not to be confused with time
 shifts. This lags used the opposite sign as the typical convention.</p></li>
