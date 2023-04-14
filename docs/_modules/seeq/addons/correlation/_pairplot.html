@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._pairplot &mdash; seeq-correlation 0.1.7 documentation</title>
+  <title>seeq.addons.correlation._pairplot &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,10 +24,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
-            <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.7
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -93,7 +89,7 @@
 
 
 <div class="viewcode-block" id="pairplot"><a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._pairplot.pairplot">[docs]</a><span class="k">def</span> <span class="nf">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">bypass_preprocessing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a n x n matrix of static plots for the n-signals in the input</span>
 <span class="sd">    dataframe with histograms in the diagonal of the matrix and density</span>
 <span class="sd">    contour plots in the off-diagonal locations.</span>
@@ -154,7 +150,7 @@
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_contour_matrix_diag_hist_static</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">lags_array_serialized</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This functions generates a contour plot matrix with diagonal histograms.</span>
 <span class="sd">    If a lags_array is provided, the signal in the x axis (of every subplot) will be shifted by the</span>
 <span class="sd">    number of lags specified in lags_array</span>

@@ -1,4 +1,4 @@
-dask[complete]>=2021.10.0
+dask>=2021.10.0
 ipython==7.31.1
 ipyvuetify==1.6.2
 ipywidgets==7.6.3
@@ -7,7 +7,7 @@ matplotlib==3.3.4
 memoization==0.3.2
 myst-parser~=0.15.2
 numpy>=1.21
-pandas>=1.2.3
+pandas>=1.2.1, <2.0.0
 parver==0.3.1
 plotly==4.14.3
 pytest==6.2.4

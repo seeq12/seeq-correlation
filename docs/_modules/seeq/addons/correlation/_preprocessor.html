@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._preprocessor &mdash; seeq-correlation 0.1.7 documentation</title>
+  <title>seeq.addons.correlation._preprocessor &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,10 +24,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
-            <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.7
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -163,7 +159,7 @@
 
 
 <div class="viewcode-block" id="attach_summary"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.attach_summary">[docs]</a><span class="k">def</span> <span class="nf">attach_summary</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">summary</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This functions adds the summary of a pre-processing operation as property</span>
 <span class="sd">    of the DataFrame that contains the data.</span>
 
@@ -302,7 +298,7 @@
     <span class="n">dff</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">cols_to_remove</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols_to_remove</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The signals </span><span class="si">{</span><span class="n">cols_to_remove</span><span class="si">}</span><span class="s2"> have been removed from the analysis since they have &quot;</span>
-                      <span class="sa">f</span><span class="s2">&quot;more than </span><span class="si">{</span><span class="n">percent_nan</span> <span class="o">*</span> <span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% invalid values&quot;</span><span class="p">)</span>
+                      <span class="sa">f</span><span class="s2">&quot;more than </span><span class="si">{</span><span class="n">percent_nan</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% invalid values&quot;</span><span class="p">)</span>
 
     <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Yes (removed)&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cols_to_remove</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="n">local_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Gaps in Signal?&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -413,7 +409,7 @@
 
 
 <div class="viewcode-block" id="standardization"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.standardization">[docs]</a><span class="k">def</span> <span class="nf">standardization</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Scales the data in the DataFrame to zero mean and unit variance</span>
 
 <span class="sd">    Parameters</span>
@@ -439,7 +435,7 @@
 
 
 <div class="viewcode-block" id="interpolate_nans"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.interpolate_nans">[docs]</a><span class="k">def</span> <span class="nf">interpolate_nans</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolates invalid values (linearly) per signal only if the percentage of</span>
 <span class="sd">    consecutive invalid values with respect to the total number of samples is</span>
 <span class="sd">    less than the specified threshold.</span>
@@ -469,7 +465,7 @@
 
 
 <div class="viewcode-block" id="remove_flat_lines"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_flat_lines">[docs]</a><span class="k">def</span> <span class="nf">remove_flat_lines</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find signals with zero variance (flat lines) and remove them from the</span>
 <span class="sd">    input DataFrame</span>
 
@@ -495,7 +491,7 @@
 
 
 <div class="viewcode-block" id="remove_signals_with_missing_data"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_signals_with_missing_data">[docs]</a><span class="k">def</span> <span class="nf">remove_signals_with_missing_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes columns from the dataframe that have a high percentage of missing</span>
 <span class="sd">    data.</span>
 
@@ -525,7 +521,7 @@
 
 
 <div class="viewcode-block" id="remove_non_numeric"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_non_numeric">[docs]</a><span class="k">def</span> <span class="nf">remove_non_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">auto_remove</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes non-numeric signals from the input DataFrame.</span>
 
 <span class="sd">    Parameters</span>
@@ -553,7 +549,7 @@
 
 
 <div class="viewcode-block" id="duplicated_column_names"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.duplicated_column_names">[docs]</a><span class="k">def</span> <span class="nf">duplicated_column_names</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Renames columns that have the same column name</span>
 
 <span class="sd">    Parameters</span>
@@ -573,7 +569,7 @@
 
 
 <div class="viewcode-block" id="sampling_info"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.sampling_info">[docs]</a><span class="k">def</span> <span class="nf">sampling_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Attaches sampling period information if available and removes or tags</span>
 <span class="sd">    signals that have a high or low ratio of sampling period to gridded period.</span>
 
@@ -602,7 +598,7 @@
 
 <div class="viewcode-block" id="default_preprocessing_wrapper"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.default_preprocessing_wrapper">[docs]</a><span class="k">def</span> <span class="nf">default_preprocessing_wrapper</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">remove_disparate_sampled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                   <span class="n">sampling_ratio_threshold</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bypass_processing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    df: pandas.DataFrame</span>
