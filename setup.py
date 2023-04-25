@@ -41,17 +41,16 @@ setup_args = dict(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'dask[complete]>=2021.10.0',
+        'dask>=2021.10.0',
         'ipyvuetify>=1.5.1',
         'matplotlib>=3.1.3',
         'memoization>=0.2.2',
         'numpy>=1.19.5',
-        'pandas>=1.2.1',
+        'pandas>=1.2.1', 'pandas<2.0.0',
         'plotly>=4.5.0',
         'python-dateutil>=2.8.1',
         'scikit-learn>=0.22.1',
-        'seaborn>=0.10.0',
-        'sklearn>=0.0',
+        'seaborn>=0.10.0'
     ],
     classifiers=[
         "Programming Language :: Python :: 3.7",

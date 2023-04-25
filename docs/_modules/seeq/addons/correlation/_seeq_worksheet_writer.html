@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._seeq_worksheet_writer &mdash; seeq-correlation 0.1.6 documentation</title>
+  <title>seeq.addons.correlation._seeq_worksheet_writer &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,10 +24,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
-            <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.6
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -189,7 +185,7 @@
                                     <span class="n">time_shifted_for_correlation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_time_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                     <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">time_shifts_signals</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">corr_thrs</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
                                     <span class="n">condition_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasource</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a new Seeq worksheet with the either the cross-correlation</span>
 <span class="sd">    coefficient signals or the time shifted signals to maximize cross-</span>
 <span class="sd">    correlation, or both, for each pair of signals passed to the function.</span>
@@ -344,7 +340,7 @@
 <div class="viewcode-block" id="create_worksheet"><a class="viewcode-back" href="../../../../seeq_server_interactions.html#seeq.addons.correlation._seeq_worksheet_writer.create_worksheet">[docs]</a><span class="k">def</span> <span class="nf">create_worksheet</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">workbook</span><span class="o">=</span><span class="n">DEFAULT_WORKBOOK_PATH</span><span class="p">,</span>
                      <span class="n">worksheet</span><span class="o">=</span><span class="n">DEFAULT_WORKSHEET_NAME</span><span class="p">,</span> <span class="n">datasource</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">include_original_signals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">new_condition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bypass_preprocessing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a new Seeq worksheet with the signals from the dataframe column names, including the</span>
 <span class="sd">    time shifted signals based on the time shifts calculated to maximize cross-correlation. This function can</span>
 <span class="sd">    append or overwrite the worksheet if it already exists.</span>

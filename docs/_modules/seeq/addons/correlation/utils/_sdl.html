@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation.utils._sdl &mdash; seeq-correlation 0.1.6 documentation</title>
+  <title>seeq.addons.correlation.utils._sdl &mdash; seeq-correlation 0.1.8 documentation</title>
       <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../../_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/underscore.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
@@ -27,10 +24,9 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../../../index.html" class="icon icon-home"> seeq-correlation
-            <img src="../../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.6
+                0.1.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
@@ -85,7 +81,7 @@
 
 
 <div class="viewcode-block" id="pull_only_signals"><a class="viewcode-back" href="../../../../../seeq_server_interactions.html#seeq.addons.correlation.utils._sdl.pull_only_signals">[docs]</a><span class="k">def</span> <span class="nf">pull_only_signals</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pull only the signals shown in the display pane of a Seeq Analysis</span>
 <span class="sd">    Worksheet. The time range used for the pull will be taken from the</span>
 <span class="sd">    display range in the worksheet. Conditions will be disregarded.</span>
@@ -106,14 +102,14 @@
     <span class="n">worksheet</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_analysis_worksheet_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">&#39;Start&#39;</span><span class="p">]</span>
     <span class="n">end</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">&#39;End&#39;</span><span class="p">]</span>
+    <span class="n">status</span><span class="o">=</span><span class="n">spy</span><span class="o">.</span><span class="n">Status</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">search_df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">estimate_sample_period</span><span class="o">=</span><span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">search_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="n">search_signals_df</span> <span class="o">=</span> <span class="n">search_df</span><span class="p">[</span><span class="n">search_df</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Signal&#39;</span><span class="p">)]</span>
 
-    <span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">search_signals_df</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                  <span class="n">status</span><span class="o">=</span><span class="n">spy</span><span class="o">.</span><span class="n">Status</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">search_signals_df</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 
