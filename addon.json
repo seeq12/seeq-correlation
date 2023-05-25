@@ -3,7 +3,7 @@
     "name": "Correlation Analysis",
     "description": "Determine cross correlations and time shifts to maximize correlations among signals",
     "version": "Input version here",
-    "license": "Seeq_Marketplace_6003",
+    "license": "Apache-2.0 license",
     "icon": "fa fa-th",
     "previews": [
       "additional_content/LargeMatrixExample.png"
