@@ -5,6 +5,7 @@
     "version": "Input version here",
     "license": "Apache-2.0 license",
     "icon": "fa fa-th",
+    "tags": {"maintainer":"Seeq"},
     "previews": [
       "additional_content/LargeMatrixExample.png"
     ],
