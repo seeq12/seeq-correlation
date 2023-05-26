@@ -76,8 +76,13 @@ def lags_coeffs(df, max_time_shift, time_output_unit):
 
     """
     _validate_df(df)
-    grid: float = pd.to_timedelta(to_offset(pd.infer_freq(df.index))).total_seconds()
-    sampling = pd.Timedelta(f'{grid}s')
+    
+    try:
+        grid: float = pd.to_timedelta(to_offset(pd.infer_freq(df.index))).total_seconds()
+        sampling = pd.Timedelta(f'{grid}s')
+    except:
+        grid: float = pd.to_timedelta(np.diff(df.index).min()).total_seconds()
+        sampling = pd.Timedelta(f'{grid}s')
 
     if not df.spy.grid:
         df.spy.grid = f'{grid}s'
