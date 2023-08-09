@@ -56,7 +56,7 @@ class CorrelationHeatmap:
 
     def __init__(self, sdl_notebook_url=None, df=None, datasource=None, seeq_url=None):
         display(HTML("<style>#appmode-leave {display: none;}"))
-        spy.options.compatibility = 189.0
+        spy.options.compatibility = 189.3
         if sdl_notebook_url is None and not isinstance(df, pd.DataFrame):
             raise ValueError('Need either the SDL url or a pd.DataFrame with the signals to analyze')
         if sdl_notebook_url is None and isinstance(df, pd.DataFrame):
