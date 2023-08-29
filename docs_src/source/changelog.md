@@ -1,4 +1,9 @@
 # Changelog
+
+v0.1.9
+---
+Fucntions to package Correlation for use in addon manager
+
 v0.1.8
 ---
 Removed requirement for nb extention install `plotlywidget` in `main.py`.
