@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; seeq-correlation 0.1.9 documentation</title>
+  <title>Installation &mdash; seeq-correlation 0.1.95 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -26,14 +29,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> seeq-correlation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            seeq-correlation
+              <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.9
+                0.1.95
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,7 +53,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#user-installation-requirements-seeq-data-lab">User Installation Requirements (Seeq Data Lab)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#user-installation-seeq-data-lab">User Installation (Seeq Data Lab)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-steps">Installation Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#seeq-add-on-installation-via-add-on-manager-recommended-method">Seeq Add-on Installation via Add-on Manager (Recommended Method)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upgrading-the-seeq-correlation-add-on">Upgrading the <strong>seeq-correlation</strong> Add-on</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#seeq-add-on-installation-via-terminal-window-depreciated-method">Seeq Add-on Installation via Terminal Window (Depreciated Method)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
@@ -70,8 +83,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Installation</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/installation.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -94,14 +107,36 @@ matches your Seeq server. For more information on the <code class="docutils lite
 <h2>User Installation Requirements (Seeq Data Lab)<a class="headerlink" href="#user-installation-requirements-seeq-data-lab" title="Permalink to this heading"></a></h2>
 <p>If you want to install <strong>seeq-correlation</strong> as a Seeq Add-on Tool, you will need:</p>
 <ul class="simple">
-<li><p>Seeq Data Lab (&gt;= R52.1.5, &gt;=R53.0.2, or &gt;=R54)</p></li>
+<li><p>Seeq Data Lab (&gt;=R56)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">seeq</span></code> module whose version matches the Seeq server version</p></li>
 <li><p>Seeq administrator access</p></li>
 <li><p>Enable Add-on Tools in the Seeq server</p></li>
 </ul>
 </section>
-<section id="user-installation-seeq-data-lab">
-<h2>User Installation (Seeq Data Lab)<a class="headerlink" href="#user-installation-seeq-data-lab" title="Permalink to this heading"></a></h2>
+<section id="installation-steps">
+<h2>Installation Steps<a class="headerlink" href="#installation-steps" title="Permalink to this heading"></a></h2>
+<section id="seeq-add-on-installation-via-add-on-manager-recommended-method">
+<h3>Seeq Add-on Installation via Add-on Manager (Recommended Method)<a class="headerlink" href="#seeq-add-on-installation-via-add-on-manager-recommended-method" title="Permalink to this heading"></a></h3>
+<p>The <strong>seeq-correlation</strong> Add-on can be installed via the Add-on Manager in the home page of the Seeq server.
+Please refer to our knowledge base for more details on Add-on Manager <a class="reference external" href="https://support.seeq.com/kb/latest/cloud/add-on-packaging">here</a>.</p>
+<p>From the Seeq home page, click on the “Add-on” icon at the left of the screen and then click the “Add-on Manager”
+icon in the new buttons displayed.</p>
+<br>
+<td><img alt="image" src="_static/addon_manager_1.png"></td>
+<br>
+<p>Now your in the Add-on Manager you will get a list of all the Add-ons available to you. Click on the “Install” button
+next to the <strong>seeq-correlation</strong> Add-on.</p>
+<br>
+<td><img alt="image" src="_static/addon_manager_2.png"></td>
+<br>
+<p>After some time the “Install” button will change to “Installed” with a tick next to it and the Add-on will be available to use in Seeq Workbench.</p>
+</section>
+<section id="upgrading-the-seeq-correlation-add-on">
+<h3>Upgrading the <strong>seeq-correlation</strong> Add-on<a class="headerlink" href="#upgrading-the-seeq-correlation-add-on" title="Permalink to this heading"></a></h3>
+<p>If there is a new version of the <strong>seeq-correlation</strong> Add-on available, you will see an “Upgrade” button next to the add-on in the Add-on Manager. Click on the “Upgrade” button to upgrade the add-on to the latest version.</p>
+</section>
+<section id="seeq-add-on-installation-via-terminal-window-depreciated-method">
+<h3>Seeq Add-on Installation via Terminal Window (Depreciated Method)<a class="headerlink" href="#seeq-add-on-installation-via-terminal-window-depreciated-method" title="Permalink to this heading"></a></h3>
 <p>The latest build of the project can be found <a class="reference external" href="https://pypi.org/project/seeq-correlation/">here</a> as a wheel file. The
 file is published as a courtesy to the user, and it does not imply any obligation for support from the publisher.</p>
 <ol class="arabic simple">
@@ -109,6 +144,7 @@ file is published as a courtesy to the user, and it does not imply any obligatio
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">seeq-correlation</span></code></p></li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">seeq.addons.correlation</span> <span class="pre">[--users</span> <span class="pre">&lt;users_list&gt;</span> <span class="pre">--groups</span> <span class="pre">&lt;groups_list&gt;]</span></code></p></li>
 </ol>
+</section>
 </section>
 </section>
 

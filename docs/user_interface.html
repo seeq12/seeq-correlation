@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Interface &mdash; seeq-correlation 0.1.9 documentation</title>
+  <title>User Interface &mdash; seeq-correlation 0.1.95 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -26,14 +29,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> seeq-correlation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            seeq-correlation
+              <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.1.9
+                0.1.95
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,9 +87,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="docstrings.html">Code Documentation</a> &raquo;</li>
-      <li>User Interface</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="docstrings.html">Code Documentation</a></li>
+      <li class="breadcrumb-item active">User Interface</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/user_interface.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -232,7 +240,7 @@ passed, the functionality to push data back to the Seeq server is disabled.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seeq.addons.correlation._seeq_add_on.CreateSignalsMenu">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">CreateSignalsMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#CreateSignalsMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.CreateSignalsMenu" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">CreateSignalsMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#CreateSignalsMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.CreateSignalsMenu" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></p>
 <p>This class creates an ipyvuetify Dialog window with the options required
 to create correlation and time shifted signals in Seeq</p>
@@ -240,7 +248,7 @@ to create correlation and time shifted signals in Seeq</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seeq.addons.correlation._seeq_add_on.HamburgerMenu">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">HamburgerMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#HamburgerMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.HamburgerMenu" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">HamburgerMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#HamburgerMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.HamburgerMenu" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code></p>
 <p>This class creates the hamburger menu (with its options) used in the
 top-right corner of the Correlation Add-on.</p>
@@ -248,7 +256,7 @@ top-right corner of the Correlation Add-on.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seeq.addons.correlation._seeq_add_on.ToggleButtons">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">ToggleButtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#ToggleButtons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.ToggleButtons" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._seeq_add_on.</span></span><span class="sig-name descname"><span class="pre">ToggleButtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_seeq_add_on.html#ToggleButtons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._seeq_add_on.ToggleButtons" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BtnToggle</span></code></p>
 <p>This is an auxiliary class to generate toggle buttons with a
 specific style and including a tooltip</p>
