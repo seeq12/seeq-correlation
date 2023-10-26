@@ -1,4 +1,7 @@
 # Changelog
+v0.1.95
+---
+Minor updates to addon manager packaging
 
 v0.1.9
 ---
