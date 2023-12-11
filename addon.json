@@ -3,9 +3,10 @@
     "name": "Correlation Analysis",
     "description": "Determine cross correlations and time shifts to maximize correlations among signals",
     "version": "Input version here",
+    "maintainer":"Seeq Corporation https://seeq.com/",
     "license": "Apache-2.0 license",
     "icon": "fa fa-th",
-    "tags": {"maintainer":"Seeq"},
+    "tags": {"documentation":"Documentation website here https://seeq12.github.io/seeq-correlation/introduction.html" },
     "previews": [
       "additional_content/LargeMatrixExample.png"
     ],
@@ -14,6 +15,7 @@
         "name": "Correlation Analysis",
         "description": "Determine cross correlations and time shifts to maximize correlations among signals",
         "identifier": "com.seeq.addon.correlation.correlation",
+        "known_aliases": ["Correlation"],
         "type": "AddOnTool",
         "path": "data-lab-functions",
         "notebook_file_path": "correlation_analysis_master.ipynb",

@@ -3,7 +3,7 @@
 <br>
 <p>
   <a href="https://www.seeq.com" rel="nofollow">
-    <img src="https://www.seeq.com/sites/default/files/seeq-content/seeq-logo-blue-web-33h.svg" alt="seeq" width="22%">
+    <img src="https://support.seeq.com/__assets-afb914a3-20be-451d-8157-92db51387860/image/seeq_logo.png" alt="seeq" width="22%">
   </a>
 </p>
 
