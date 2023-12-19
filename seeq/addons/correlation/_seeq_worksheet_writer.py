@@ -48,7 +48,7 @@ def get_existing_worksheet(workbook_id, worksheet_id, api_client):
                                                      worksheet_id=worksheet_id)  # type: sdk.WorksheetOutputV1
     return existing_worksheet
 
-def create_analysis_search_query(workbook) -> tuple[dict[str, str], str]:
+def create_analysis_search_query(workbook):
     workbook_spec_parts = path_string_to_list(workbook)
     search_query = dict()
     if len(workbook_spec_parts) > 1:
