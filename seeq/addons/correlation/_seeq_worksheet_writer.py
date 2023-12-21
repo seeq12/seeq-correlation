@@ -38,7 +38,7 @@ def create_lagged_signals(signal_ids, signal_names, workbook_id, time_shifts, ti
             lagged_signals.extend([signalId, r.data_id])
         else:
             lagged_signals.append(r.data_id)
-    print(lagged_signals)
+
     return lagged_signals
 
 
