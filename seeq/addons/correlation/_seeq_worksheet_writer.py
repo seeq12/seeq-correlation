@@ -1,10 +1,11 @@
 import warnings
 import pandas as pd
 import pickle
+import re
 from IPython import display
 from IPython.core.display import HTML
 from seeq import spy, sdk
-from .utils import create_condition, create_workstep_signals, get_seeq_url
+from .utils import create_condition, create_workstep_signals, get_seeq_url, path_list_to_string, path_string_to_list
 from . import default_preprocessing_wrapper
 from . import lags_coeffs, signals_from_formula
 
@@ -47,6 +48,17 @@ def get_existing_worksheet(workbook_id, worksheet_id, api_client):
                                                      worksheet_id=worksheet_id)  # type: sdk.WorksheetOutputV1
     return existing_worksheet
 
+def create_analysis_search_query(workbook):
+    workbook_spec_parts = path_string_to_list(workbook)
+    search_query = dict()
+    if len(workbook_spec_parts) > 1:
+        search_query['Path'] = path_list_to_string(workbook_spec_parts[0:-1])
+        workbook_name = workbook_spec_parts[-1]
+    else:
+        workbook_name = workbook_spec_parts[0]
+    search_query['Name'] = f'/^{re.escape(workbook_name)}$/'
+    search_query['Workbook Type'] = 'Analysis'
+    return search_query, workbook_name
 
 def get_workbook(workbook, worksheet, datasource):
     if workbook is None:
@@ -66,7 +78,7 @@ def get_workbook(workbook, worksheet, datasource):
             }]), include_inventory=False, quiet=True)[0]
 
         else:
-            search_query, workbook_name = spy._push.create_analysis_search_query(workbook)
+            search_query, workbook_name = create_analysis_search_query(workbook)
             search_df = spy.workbooks.search(search_query, quiet=True)
             if len(search_df) == 0:
                 primary_workbook = spy.workbooks.Analysis({'Name': workbook_name})
@@ -207,6 +219,7 @@ def worksheet_corrs_and_time_shifts(signal_pairs_ids: list, workbook_id: str,
 
     workbook_id, worksheet_id = get_workbook(workbook_id, worksheet_name, datasource)
     existing_worksheet = get_existing_worksheet(workbook_id, worksheet_id, api_client)
+
     create_workstep_signals(existing_worksheet,
                             workbook_id,
                             all_new_signals,

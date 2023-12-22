@@ -1,3 +1,5 @@
+import re
+
 def validate_argument_types(expected_types):
     for _value, _name, _types in expected_types:
         if _value is None:
@@ -16,3 +18,10 @@ def validate_argument_types(expected_types):
 
 
 def print_red(text): print(f"\x1b[31m{text}\x1b[0m")
+
+
+def path_list_to_string(path_list):
+    return ' >> '.join(path_list)
+
+def path_string_to_list(path_string):
+    return re.split(r'\s*>>\s*', path_string.strip())
