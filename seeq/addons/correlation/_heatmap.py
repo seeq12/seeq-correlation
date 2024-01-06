@@ -147,13 +147,17 @@ def _heatmap(df, max_time_shift='auto', output_values='coeffs', output_type='plo
 def rename_signals(signal_list, max_label_chars):
     if np.array([len(x) for x in signal_list]).max() > max_label_chars:
         new_names = []
+        size_ = int(max_label_chars/2)
         for i, name in enumerate(signal_list):
-            truncated_name = name[-max_label_chars:]
-            if truncated_name in new_names:
-                unique_name = f"{truncated_name[2:]}_{i}"
+            if len(name) > max_label_chars:
+                truncated_name = name[:size_] + "..." + name[-(size_-3):]
+                if truncated_name in new_names:
+                    unique_name = f"{truncated_name[2:]}_{i}"
+                else:
+                    unique_name = truncated_name
+                new_names.append(unique_name)
             else:
-                unique_name = truncated_name
-            new_names.append(unique_name)
+                new_names.append(name)
 
     else:
         new_names = signal_list
