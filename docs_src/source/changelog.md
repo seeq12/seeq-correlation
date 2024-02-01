@@ -1,4 +1,8 @@
 # Changelog
+v0.1.96
+---
+Bug fix for long signal name leading to duplicates dropped in heatmap plot
+
 v0.1.95
 ---
 Minor updates to addon manager packaging
