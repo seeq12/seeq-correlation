@@ -1,5 +1,5 @@
 dask>=2021.10.0
-ipython==7.31.1
+ipython
 ipyvuetify==1.6.2
 ipywidgets==7.6.3
 jupyter~=1.0.0
@@ -20,9 +20,9 @@ seeq
 sphinx==4.2.0
 sphinx-rtd-theme==1.0.0
 statsmodels==0.12.2
-setuptools==57.1.0
+setuptools
 traitlets==5.1.1
 tzlocal==2.1
 twine~=3.4.1
-wheel~=0.36.2
+wheel
 dohq-artifactory==0.8.1
