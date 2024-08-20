@@ -191,8 +191,8 @@ class CorrelationHeatmap:
                                                      self.output_type_toggle])
 
         # Filters
-        self.coeff_lower_bound = self.bound_box(v_model=-1.0, color=self.colors['seeq_primary'])
-        self.coeff_upper_bound = self.bound_box(v_model=1.0, color=self.colors['seeq_primary'])
+        self.coeff_lower_bound = self.bound_box(v_model=-1.0, color=self.colors['seeq_primary'], identifier='coeff_lower_bound')
+        self.coeff_upper_bound = self.bound_box(v_model=1.0, color=self.colors['seeq_primary'], identifier='coeff_upper_bound')
         self.coeff_slider, self.coeff_slider_tooltip = self.slider_widget(color=self.colors['slider_selected'],
                                                                           track_color=self.colors[
                                                                               'slider_track_unselected'],
@@ -203,10 +203,12 @@ class CorrelationHeatmap:
                                                                                   'values to display')
 
         self.time_lower_bound = self.bound_box(v_model=np.round(self.time_shift_min, 1),
-                                               color=self.colors['seeq_primary'])
+                                               color=self.colors['seeq_primary'],
+                                               identifier='time_lower_bound')
 
         self.time_upper_bound = self.bound_box(v_model=np.round(self.time_shift_max, 1),
-                                               color=self.colors['seeq_primary'])
+                                               color=self.colors['seeq_primary'],
+                                               identifier='time_upper_bound')
         self.time_slider, self.time_slider_tooltip = self.slider_widget(color=self.colors['slider_selected'],
                                                                         track_color=self.colors[
                                                                             'slider_track_unselected'],
@@ -296,7 +298,7 @@ class CorrelationHeatmap:
                                                             indeterminate=True)])
 
     @staticmethod
-    def bound_box(v_model, color):
+    def bound_box(v_model, color, identifier=None):
         return v.TextField(v_model=v_model,
                            hide_details="auto",
                            dense=True,
@@ -307,6 +309,7 @@ class CorrelationHeatmap:
                            filled=False,
                            color=color,
                            counter=False,
+                           id=identifier
                            )
 
     @staticmethod
