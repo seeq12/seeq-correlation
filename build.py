@@ -7,7 +7,6 @@ import shutil
 import argparse
 import subprocess
 from pathlib import Path
-from artifactory import ArtifactoryPath
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -106,45 +105,3 @@ if args.addon:
         addon_manager_artifacts.append(addon_meta)
 
     print('Successfully created.')
-
-if args.distribute:
-
-    # THIS BLOCK OF CODE IS NO MORE IN USE BUT COULD LATER BE USED IN FUTURE PURPOSES
-    # if compiled_wheel is not None:
-    #     print(f'Distributing compiled wheel {compiled_wheel} to pipy.seeq.com')
-    #     command_distribute_compiled = \
-    #         ['twine', 'upload',
-    #          '--repository-url', 'https://pypi.seeq.com',
-    #          '-u', username,
-    #          '-p', password,
-    #          compiled_wheel]
-    #     result = subprocess.run(' '.join(command_distribute_compiled))
-    #     if result.stderr:
-    #         print(f'There was an error uploading the compiled version: {result.stderr}')
-    #
-    # print(f'Distributing source wheel {source_wheel} to pypi.seeq.com:8081')
-    # command_distribute_source = \
-    #     ['twine', 'upload',
-    #      '--repository-url', 'https://pypi.seeq.com:8081',
-    #      '-u', username,
-    #      '-p', password,
-    #      source_wheel]
-    # result = subprocess.run(' '.join(command_distribute_source))
-    # if result.stderr:
-    #     print(f'There was an error uploading the source version: {result.stderr}')
-
-    if addon_manager_artifacts:
-        print(f'Distributing addon manager artifacts to seeq.jfrog.io')
-        api_key = os.getenv('JFROG_API_KEY')
-        for artifact in addon_manager_artifacts:
-            _, file = os.path.split(artifact)
-            path = ArtifactoryPath(f"https://seeq.jfrog.io/artifactory/seeq-add-ons-prod-local/Correlation/{file}",
-                                   apikey=api_key)
-            try:
-                path.deploy_file(artifact)
-                properties = path.properties
-                # Add identifier property
-                properties["identifier"] = "com.seeq.addon.correlation"
-                path.properties = properties
-            except Exception as e:
-                print(e)
