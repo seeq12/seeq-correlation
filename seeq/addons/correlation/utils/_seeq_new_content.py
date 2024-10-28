@@ -90,7 +90,7 @@ def create_workstep_signals(existing_worksheet, workbook_id, signal_ids, start_t
         new_items['Lane'].append(previous_highest_lane)
         new_items['Axis Auto Scale'].append(True)
 
-    workstep.display_items = pd.concat([current_display_items, new_items]).\
+    workstep.display_items = pd.concat([current_display_items, pd.DataFrame(new_items)]).\
         drop_duplicates(keep='first', subset=['ID']).reset_index()
     workstep.display_range = display_range
     workstep.investigate_range = investigate_range
