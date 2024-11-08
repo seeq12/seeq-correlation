@@ -45,10 +45,6 @@ def get_workbook_and_worksheet(workbook_id, worksheet_id=None, **kwargs):
                                 include_referenced_workbooks=False, include_annotations=False,
                                 include_images=False, include_inventory=False,
                                 include_rendered_content=False, **kwargs)[0]
-    except TypeError:
-        wb = spy.workbooks.pull(search, include_referenced_workbooks=False, include_annotations=False,
-                                include_images=False, include_inventory=False,
-                                include_rendered_content=False, **kwargs)[0]
     except Exception as e:
         raise SPyRuntimeError(str(e))
 
