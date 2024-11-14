@@ -11,14 +11,12 @@ from seeq.spy._errors import *
 # noinspection PyProtectedMember
 from seeq.spy import _url
 from ._copy import copy
-from .utils import get_user, get_user_group, get_seeq_url
-from . import correlation_udfs
+from .utils import get_seeq_url, DEFAULT_GROUP, DEFAULT_USERS
+from . import create_udfs
 
 NB_EXTENSIONS = ['widgetsnbextension', 'ipyvuetify', 'ipyvue']
 DEPLOYMENT_FOLDER = 'deployment'
 CORRELATION_NOTEBOOK = "correlation_analysis_master.ipynb"
-DEFAULT_GROUP = ['Everyone']
-DEFAULT_USERS = []
 
 
 def install_app(sdl_url_, *, sort_key='a', permissions_group: list = None, permissions_users: list = None):
@@ -120,52 +118,6 @@ def logging_attempts(_user):
                 raise
             if count > allowed_attempts:
                 raise RuntimeError("Number of login attempts exceeded")
-
-
-def create_udfs(api_client, *, permissions_groups: list = None, permissions_users: list = None):
-    """
-    Creates the required Formula UDFs for the Correlation app
-
-    Parameters
-    ----------
-    api_client: seeq.sdk.api_client.ApiClient
-        The seeq.sdk API client that handles the client-server
-        communication
-    permissions_groups: list
-        Names of the Seeq groups that will have access to each tool
-    permissions_users: list
-        Names of Seeq users that will have access to each tool
-    Returns
-    --------
-    -: None
-        The Correlation UDFs will be available in Seeq Workbench
-    """
-
-    permissions_groups = permissions_groups if permissions_groups else DEFAULT_GROUP
-    permissions_users = permissions_users if permissions_users else DEFAULT_USERS
-    print("\n\nCreating CrossCorrelation UDFs...")
-    user_groups_api = sdk.UserGroupsApi(api_client)
-    users_api = sdk.UsersApi(spy.client)
-    items_api = sdk.ItemsApi(api_client)
-    pkg_id = correlation_udfs(api_client)
-
-    # assign group permissions
-    for group_name in permissions_groups:
-        group = get_user_group(group_name, user_groups_api)
-        if group:
-            ace_input = sdk.AceInputV1(identity_id=group.items[0].id, permissions=sdk.PermissionsV1(read=True))
-            items_api.add_access_control_entry(id=pkg_id, body=ace_input)
-
-    # assign user permissions
-    for user_name in permissions_users:
-        current_user = get_user(user_name, users_api)
-        if current_user:
-            ace_input = sdk.AceInputV1(identity_id=current_user.users[0].id,
-                                       permissions=sdk.PermissionsV1(read=True))
-            items_api.add_access_control_entry(id=pkg_id, body=ace_input)
-
-    print("DONE")
-
 
 def cli_interface():
     """ Command line utility to install the Correlation Add-on Tool """

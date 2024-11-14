@@ -2,6 +2,10 @@ from seeq.sdk.rest import ApiException
 from . import print_red
 
 
+DEFAULT_GROUP = ['Everyone']
+DEFAULT_USERS = []
+
+
 def get_user_group(group_name, user_groups_api):
     try:
         group = user_groups_api.get_user_groups(name_search=group_name)
