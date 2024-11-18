@@ -1,6 +1,7 @@
 import textwrap
-from seeq import sdk
+from seeq import sdk, spy
 from seeq.sdk.rest import ApiException
+from .utils import check_udf_package, get_user_group, get_user, DEFAULT_USERS, DEFAULT_GROUP
 
 pearson_formula = textwrap.dedent(
     """
@@ -163,16 +164,10 @@ def correlation_udfs(api_client):
     creator_name = 'Alberto Rivas'
     creator_contact_info = 'applied.research@seeq.com'
     formulas_api = sdk.FormulasApi(api_client)
-    try:
-        pkg = formulas_api.get_package(package_name=package_name)
-        if pkg.name == package_name:
-            print(f"Overwriting CrossCorrelation package")
-            formulas_api.delete_package(package_name=package_name)
-    except ApiException as e:
-        if 'not found' in e.reason.lower():
-            pass
-        else:
-            raise e
+    found = check_udf_package(package_name, api_client)
+    if found:
+        print(f"Overwriting CrossCorrelation package")
+        formulas_api.delete_package(package_name=package_name)
 
     # Create the Formula Package
     package_input = sdk.FormulaPackageInputV1(creator_name=creator_name, creator_contact_info=creator_contact_info)
@@ -290,3 +285,48 @@ def signals_from_formula(signal1_id, signal_ref_id, workbook_id, formula_type=No
                    )
     r = signals_api.create_signal_with_http_info(body=payload)[0]
     return r
+
+
+def create_udfs(api_client, *, permissions_groups: list = None, permissions_users: list = None):
+    """
+    Creates the required Formula UDFs for the Correlation app
+
+    Parameters
+    ----------
+    api_client: seeq.sdk.api_client.ApiClient
+        The seeq.sdk API client that handles the client-server
+        communication
+    permissions_groups: list
+        Names of the Seeq groups that will have access to each tool
+    permissions_users: list
+        Names of Seeq users that will have access to each tool
+    Returns
+    --------
+    -: None
+        The Correlation UDFs will be available in Seeq Workbench
+    """
+
+    permissions_groups = permissions_groups if permissions_groups else DEFAULT_GROUP
+    permissions_users = permissions_users if permissions_users else DEFAULT_USERS
+    print("\n\nCreating CrossCorrelation UDFs...")
+    user_groups_api = sdk.UserGroupsApi(api_client)
+    users_api = sdk.UsersApi(spy.client)
+    items_api = sdk.ItemsApi(api_client)
+    pkg_id = correlation_udfs(api_client)
+
+    # assign group permissions
+    for group_name in permissions_groups:
+        group = get_user_group(group_name, user_groups_api)
+        if group:
+            ace_input = sdk.AceInputV1(identity_id=group.items[0].id, permissions=sdk.PermissionsV1(read=True))
+            items_api.add_access_control_entry(id=pkg_id, body=ace_input)
+
+    # assign user permissions
+    for user_name in permissions_users:
+        current_user = get_user(user_name, users_api)
+        if current_user:
+            ace_input = sdk.AceInputV1(identity_id=current_user.users[0].id,
+                                       permissions=sdk.PermissionsV1(read=True))
+            items_api.add_access_control_entry(id=pkg_id, body=ace_input)
+
+    print("DONE")

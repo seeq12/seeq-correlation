@@ -1,5 +1,6 @@
 import pandas as pd
-from seeq import spy
+from seeq import spy, sdk
+from seeq.sdk.rest import ApiException
 from urllib.parse import urlparse, unquote, parse_qs
 import ipaddress
 
@@ -95,3 +96,17 @@ def get_seeq_url():
                 return spy.session.private_url
 
     return None
+
+def check_udf_package(name="CrossCorrelations", api_client=None):
+    if api_client:
+        formulas_api = sdk.FormulasApi(api_client)
+    else:
+        formulas_api = sdk.FormulasApi(spy.client)
+    try:
+        formulas_api.get_package(package_name=name)
+        return True
+    except ApiException as e:
+        if 'not found' in e.reason.lower():
+            return False
+        else:
+            raise e
