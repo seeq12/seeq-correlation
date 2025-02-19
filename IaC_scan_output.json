@@ -1,0 +1,2722 @@
+{
+    "check_type": "github_actions",
+    "results": {
+        "passed_checks": [
+            {
+                "check_id": "CKV_GHA_1",
+                "bc_check_id": null,
+                "check_name": "Ensure ACTIONS_ALLOW_UNSECURE_COMMANDS isn't true on environment variables",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "runs-on": "ubuntu-latest",
+                        "steps": [
+                            {
+                                "uses": "actions/checkout@v2",
+                                "__startline__": 18,
+                                "__endline__": 19
+                            },
+                            {
+                                "name": "Set up Python 3.8",
+                                "uses": "actions/setup-python@v2",
+                                "with": {
+                                    "python-version": "3.8",
+                                    "__startline__": 22,
+                                    "__endline__": 23
+                                },
+                                "__startline__": 19,
+                                "__endline__": 23
+                            },
+                            {
+                                "name": "Install dependencies",
+                                "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                                "__startline__": 23,
+                                "__endline__": 28
+                            },
+                            {
+                                "name": "Lint with flake8",
+                                "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                                "__startline__": 28,
+                                "__endline__": 34
+                            },
+                            {
+                                "name": "Test with pytest",
+                                "run": "pytest -v -m unit\n",
+                                "__startline__": 34,
+                                "__endline__": 37
+                            }
+                        ],
+                        "__startline__": 15,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        15,
+                        "    runs-on: ubuntu-latest\n"
+                    ],
+                    [
+                        16,
+                        "\n"
+                    ],
+                    [
+                        17,
+                        "    steps:\n"
+                    ],
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    15,
+                    38
+                ],
+                "resource": "jobs(build)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.AllowUnsecureCommandsOnJob",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_5",
+                "bc_check_id": null,
+                "check_name": "Found artifact build without evidence of cosign sign execution in pipeline",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "build": {
+                            "runs-on": "ubuntu-latest",
+                            "steps": [
+                                {
+                                    "uses": "actions/checkout@v2",
+                                    "__startline__": 18,
+                                    "__endline__": 19
+                                },
+                                {
+                                    "name": "Set up Python 3.8",
+                                    "uses": "actions/setup-python@v2",
+                                    "with": {
+                                        "python-version": "3.8",
+                                        "__startline__": 22,
+                                        "__endline__": 23
+                                    },
+                                    "__startline__": 19,
+                                    "__endline__": 23
+                                },
+                                {
+                                    "name": "Install dependencies",
+                                    "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                                    "__startline__": 23,
+                                    "__endline__": 28
+                                },
+                                {
+                                    "name": "Lint with flake8",
+                                    "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                                    "__startline__": 28,
+                                    "__endline__": 34
+                                },
+                                {
+                                    "name": "Test with pytest",
+                                    "run": "pytest -v -m unit\n",
+                                    "__startline__": 34,
+                                    "__endline__": 37
+                                }
+                            ],
+                            "__startline__": 15,
+                            "__endline__": 37
+                        },
+                        "__startline__": 13,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        13,
+                        "  build:\n"
+                    ],
+                    [
+                        14,
+                        "\n"
+                    ],
+                    [
+                        15,
+                        "    runs-on: ubuntu-latest\n"
+                    ],
+                    [
+                        16,
+                        "\n"
+                    ],
+                    [
+                        17,
+                        "    steps:\n"
+                    ],
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    13,
+                    38
+                ],
+                "resource": "jobs",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.CosignArtifacts",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_6",
+                "bc_check_id": null,
+                "check_name": "Found artifact build without evidence of cosign sbom attestation in pipeline",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "build": {
+                            "runs-on": "ubuntu-latest",
+                            "steps": [
+                                {
+                                    "uses": "actions/checkout@v2",
+                                    "__startline__": 18,
+                                    "__endline__": 19
+                                },
+                                {
+                                    "name": "Set up Python 3.8",
+                                    "uses": "actions/setup-python@v2",
+                                    "with": {
+                                        "python-version": "3.8",
+                                        "__startline__": 22,
+                                        "__endline__": 23
+                                    },
+                                    "__startline__": 19,
+                                    "__endline__": 23
+                                },
+                                {
+                                    "name": "Install dependencies",
+                                    "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                                    "__startline__": 23,
+                                    "__endline__": 28
+                                },
+                                {
+                                    "name": "Lint with flake8",
+                                    "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                                    "__startline__": 28,
+                                    "__endline__": 34
+                                },
+                                {
+                                    "name": "Test with pytest",
+                                    "run": "pytest -v -m unit\n",
+                                    "__startline__": 34,
+                                    "__endline__": 37
+                                }
+                            ],
+                            "__startline__": 15,
+                            "__endline__": 37
+                        },
+                        "__startline__": 13,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        13,
+                        "  build:\n"
+                    ],
+                    [
+                        14,
+                        "\n"
+                    ],
+                    [
+                        15,
+                        "    runs-on: ubuntu-latest\n"
+                    ],
+                    [
+                        16,
+                        "\n"
+                    ],
+                    [
+                        17,
+                        "    steps:\n"
+                    ],
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    13,
+                    38
+                ],
+                "resource": "jobs",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.CosignSBOM",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_4",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of netcat with IP address",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "runs-on": "ubuntu-latest",
+                        "steps": [
+                            {
+                                "uses": "actions/checkout@v2",
+                                "__startline__": 18,
+                                "__endline__": 19
+                            },
+                            {
+                                "name": "Set up Python 3.8",
+                                "uses": "actions/setup-python@v2",
+                                "with": {
+                                    "python-version": "3.8",
+                                    "__startline__": 22,
+                                    "__endline__": 23
+                                },
+                                "__startline__": 19,
+                                "__endline__": 23
+                            },
+                            {
+                                "name": "Install dependencies",
+                                "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                                "__startline__": 23,
+                                "__endline__": 28
+                            },
+                            {
+                                "name": "Lint with flake8",
+                                "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                                "__startline__": 28,
+                                "__endline__": 34
+                            },
+                            {
+                                "name": "Test with pytest",
+                                "run": "pytest -v -m unit\n",
+                                "__startline__": 34,
+                                "__endline__": 37
+                            }
+                        ],
+                        "__startline__": 15,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        15,
+                        "    runs-on: ubuntu-latest\n"
+                    ],
+                    [
+                        16,
+                        "\n"
+                    ],
+                    [
+                        17,
+                        "    steps:\n"
+                    ],
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    15,
+                    38
+                ],
+                "resource": "jobs(build)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ReverseShellNetcat",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_2",
+                "bc_check_id": null,
+                "check_name": "Ensure run commands are not vulnerable to shell injection",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "runs-on": "ubuntu-latest",
+                        "steps": [
+                            {
+                                "uses": "actions/checkout@v2",
+                                "__startline__": 18,
+                                "__endline__": 19
+                            },
+                            {
+                                "name": "Set up Python 3.8",
+                                "uses": "actions/setup-python@v2",
+                                "with": {
+                                    "python-version": "3.8",
+                                    "__startline__": 22,
+                                    "__endline__": 23
+                                },
+                                "__startline__": 19,
+                                "__endline__": 23
+                            },
+                            {
+                                "name": "Install dependencies",
+                                "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                                "__startline__": 23,
+                                "__endline__": 28
+                            },
+                            {
+                                "name": "Lint with flake8",
+                                "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                                "__startline__": 28,
+                                "__endline__": 34
+                            },
+                            {
+                                "name": "Test with pytest",
+                                "run": "pytest -v -m unit\n",
+                                "__startline__": 34,
+                                "__endline__": 37
+                            }
+                        ],
+                        "__startline__": 15,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        15,
+                        "    runs-on: ubuntu-latest\n"
+                    ],
+                    [
+                        16,
+                        "\n"
+                    ],
+                    [
+                        17,
+                        "    steps:\n"
+                    ],
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    15,
+                    38
+                ],
+                "resource": "jobs(build)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ShellInjection",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_3",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of curl with secrets",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "runs-on": "ubuntu-latest",
+                        "steps": [
+                            {
+                                "uses": "actions/checkout@v2",
+                                "__startline__": 18,
+                                "__endline__": 19
+                            },
+                            {
+                                "name": "Set up Python 3.8",
+                                "uses": "actions/setup-python@v2",
+                                "with": {
+                                    "python-version": "3.8",
+                                    "__startline__": 22,
+                                    "__endline__": 23
+                                },
+                                "__startline__": 19,
+                                "__endline__": 23
+                            },
+                            {
+                                "name": "Install dependencies",
+                                "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                                "__startline__": 23,
+                                "__endline__": 28
+                            },
+                            {
+                                "name": "Lint with flake8",
+                                "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                                "__startline__": 28,
+                                "__endline__": 34
+                            },
+                            {
+                                "name": "Test with pytest",
+                                "run": "pytest -v -m unit\n",
+                                "__startline__": 34,
+                                "__endline__": 37
+                            }
+                        ],
+                        "__startline__": 15,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        15,
+                        "    runs-on: ubuntu-latest\n"
+                    ],
+                    [
+                        16,
+                        "\n"
+                    ],
+                    [
+                        17,
+                        "    steps:\n"
+                    ],
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    15,
+                    38
+                ],
+                "resource": "jobs(build)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.SuspectCurlInScript",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_7",
+                "bc_check_id": null,
+                "check_name": "The build output cannot be affected by user parameters other than the build entry point and the top-level source location. GitHub Actions workflow_dispatch inputs MUST be empty. ",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "push": {
+                            "branches": [
+                                "develop"
+                            ],
+                            "__startline__": 8,
+                            "__endline__": 9
+                        },
+                        "pull_request": {
+                            "branches": [
+                                "develop"
+                            ],
+                            "__startline__": 10,
+                            "__endline__": 12
+                        },
+                        "__startline__": 7,
+                        "__endline__": 12
+                    }
+                },
+                "code_block": [
+                    [
+                        7,
+                        "  push:\n"
+                    ],
+                    [
+                        8,
+                        "    branches: [ develop ]\n"
+                    ],
+                    [
+                        9,
+                        "  pull_request:\n"
+                    ],
+                    [
+                        10,
+                        "    branches: [ develop ]\n"
+                    ],
+                    [
+                        11,
+                        "\n"
+                    ],
+                    [
+                        12,
+                        "jobs:\n"
+                    ],
+                    [
+                        13,
+                        "  build:\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    7,
+                    13
+                ],
+                "resource": "on(Python application)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.EmptyWorkflowDispatch",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    ""
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_1",
+                "bc_check_id": null,
+                "check_name": "Ensure ACTIONS_ALLOW_UNSECURE_COMMANDS isn't true on environment variables",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "uses": "actions/checkout@v2",
+                        "__startline__": 18,
+                        "__endline__": 19
+                    }
+                },
+                "code_block": [
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    18,
+                    20
+                ],
+                "resource": "jobs(build).steps[1]",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.AllowUnsecureCommandsOnJob",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_1",
+                "bc_check_id": null,
+                "check_name": "Ensure ACTIONS_ALLOW_UNSECURE_COMMANDS isn't true on environment variables",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Set up Python 3.8",
+                        "uses": "actions/setup-python@v2",
+                        "with": {
+                            "python-version": "3.8",
+                            "__startline__": 22,
+                            "__endline__": 23
+                        },
+                        "__startline__": 19,
+                        "__endline__": 23
+                    }
+                },
+                "code_block": [
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    19,
+                    24
+                ],
+                "resource": "jobs(build).steps[2](Set up Python 3.8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.AllowUnsecureCommandsOnJob",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_1",
+                "bc_check_id": null,
+                "check_name": "Ensure ACTIONS_ALLOW_UNSECURE_COMMANDS isn't true on environment variables",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Install dependencies",
+                        "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                        "__startline__": 23,
+                        "__endline__": 28
+                    }
+                },
+                "code_block": [
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    23,
+                    29
+                ],
+                "resource": "jobs(build).steps[3](Install dependencies)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.AllowUnsecureCommandsOnJob",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_1",
+                "bc_check_id": null,
+                "check_name": "Ensure ACTIONS_ALLOW_UNSECURE_COMMANDS isn't true on environment variables",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Lint with flake8",
+                        "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                        "__startline__": 28,
+                        "__endline__": 34
+                    }
+                },
+                "code_block": [
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    28,
+                    35
+                ],
+                "resource": "jobs(build).steps[4](Lint with flake8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.AllowUnsecureCommandsOnJob",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_1",
+                "bc_check_id": null,
+                "check_name": "Ensure ACTIONS_ALLOW_UNSECURE_COMMANDS isn't true on environment variables",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Test with pytest",
+                        "run": "pytest -v -m unit\n",
+                        "__startline__": 34,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    34,
+                    38
+                ],
+                "resource": "jobs(build).steps[5](Test with pytest)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.AllowUnsecureCommandsOnJob",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_4",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of netcat with IP address",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "uses": "actions/checkout@v2",
+                        "__startline__": 18,
+                        "__endline__": 19
+                    }
+                },
+                "code_block": [
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    18,
+                    20
+                ],
+                "resource": "jobs(build).steps[1]",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ReverseShellNetcat",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_4",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of netcat with IP address",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Set up Python 3.8",
+                        "uses": "actions/setup-python@v2",
+                        "with": {
+                            "python-version": "3.8",
+                            "__startline__": 22,
+                            "__endline__": 23
+                        },
+                        "__startline__": 19,
+                        "__endline__": 23
+                    }
+                },
+                "code_block": [
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    19,
+                    24
+                ],
+                "resource": "jobs(build).steps[2](Set up Python 3.8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ReverseShellNetcat",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_4",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of netcat with IP address",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Install dependencies",
+                        "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                        "__startline__": 23,
+                        "__endline__": 28
+                    }
+                },
+                "code_block": [
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    23,
+                    29
+                ],
+                "resource": "jobs(build).steps[3](Install dependencies)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ReverseShellNetcat",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_4",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of netcat with IP address",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Lint with flake8",
+                        "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                        "__startline__": 28,
+                        "__endline__": 34
+                    }
+                },
+                "code_block": [
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    28,
+                    35
+                ],
+                "resource": "jobs(build).steps[4](Lint with flake8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ReverseShellNetcat",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_4",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of netcat with IP address",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Test with pytest",
+                        "run": "pytest -v -m unit\n",
+                        "__startline__": 34,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    34,
+                    38
+                ],
+                "resource": "jobs(build).steps[5](Test with pytest)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ReverseShellNetcat",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_2",
+                "bc_check_id": null,
+                "check_name": "Ensure run commands are not vulnerable to shell injection",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "uses": "actions/checkout@v2",
+                        "__startline__": 18,
+                        "__endline__": 19
+                    }
+                },
+                "code_block": [
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    18,
+                    20
+                ],
+                "resource": "jobs(build).steps[1]",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ShellInjection",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_2",
+                "bc_check_id": null,
+                "check_name": "Ensure run commands are not vulnerable to shell injection",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Set up Python 3.8",
+                        "uses": "actions/setup-python@v2",
+                        "with": {
+                            "python-version": "3.8",
+                            "__startline__": 22,
+                            "__endline__": 23
+                        },
+                        "__startline__": 19,
+                        "__endline__": 23
+                    }
+                },
+                "code_block": [
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    19,
+                    24
+                ],
+                "resource": "jobs(build).steps[2](Set up Python 3.8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ShellInjection",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_2",
+                "bc_check_id": null,
+                "check_name": "Ensure run commands are not vulnerable to shell injection",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Install dependencies",
+                        "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                        "__startline__": 23,
+                        "__endline__": 28
+                    }
+                },
+                "code_block": [
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    23,
+                    29
+                ],
+                "resource": "jobs(build).steps[3](Install dependencies)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ShellInjection",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_2",
+                "bc_check_id": null,
+                "check_name": "Ensure run commands are not vulnerable to shell injection",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Lint with flake8",
+                        "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                        "__startline__": 28,
+                        "__endline__": 34
+                    }
+                },
+                "code_block": [
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    28,
+                    35
+                ],
+                "resource": "jobs(build).steps[4](Lint with flake8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ShellInjection",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_2",
+                "bc_check_id": null,
+                "check_name": "Ensure run commands are not vulnerable to shell injection",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Test with pytest",
+                        "run": "pytest -v -m unit\n",
+                        "__startline__": 34,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    34,
+                    38
+                ],
+                "resource": "jobs(build).steps[5](Test with pytest)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.ShellInjection",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_3",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of curl with secrets",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "uses": "actions/checkout@v2",
+                        "__startline__": 18,
+                        "__endline__": 19
+                    }
+                },
+                "code_block": [
+                    [
+                        18,
+                        "      - uses: actions/checkout@v2\n"
+                    ],
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    18,
+                    20
+                ],
+                "resource": "jobs(build).steps[1]",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.SuspectCurlInScript",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_3",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of curl with secrets",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Set up Python 3.8",
+                        "uses": "actions/setup-python@v2",
+                        "with": {
+                            "python-version": "3.8",
+                            "__startline__": 22,
+                            "__endline__": 23
+                        },
+                        "__startline__": 19,
+                        "__endline__": 23
+                    }
+                },
+                "code_block": [
+                    [
+                        19,
+                        "      - name: Set up Python 3.8\n"
+                    ],
+                    [
+                        20,
+                        "        uses: actions/setup-python@v2\n"
+                    ],
+                    [
+                        21,
+                        "        with:\n"
+                    ],
+                    [
+                        22,
+                        "          python-version: \"3.8\"\n"
+                    ],
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    19,
+                    24
+                ],
+                "resource": "jobs(build).steps[2](Set up Python 3.8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.SuspectCurlInScript",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_3",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of curl with secrets",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Install dependencies",
+                        "run": "python -m pip install --upgrade pip\npip install flake8 pytest\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
+                        "__startline__": 23,
+                        "__endline__": 28
+                    }
+                },
+                "code_block": [
+                    [
+                        23,
+                        "      - name: Install dependencies\n"
+                    ],
+                    [
+                        24,
+                        "        run: |\n"
+                    ],
+                    [
+                        25,
+                        "          python -m pip install --upgrade pip\n"
+                    ],
+                    [
+                        26,
+                        "          pip install flake8 pytest\n"
+                    ],
+                    [
+                        27,
+                        "          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
+                    ],
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    23,
+                    29
+                ],
+                "resource": "jobs(build).steps[3](Install dependencies)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.SuspectCurlInScript",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_3",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of curl with secrets",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Lint with flake8",
+                        "run": "# stop the build if there are Python syntax errors or undefined names\nflake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\nflake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n",
+                        "__startline__": 28,
+                        "__endline__": 34
+                    }
+                },
+                "code_block": [
+                    [
+                        28,
+                        "      - name: Lint with flake8\n"
+                    ],
+                    [
+                        29,
+                        "        run: |\n"
+                    ],
+                    [
+                        30,
+                        "          # stop the build if there are Python syntax errors or undefined names\n"
+                    ],
+                    [
+                        31,
+                        "          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics\n"
+                    ],
+                    [
+                        32,
+                        "          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide\n"
+                    ],
+                    [
+                        33,
+                        "          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics\n"
+                    ],
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    28,
+                    35
+                ],
+                "resource": "jobs(build).steps[4](Lint with flake8)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.SuspectCurlInScript",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            },
+            {
+                "check_id": "CKV_GHA_3",
+                "bc_check_id": null,
+                "check_name": "Suspicious use of curl with secrets",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Test with pytest",
+                        "run": "pytest -v -m unit\n",
+                        "__startline__": 34,
+                        "__endline__": 37
+                    }
+                },
+                "code_block": [
+                    [
+                        34,
+                        "      - name: Test with pytest\n"
+                    ],
+                    [
+                        35,
+                        "        run: |\n"
+                    ],
+                    [
+                        36,
+                        "          pytest -v -m unit\n"
+                    ]
+                ],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    34,
+                    38
+                ],
+                "resource": "jobs(build).steps[5](Test with pytest)",
+                "evaluations": null,
+                "check_class": "checkov.github_actions.checks.job.SuspectCurlInScript",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    "build"
+                ],
+                "workflow_name": "Python application"
+            }
+        ],
+        "failed_checks": [
+            {
+                "check_id": "CKV2_GHA_1",
+                "bc_check_id": null,
+                "check_name": "Ensure top-level permissions are not set to write-all",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "permissions"
+                    ]
+                },
+                "code_block": [],
+                "file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_abs_path": "/tmp/ws-scm/seeq-correlation/.github/workflows/python-app-unit-test.yml",
+                "repo_file_path": "/.github/workflows/python-app-unit-test.yml",
+                "file_line_range": [
+                    0,
+                    1
+                ],
+                "resource": "on(Python application)",
+                "evaluations": null,
+                "check_class": "checkov.common.graph.checks_infra.base_check",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null,
+                "triggers": [
+                    [
+                        "push",
+                        "pull_request"
+                    ]
+                ],
+                "job": [
+                    ""
+                ],
+                "workflow_name": "Python application"
+            }
+        ],
+        "skipped_checks": [],
+        "parsing_errors": []
+    },
+    "summary": {
+        "passed": 27,
+        "failed": 1,
+        "skipped": 0,
+        "parsing_errors": 0,
+        "resource_count": 0,
+        "checkov_version": "3.2.174"
+    },
+    "url": "Add an api key '--bc-api-key <api-key>' to see more detailed insights via https://bridgecrew.cloud"
+}
