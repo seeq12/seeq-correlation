@@ -1,0 +1,148 @@
+{	
+	"formulaPackage": {
+		"name": "CrossCorrelations",
+		"creatorName": "Alberto Rivas",
+		"creatorContactInfo": "applied.research@seeq.com"
+	},
+	"functions": [
+		{
+			"id": "f253c5ca-6eed-43e0-993e-5696ecd441ea",
+			"name": "correlationCoefficient",			
+			"description": "<p>Calculates the rolling window Pearson's correlation coefficients between two signals.\nOne correlation coefficient is calculated for the data contained within each <code>window</code> of time.\nThe <code>period</code> dictates the step the <code>window</code> is moved (or rolled) for the next\ncoefficient calculation.</p>",
+			"formula": "$condition = periods($window, $period)\n$s1 = $signal1.setUnits('')\n$s2 = $signal2.setUnits('')\n// intermediate calculations\n$s1_sq = $s1^2\n$s2_sq = $s2^2\n$s1s2_product = ($s1 * $s2)\n$N = $s1.aggregate(count(), $condition, middleKey(), 0h)\n// Pearson's coefficient\n$numerator = $N * $s1s2_product.aggregate(sum(), $condition, middleKey(), 0h) - $s1.aggregate(sum(), $condition,\nmiddleKey(), 0h) * $s2.aggregate(sum(), $condition, middleKey(), 0h)\n$denominator = sqrt(($N * $s1_sq.aggregate(sum(), $condition, middleKey(), 0h) - ($s1.aggregate(sum(), $condition,\nmiddleKey(), 0h))^2) * ($N * $s2_sq.aggregate(sum(), $condition, middleKey(), 0h) - ($s2.aggregate(sum(),\n$condition, middleKey(), 0h))^2))\n($numerator / $denominator).aggregate(average(), $condition, middleKey())",
+			"type": "UserDefinedFormulaFunction",
+			"parameters": [
+				{
+					"unbound": true,
+					"name": "signal1",
+					"formula": "1.toSignal()"
+				},
+				{
+					"unbound": true,
+					"name": "signal2",
+					"formula": "1.toSignal()"
+				},
+				{
+					"unbound": true,
+					"name": "window",
+					"formula": "1h"
+				},
+				{
+					"unbound": true,
+					"name": "period",
+					"formula": "1h"
+				}
+			]
+		},
+		{
+			"id": "d32366ff-b9f0-494f-8c8e-cced58386968",
+			"name": "correlationCoefficientWithTimeShifts",			
+			"description": "<p>Calculates the rolling window maximum Pearson's correlation coefficients between two sliding signals. \nFor each <code>window</code>, the time shift that maximizes the cross-correlation between the two \nsignals is determined first. Then, the samples inside the window are time shifted \n(the <code>goal</code> signal is kept fixed and the other <code>window</code> is shifted). Finally, \nthe maximum correlation coefficient coefficient for the <code>window</code> is calculated and its value \nbecomes one sample of the output signal. The process repeats after rolling the window a given \n<code>period</code>.</p> \n<p>This formula uses the <sq-link href=\"/formulas/docs/Seeq/correlationOffset\"> \n<a href=\"\" ng-click=\"$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)\" \nng-transclude=\"\">correlationOffset() </a></sq-link> formula to calculate the time shifts for each window. \nSee <sq-link href=\"/formulas/docs/Seeq/correlationOffset\"> \n<a href=\"\" ng-click=\"$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)\" \nng-transclude=\"\">correlationOffset() </a></sq-link> \nfor more information on the <code>maxOffset</code> and <code>correlation_threshold</code> parameters</p> \n<p><i>Note: The <strong>correlationCoefficientWithTimeShifts</strong> assumes the <code>minOffset</code> in \n<sq-link href=\"/formulas/docs/Seeq/correlationOffset\"> \n<a href=\"\" ng-click=\"$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)\" \nng-transclude=\"\">correlationOffset() </a></sq-link> to be equal to <code>-maxOffset</code>.</i></p>",
+			"formula": "$s1_o = $signal.setUnits('')\n$s2 = $goal.setUnits('')\n\n$Wind = periods($window, $period)\n$Wind.tosamples( $cap -> {\n// get the time shift to maximize cross-correlation\n$time_shift = $signal.correlationOffset($goal, group($cap), -$maxOffset , $maxOffset, $correlation_threshold)\n// shift the signal\n$s1 = $s1_o.move($time_shift)\n$s1_sq = $s1^2\n$s2_sq = $s2^2\n$s1s2_product = ($s1 * $s2)\n$N = $s1.count($cap)\n// Pearson's coefficient\n$numerator = $N * $s1s2_product.sum($cap) - $s1.sum($cap) * $s2.sum($cap)\n$denominator = sqrt(($N * $s1_sq.sum($cap) - ($s1.sum($cap))^2) * ($N * $s2_sq.sum($cap) - ($s2.sum($cap))^2))\n$pearson = ($numerator / $denominator)\nsample($cap.middleKey(),$pearson)},$window)",
+			"type": "UserDefinedFormulaFunction",
+			"parameters": [
+				{
+					"unbound": true,
+					"name": "signal",
+					"formula": "1.toSignal()"
+				},
+				{
+					"unbound": true,
+					"name": "goal",
+					"formula": "1.toSignal()"
+				},
+				{
+					"unbound": true,
+					"name": "window",
+					"formula": "1h"
+				},
+				{
+					"unbound": true,
+					"name": "period",
+					"formula": "1h"
+				},
+				{
+					"unbound": true,
+					"name": "correlation_threshold",
+					"formula": "1"
+				},
+				{
+					"unbound": true,
+					"name": "maxOffset",
+					"formula": "1h"
+				}
+			]
+		},
+		{
+			"id": "3ff61fcb-bfb2-45e0-b5e5-586c7858ca17",
+			"name": "timeShifts",			
+			"description": "<p>Calculates the rolling window \n<sq-link href=\"/formulas/docs/Seeq/correlationOffset\"> \n<a href=\"\" ng-click=\"$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)\" \nng-transclude=\"\">correlationOffset() </a></sq-link> between <code>signal</code> and <code>goal</code> \nThat is, the time shift that maximizes the cross-correlation between the two signals is determined for \neach <code>window</code> using the <sq-link href=\"/formulas/docs/Seeq/correlationOffset\"> \n<a href=\"\" ng-click=\"$ctrl.sqPowerSearch.requestDocumentation($ctrl.href)\" \nng-transclude=\"\">correlationOffset() \n</a></sq-link> formula. The process repeats after rolling the window a given <code>period</code>.</p>",
+			"formula": "$Wind = periods($window, $period)\n$Wind.tosamples( $cap -> {\n$value = $signal.correlationOffset($goal,group($cap), -$maxOffset, $maxOffset, $correlation_threshold)\nsample($cap.middleKey(),$value)},$window)",
+			"type": "UserDefinedFormulaFunction",
+			"parameters": [
+				{
+					"unbound": true,
+					"name": "signal",
+					"formula": "1.toSignal()"
+				},
+				{
+					"unbound": true,
+					"name": "goal",
+					"formula": "1.toSignal()"
+				},
+				{
+					"unbound": true,
+					"name": "window",
+					"formula": "1h"
+				},
+				{
+					"unbound": true,
+					"name": "period",
+					"formula": "1h"
+				},
+				{
+					"unbound": true,
+					"name": "correlation_threshold",
+					"formula": "1"
+				},
+				{
+					"unbound": true,
+					"name": "maxOffset",
+					"formula": "1h"
+				}
+			]
+		}
+	],
+	"docs": [
+		{
+			"name": "index",
+			"description": "Computes the cross-correlations between two signals and allows signals to time shift to maximize the \ncross-correlation",
+			"title": "Cross Correlation Formula Package",
+			"examples": {
+				"examples": [
+					{
+						"description": "Calculate the Pearson's correlation coefficients between <code>$signal1</code> and \n<code>$signal2</code> during a 24 hour interval and move the window every 6 hours",
+						"formula": "CrossCorrelations_correlationCoefficient($signal1, $signal2, 24h, 6h)"
+					},
+					{
+						"description": "Calculate the maximum Pearson's correlation coefficients between <code>$signal</code> \nand <code>$goal</code> in 24 h intervals that step every 6 hours, if <code>$signal</code>\n is allowed to shift in time with respect to <code>$goal</code>",
+						"formula": "CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)"
+					},
+					{
+						"description": "Calculate the dynamic time shifts to maximize cross-correlation between <code>$signal</code>\n and <code>$goal</code> in 24 h intervals  every 6 hours, if <code>$signal</code> is allowed\nto shift in time with respect to <code>$goal</code>",
+						"formula": "CrossCorrelations_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)"
+					}
+				]
+			},
+			"searchKeywords": {
+				"keywords": [
+					"cross-correlation",
+					"correlation",
+					"Pearson",
+					"offset",
+					"time shifts"
+				]
+			}			
+		}
+	]
+}

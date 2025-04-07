@@ -94,6 +94,9 @@ if args.addon:
         directory = pathlib.Path("./additional_content/")
         for file in directory.iterdir():
             z.write(file)
+        directory = pathlib.Path("./correlation_formulas/")
+        for file in directory.iterdir():
+            z.write(file)
         addon_manager_artifacts.append(addon)
     # Build addonmeta
     print(f'Creating {name}.addonmeta')
@@ -101,6 +104,9 @@ if args.addon:
         with z.open("addon.json", "w") as c:
             c.write(json.dumps(parsed_json, indent=2).encode("utf-8"))
         directory = pathlib.Path("./additional_content/")
+        for file in directory.iterdir():
+            z.write(file)
+        directory = pathlib.Path("./correlation_formulas/")
         for file in directory.iterdir():
             z.write(file)
         addon_manager_artifacts.append(addon_meta)
