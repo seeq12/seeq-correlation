@@ -92,7 +92,7 @@
       }
     },
     {
-      "name": "CrossCorrelations",
+      "name": "CrossCorrelationAddOn",
       "identifier": "com.seeq.addon.correlation.formulapackage",
       "type": "FormulaPackage",
       "path": "correlation_formulas"

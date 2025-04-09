@@ -106,9 +106,6 @@ if args.addon:
         directory = pathlib.Path("./additional_content/")
         for file in directory.iterdir():
             z.write(file)
-        directory = pathlib.Path("./correlation_formulas/")
-        for file in directory.iterdir():
-            z.write(file)
         addon_manager_artifacts.append(addon_meta)
 
     print('Successfully created.')

@@ -77,7 +77,7 @@ formulas_info = [
              sdk.FormulaDocExampleInputV1(
                  description="Calculate the Pearson's correlation coefficients between <code>$signal1</code> and "
                              "<code>$signal2</code> during a 24 hour interval and move the window every 6 hours",
-                 formula='CrossCorrelations_correlationCoefficient($signal1, $signal2, 24h, 6h)')
+                 formula='CrossCorrelationAddOn_correlationCoefficient($signal1, $signal2, 24h, 6h)')
          ]
          ),
     dict(function_name='correlationCoefficientWithTimeShifts',
@@ -109,7 +109,7 @@ formulas_info = [
                  description="Calculate the maximum Pearson's correlation coefficients between <code>$signal</code> "
                              "and <code>$goal</code> in 24 h intervals that step every 6 hours, if <code>$signal</code>"
                              " is allowed to shift in time with respect to <code>$goal</code>",
-                 formula='CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)')
+                 formula='CrossCorrelationAddOn_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)')
          ],
          ),
     dict(function_name='timeShifts',
@@ -137,7 +137,7 @@ formulas_info = [
                      to shift in time with respect to <code>$goal</code>
                      """
                  ),
-                 formula='CrossCorrelations_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)')
+                 formula='CrossCorrelationAddOn_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)')
          ],
          )
 ]
@@ -160,7 +160,7 @@ def correlation_udfs(api_client):
     package.id: str
         The ID of the Seeq UDF package
     """
-    package_name = 'CrossCorrelations'
+    package_name = 'CrossCorrelationAddOn'
     creator_name = 'Alberto Rivas'
     creator_contact_info = 'applied.research@seeq.com'
     formulas_api = sdk.FormulasApi(api_client)
@@ -237,7 +237,7 @@ def signals_from_formula(signal1_id, signal_ref_id, workbook_id, formula_type=No
             f"""
             $window = {kwargs['window']}
             $period = {kwargs['period']}
-            CrossCorrelations_correlationCoefficient($signal, $goal, $window, $period)
+            CrossCorrelationAddOn_correlationCoefficient($signal, $goal, $window, $period)
         """
         )
         signal_name_prefix = f"Correlation Coefficient:"
@@ -251,7 +251,7 @@ def signals_from_formula(signal1_id, signal_ref_id, workbook_id, formula_type=No
             $correlation_threshold = {kwargs['corr_threshold']}
             $max_time_shift = {kwargs['max_time_shift']}
             $time_unit = '{kwargs['output_time_unit']}'
-            CrossCorrelations_timeShifts($signal, $goal, $window, $period, $correlation_threshold, 
+            CrossCorrelationAddOn_timeShifts($signal, $goal, $window, $period, $correlation_threshold, 
             $max_time_shift).convertUnits($time_unit)
         """
         )
@@ -264,7 +264,7 @@ def signals_from_formula(signal1_id, signal_ref_id, workbook_id, formula_type=No
             $period = {kwargs['period']}
             $correlation_threshold = {kwargs['corr_threshold']}
             $max_time_shift = {kwargs['max_time_shift']}
-            CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, $window, $period, $correlation_threshold, 
+            CrossCorrelationAddOn_correlationCoefficientWithTimeShifts($signal, $goal, $window, $period, $correlation_threshold, 
             $max_time_shift)
         """
         )
@@ -308,7 +308,7 @@ def create_udfs(api_client, *, permissions_groups: list = None, permissions_user
 
     permissions_groups = permissions_groups if permissions_groups else DEFAULT_GROUP
     permissions_users = permissions_users if permissions_users else DEFAULT_USERS
-    print("\n\nCreating CrossCorrelation UDFs...")
+    print("\n\nCreating CrossCorrelationAddOn UDFs...")
     user_groups_api = sdk.UserGroupsApi(api_client)
     users_api = sdk.UsersApi(spy.client)
     items_api = sdk.ItemsApi(api_client)

@@ -1,8 +1,8 @@
 {	
 	"formulaPackage": {
-		"name": "CrossCorrelations",
-		"creatorName": "Alberto Rivas",
-		"creatorContactInfo": "applied.research@seeq.com"
+		"name": "CrossCorrelationAddOn",
+		"creatorName": "Seeq Corporation",
+		"creatorContactInfo": "support@seeq.com"
 	},
 	"functions": [
 		{
@@ -122,15 +122,15 @@
 				"examples": [
 					{
 						"description": "Calculate the Pearson's correlation coefficients between <code>$signal1</code> and \n<code>$signal2</code> during a 24 hour interval and move the window every 6 hours",
-						"formula": "CrossCorrelations_correlationCoefficient($signal1, $signal2, 24h, 6h)"
+						"formula": "CrossCorrelationAddOn_correlationCoefficient($signal1, $signal2, 24h, 6h)"
 					},
 					{
 						"description": "Calculate the maximum Pearson's correlation coefficients between <code>$signal</code> \nand <code>$goal</code> in 24 h intervals that step every 6 hours, if <code>$signal</code>\n is allowed to shift in time with respect to <code>$goal</code>",
-						"formula": "CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)"
+						"formula": "CrossCorrelationAddOn_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)"
 					},
 					{
 						"description": "Calculate the dynamic time shifts to maximize cross-correlation between <code>$signal</code>\n and <code>$goal</code> in 24 h intervals  every 6 hours, if <code>$signal</code> is allowed\nto shift in time with respect to <code>$goal</code>",
-						"formula": "CrossCorrelations_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)"
+						"formula": "CrossCorrelationAddOn_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)"
 					}
 				]
 			},
