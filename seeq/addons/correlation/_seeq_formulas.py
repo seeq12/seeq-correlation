@@ -1,6 +1,8 @@
 import textwrap
 from seeq import sdk, spy
 from seeq.sdk.rest import ApiException
+
+from . import _version
 from .utils import check_udf_package, get_user_group, get_user, DEFAULT_USERS, DEFAULT_GROUP
 
 pearson_formula = textwrap.dedent(
@@ -64,6 +66,7 @@ maxtimeshift_input = sdk.FormulaParameterInputV1(name='maxOffset', formula='1h',
 
 formulas_info = [
     dict(function_name='correlationCoefficient',
+         data_id="f253c5ca-6eed-43e0-993e-5696ecd441ea", # Must match the IDs in formula_package.json
          formula=pearson_formula,
          args=[signal_input1, signal_input2, window_input, period_input],
          description=textwrap.dedent(
@@ -81,6 +84,7 @@ formulas_info = [
          ]
          ),
     dict(function_name='correlationCoefficientWithTimeShifts',
+         data_id="d32366ff-b9f0-494f-8c8e-cced58386968",
          formula=pearson_timeshifted_formula,
          args=[signal_input, goal_input, window_input, period_input, corr_thrs_input, maxtimeshift_input],
          description=textwrap.dedent(
@@ -113,6 +117,7 @@ formulas_info = [
          ],
          ),
     dict(function_name='timeShifts',
+         data_id="3ff61fcb-bfb2-45e0-b5e5-586c7858ca17",
          formula=time_shifts_formula,
          args=[signal_input, goal_input, window_input, period_input, corr_thrs_input, maxtimeshift_input],
          description=textwrap.dedent(
@@ -161,39 +166,56 @@ def correlation_udfs(api_client):
         The ID of the Seeq UDF package
     """
     package_name = 'CrossCorrelationAddOn'
-    creator_name = 'Alberto Rivas'
-    creator_contact_info = 'applied.research@seeq.com'
+    creator_name = 'Seeq Corporation'
+    creator_contact_info = 'support@seeq.com'
+    version = _version.__version__
     formulas_api = sdk.FormulasApi(api_client)
     found = check_udf_package(package_name, api_client)
     if found:
         print(f"Overwriting CrossCorrelation package")
         formulas_api.delete_package(package_name=package_name)
 
-    # Create the Formula Package
-    package_input = sdk.FormulaPackageInputV1(creator_name=creator_name, creator_contact_info=creator_contact_info)
-    package_output = formulas_api.put_package(package_name=package_name, body=package_input)
+    # Define the Formula Package
+    import_input = sdk.FormulaPackageImportInputV1()
+    import_input.formula_package = sdk.FormulaPackageInputV1(name=package_name,
+                                                             creator_name=creator_name,
+                                                             creator_contact_info=creator_contact_info,
+                                                             version_string=version)
 
-    # Create the individual formulas
+    # Define the individual formulas
+    import_input.functions = list()
     for formula in formulas_info:
         print(f"Creating formula {formula['function_name']}")
-        create_udf_formulas(formulas_api, package_name, formula['function_name'], formula['formula'], *formula['args'])
+        udf_input = create_udf_formulas(package_name, formula['function_name'],
+                                        formula['data_id'], formula['formula'], *formula['args'])
+        import_input.functions.append(udf_input)
 
-    # Create the formula docs
-    formula_pkg_docs(package_name, formulas_api)
+    # Define the formula docs for the top-level and for each function
+    import_input.docs = list()
+    pkg_doc_input = formula_pkg_doc(package_name)
+    import_input.docs.append(pkg_doc_input)
+    for formula in formulas_info:
+        formula_doc_input = formula_doc(formula['function_name'], formula['description'],
+                                        sdk.FormulaDocExampleListInputV1(examples=formula['examples']))
+        import_input.docs.append(formula_doc_input)
 
-    return package_output.id
+    # Actually create everything
+    package_output = formulas_api.import_package(body=import_input)
+
+    return package_output.formula_package.id
 
 
-def create_udf_formulas(formulas_api, pkg_name, function_name, formula, *args):
+def create_udf_formulas(pkg_name, function_name, data_id, formula, *args):
     udf_input = sdk.FunctionInputV1(package_name=pkg_name,
                                     name=function_name,
+                                    data_id=data_id,
                                     type='UserDefinedFormulaFunction',
                                     formula=formula,
                                     parameters=list(args))
-    formulas_api.create_function(body=udf_input)
+    return udf_input
 
 
-def formula_pkg_docs(package_name, formulas_api: sdk.FormulasApi):
+def formula_pkg_doc(package_name):
     # Create formula docs
     index_title = 'Cross Correlation'
     index_description = textwrap.dedent(
@@ -202,29 +224,20 @@ def formula_pkg_docs(package_name, formulas_api: sdk.FormulasApi):
         cross-correlation
         """)
     index_doc_input = sdk.FormulaDocInputV1(
+        name='index',
         title=index_title,
         description=index_description,
         search_keywords=sdk.FormulaDocKeywordListInputV1(keywords=[
             'cross-correlation', 'correlation', 'Pearson', 'offset', 'time shifts']))
-    formulas_api.put_formula_doc(
-        package_name=package_name,
-        doc_name='index',
-        body=index_doc_input)
-
-    # Create the docs for each formula
-    for formula in formulas_info:
-        formula_docs(package_name, formula['function_name'], formula['description'],
-                     sdk.FormulaDocExampleListInputV1(examples=formula['examples']), formulas_api)
+    return index_doc_input
 
 
-def formula_docs(pkg_name, function_name, description, examples: sdk.FormulaDocExampleListInputV1,
-                 formulas_api: sdk.FormulasApi):
+def formula_doc(function_name, description, examples: sdk.FormulaDocExampleListInputV1):
     # Examples are the best way to demonstrate using the UDF.
-    doc_input = sdk.FormulaDocInputV1(description=description,
+    doc_input = sdk.FormulaDocInputV1(name=function_name,
+                                      description=description,
                                       examples=examples)
-    formulas_api.put_formula_doc(package_name=pkg_name,
-                                 doc_name=function_name,
-                                 body=doc_input)
+    return doc_input
 
 
 def signals_from_formula(signal1_id, signal_ref_id, workbook_id, formula_type=None, output_signal_name=None,
@@ -310,7 +323,7 @@ def create_udfs(api_client, *, permissions_groups: list = None, permissions_user
     permissions_users = permissions_users if permissions_users else DEFAULT_USERS
     print("\n\nCreating CrossCorrelationAddOn UDFs...")
     user_groups_api = sdk.UserGroupsApi(api_client)
-    users_api = sdk.UsersApi(spy.client)
+    users_api = sdk.UsersApi(api_client)
     items_api = sdk.ItemsApi(api_client)
     pkg_id = correlation_udfs(api_client)
 
