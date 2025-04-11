@@ -98,10 +98,8 @@ def get_seeq_url():
     return None
 
 def check_udf_package(name="CrossCorrelationAddOn", api_client=None):
-    if api_client:
-        formulas_api = sdk.FormulasApi(api_client)
-    else:
-        formulas_api = sdk.FormulasApi(spy.client)
+    client = api_client if api_client else spy.client
+    formulas_api = sdk.FormulasApi(client)
     try:
         formulas_api.get_package(package_name=name)
         return True
