@@ -46,7 +46,7 @@ Correlation is included in the default list of available Add-ons. Simply search 
 and click "Install".
 
 ## Manual Installation
-If you want to install **seeq-correlation** manually or Add-on Manager is not availible, you can do so by 
+If you want to install **seeq-correlation** manually or Add-on Manager is not available, you can do so by 
 following the steps below.
 
 ### Dependencies
