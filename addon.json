@@ -9,17 +9,25 @@
   "tags": {
     "documentation": "Documentation website here https://seeq12.github.io/seeq-correlation/introduction.html"
   },
-  "previews": ["additional_content/LargeMatrixExample.png"],
+  "previews": [
+    "additional_content/LargeMatrixExample.png"
+  ],
   "elements": [
     {
       "name": "Correlation Analysis",
       "description": "Determine cross correlations and time shifts to maximize correlations among signals",
       "identifier": "com.seeq.addon.correlation.correlation",
-      "known_aliases": ["Correlation"],
+      "known_aliases": [
+        "Correlation"
+      ],
       "type": "AddOnTool",
       "path": "data-lab-functions",
       "notebook_file_path": "correlation_analysis_master.ipynb",
-      "extensions": ["ipyvuetify", "widgetsnbextension", "ipyvue"],
+      "extensions": [
+        "ipyvuetify",
+        "widgetsnbextension",
+        "ipyvue"
+      ],
       "configuration_schema": {
         "type": "object",
         "properties": {
@@ -31,7 +39,11 @@
                 "default": "fa fa-th"
               },
               "linkType": {
-                "enum": ["window", "tab", "none"],
+                "enum": [
+                  "window",
+                  "tab",
+                  "none"
+                ],
                 "default": "window"
               },
               "sortKey": {
@@ -73,8 +85,17 @@
             ]
           }
         },
-        "required": ["display", "advanced_project_configuration"]
+        "required": [
+          "display",
+          "advanced_project_configuration"
+        ]
       }
+    },
+    {
+      "name": "CrossCorrelationAddOn",
+      "identifier": "com.seeq.addon.correlation.formulapackage",
+      "type": "FormulaPackage",
+      "path": "correlation_formulas"
     }
   ]
 }

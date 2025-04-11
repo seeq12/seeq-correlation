@@ -113,8 +113,8 @@ def delete_correlation_udfs():
     r = formulas_api.get_packages()
     package_exists = False
     for item in r.items:
-        if item.name == 'CrossCorrelations':
+        if item.name == 'CrossCorrelationAddOn':
             package_exists = True
             break
     if package_exists:
-        formulas_api.delete_package(package_name='CrossCorrelations')
+        formulas_api.delete_package(package_name='CrossCorrelationAddOn')

@@ -38,7 +38,7 @@ def test_create_worksheet():
 @pytest.mark.integration
 def test_create_correlation_udf_package():
     test_common.delete_correlation_udfs()
-    print("\n\nCreating CrossCorrelation UDFs...")
+    print("\n\nCreating CrossCorrelationAddOn UDFs...")
     pkg_id = correlation.correlation_udfs(spy.client)
     print(f"DONE. Created UDF package with id: {pkg_id}")
 

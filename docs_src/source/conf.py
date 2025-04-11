@@ -21,7 +21,7 @@ from seeq.addons import correlation
 
 project = 'seeq-correlation'
 copyright = '2021, Seeq Corporation'
-author = 'Alberto Rivas'
+author = 'Seeq Corporation'
 
 # The full version, including alpha/beta/rc tags
 version = correlation.__version__
