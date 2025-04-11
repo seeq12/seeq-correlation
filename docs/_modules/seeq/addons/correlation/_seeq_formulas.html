@@ -152,7 +152,7 @@
              <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleInputV1</span><span class="p">(</span>
                  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Calculate the Pearson&#39;s correlation coefficients between &lt;code&gt;$signal1&lt;/code&gt; and &quot;</span>
                              <span class="s2">&quot;&lt;code&gt;$signal2&lt;/code&gt; during a 24 hour interval and move the window every 6 hours&quot;</span><span class="p">,</span>
-                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelations_correlationCoefficient($signal1, $signal2, 24h, 6h)&#39;</span><span class="p">)</span>
+                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelationAddOn_correlationCoefficient($signal1, $signal2, 24h, 6h)&#39;</span><span class="p">)</span>
          <span class="p">]</span>
          <span class="p">),</span>
     <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;correlationCoefficientWithTimeShifts&#39;</span><span class="p">,</span>
@@ -184,7 +184,7 @@
                  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Calculate the maximum Pearson&#39;s correlation coefficients between &lt;code&gt;$signal&lt;/code&gt; &quot;</span>
                              <span class="s2">&quot;and &lt;code&gt;$goal&lt;/code&gt; in 24 h intervals that step every 6 hours, if &lt;code&gt;$signal&lt;/code&gt;&quot;</span>
                              <span class="s2">&quot; is allowed to shift in time with respect to &lt;code&gt;$goal&lt;/code&gt;&quot;</span><span class="p">,</span>
-                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)&#39;</span><span class="p">)</span>
+                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelationAddOn_correlationCoefficientWithTimeShifts($signal, $goal, 24h, 6h, 0.8, 2h)&#39;</span><span class="p">)</span>
          <span class="p">],</span>
          <span class="p">),</span>
     <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;timeShifts&#39;</span><span class="p">,</span>
@@ -212,7 +212,7 @@
 <span class="sd">                     to shift in time with respect to &lt;code&gt;$goal&lt;/code&gt;</span>
 <span class="sd">                     &quot;&quot;&quot;</span>
                  <span class="p">),</span>
-                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelations_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)&#39;</span><span class="p">)</span>
+                 <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;CrossCorrelationAddOn_timeShifts($signal, $goal, 24h, 6h, 0.8, 2h)&#39;</span><span class="p">)</span>
          <span class="p">],</span>
          <span class="p">)</span>
 <span class="p">]</span>
@@ -235,9 +235,9 @@
 <span class="sd">    package.id: str</span>
 <span class="sd">        The ID of the Seeq UDF package</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">package_name</span> <span class="o">=</span> <span class="s1">&#39;CrossCorrelations&#39;</span>
-    <span class="n">creator_name</span> <span class="o">=</span> <span class="s1">&#39;Alberto Rivas&#39;</span>
-    <span class="n">creator_contact_info</span> <span class="o">=</span> <span class="s1">&#39;applied.research@seeq.com&#39;</span>
+    <span class="n">package_name</span> <span class="o">=</span> <span class="s1">&#39;CrossCorrelationAddOn&#39;</span>
+    <span class="n">creator_name</span> <span class="o">=</span> <span class="s1">&#39;Seeq Corporation&#39;</span>
+    <span class="n">creator_contact_info</span> <span class="o">=</span> <span class="s1">&#39;support@seeq.com&#39;</span>
     <span class="n">formulas_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">pkg</span> <span class="o">=</span> <span class="n">formulas_api</span><span class="o">.</span><span class="n">get_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">)</span>
@@ -318,7 +318,7 @@
             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            $window = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span>
-<span class="s2">            CrossCorrelations_correlationCoefficient($signal, $goal, $window, $period)</span>
+<span class="s2">            CrossCorrelationAddOn_correlationCoefficient($signal, $goal, $window, $period)</span>
 <span class="s2">        &quot;&quot;&quot;</span>
         <span class="p">)</span>
         <span class="n">signal_name_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Correlation Coefficient:&quot;</span>
@@ -332,7 +332,7 @@
 <span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            $time_unit = &#39;</span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;output_time_unit&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;</span>
-<span class="s2">            CrossCorrelations_timeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
+<span class="s2">            CrossCorrelationAddOn_timeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
 <span class="s2">            $max_time_shift).convertUnits($time_unit)</span>
 <span class="s2">        &quot;&quot;&quot;</span>
         <span class="p">)</span>
@@ -345,7 +345,7 @@
 <span class="s2">            $period = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            $correlation_threshold = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;corr_threshold&#39;</span><span class="p">]</span><span class="si">}</span>
 <span class="s2">            $max_time_shift = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_time_shift&#39;</span><span class="p">]</span><span class="si">}</span>
-<span class="s2">            CrossCorrelations_correlationCoefficientWithTimeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
+<span class="s2">            CrossCorrelationAddOn_correlationCoefficientWithTimeShifts($signal, $goal, $window, $period, $correlation_threshold, </span>
 <span class="s2">            $max_time_shift)</span>
 <span class="s2">        &quot;&quot;&quot;</span>
         <span class="p">)</span>

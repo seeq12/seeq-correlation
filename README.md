@@ -41,15 +41,23 @@ section [Use Cases](https://seeq12.github.io/seeq-correlation/examples.html).
 
 # Installation
 
-The backend of **seeq-correlation** requires **Python 3.7** or later.
+The easiest way to install **seeq-correlation** is to use Add-on Manager from Seeq Workbench. 
+Correlation is included in the default list of available Add-ons. Simply search for "Correlation" in the manager
+and click "Install".
 
-## Dependencies
+## Manual Installation
+If you want to install **seeq-correlation** manually or Add-on Manager is not available, you can do so by 
+following the steps below.
+
+### Dependencies
+
+The backend of **seeq-correlation** requires **Python 3.7** or later.
 
 See [`requirements.txt`](https://github.com/seeq12/seeq-correlation/tree/master/requirements.txt) file for a list of
 dependencies and versions. Additionally, you will need to install the `seeq` module with the appropriate version that
 matches your Seeq server. For more information on the `seeq` module see [seeq at pypi](https://pypi.org/project/seeq/)
 
-## User Installation Requirements (Seeq Data Lab)
+### User Installation Requirements (Seeq Data Lab)
 
 If you want to install **seeq-correlation** as a Seeq Add-on Tool, you will need:
 
@@ -58,7 +66,7 @@ If you want to install **seeq-correlation** as a Seeq Add-on Tool, you will need
 - Seeq administrator access
 - Enable Add-on Tools in the Seeq server
 
-## User Installation (Seeq Data Lab)
+### User Installation (Seeq Data Lab)
 
 The latest build of the project can be found [here](https://pypi.org/project/seeq-correlation/) as a wheel file. The
 file is published as a courtesy to the user, and it does not imply any obligation for support from the publisher.

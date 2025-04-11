@@ -6,7 +6,6 @@
 /bin
 /seeq_causality.egg-info
 /.spyproject
-.idea
 .ptest_cache
 *.pyc
 *.egg-info
@@ -99,3 +98,5 @@ Generated\ Files/
 
 # credential files
 *.key
+
+/.venv/
