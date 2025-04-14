@@ -23,11 +23,7 @@
       "type": "AddOnTool",
       "path": "data-lab-functions",
       "notebook_file_path": "correlation_analysis_master.ipynb",
-      "extensions": [
-        "ipyvuetify",
-        "widgetsnbextension",
-        "ipyvue"
-      ],
+      "extensions": [],
       "configuration_schema": {
         "type": "object",
         "properties": {
@@ -77,7 +73,7 @@
             "properties": {
               "kernel_name": {
                 "type": "string",
-                "default": "python38"
+                "default": "python311"
               }
             },
             "required": [
