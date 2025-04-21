@@ -50,7 +50,8 @@ setup_args = dict(
         'plotly>=4.5.0',
         'python-dateutil>=2.8.1',
         'scikit-learn>=0.22.1',
-        'seaborn>=0.10.0'
+        'seaborn>=0.10.0',
+        'anywidget'
     ],
     classifiers=[
         "Programming Language :: Python :: 3.7",
