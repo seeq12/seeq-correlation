@@ -47,11 +47,10 @@ setup_args = dict(
         'memoization>=0.2.2',
         'numpy>=1.19.5',
         'pandas>=2.0.0',
-        'plotly>=4.5.0',
+        'plotly==5.24.1',
         'python-dateutil>=2.8.1',
         'scikit-learn>=0.22.1',
-        'seaborn>=0.10.0',
-        'anywidget'
+        'seaborn>=0.10.0'
     ],
     classifiers=[
         "Programming Language :: Python :: 3.7",
