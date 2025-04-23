@@ -17,7 +17,6 @@ scikit-learn>=1.0.1
 scipy==1.6.1
 seaborn==0.11.1
 seeq
-anywidget
 sphinx==4.2.0
 sphinx-rtd-theme==1.0.0
 statsmodels==0.12.2
