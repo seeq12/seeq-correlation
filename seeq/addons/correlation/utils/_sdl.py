@@ -24,7 +24,7 @@ def pull_only_signals(url, grid='auto'):
         A dataframe with signal data of the worksheet
 
     """
-    worksheet = spy.utils.get_analysis_worksheet_from_url(url)
+    worksheet = spy.utils.pull_worksheet_via_url(url, quiet=True)
     start = worksheet.display_range['Start']
     end = worksheet.display_range['End']
     status = spy.Status(quiet=True)
