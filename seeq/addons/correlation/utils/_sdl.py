@@ -29,12 +29,12 @@ def pull_only_signals(url, grid='auto'):
     end = worksheet.display_range['End']
     status = spy.Status(quiet=True)
 
-    search_df = spy.search(url, estimate_sample_period=worksheet.display_range, status=status)
+    search_df = spy.search(url, estimate_sample_period=worksheet.display_range, status=status, quiet=True)
     if search_df.empty:
         return pd.DataFrame()
     search_signals_df = search_df[search_df['Type'].str.contains('Signal')]
 
-    df = spy.pull(search_signals_df, start=start, end=end, grid=grid, header='ID', status=status)
+    df = spy.pull(search_signals_df, start=start, end=end, grid=grid, header='ID', status=status, quiet=True)
     if df.empty:
         return pd.DataFrame()
 
