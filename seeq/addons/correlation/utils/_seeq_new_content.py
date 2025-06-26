@@ -1,8 +1,3 @@
-import time
-import json
-import string
-import traceback
-
 import pandas as pd
 
 from seeq import spy, sdk
@@ -30,11 +25,8 @@ def get_workbook_and_worksheet(workbook_id, worksheet_id=None, **kwargs):
         spy.workbooks.Analysis, spy.workbooks.Worksheet if worksheet_id is
         specified
     """
-    # quiet by default
-    if 'quiet' not in kwargs:
-        kwargs['quiet'] = True
 
-    search = spy.workbooks.search({'ID': workbook_id}, all_properties=True, **kwargs)
+    search = spy.workbooks.search({'ID': workbook_id}, all_properties=True, quiet=True, **kwargs)
 
     if search.empty:
         raise RuntimeError(f'Could not find the workbook with Seeq ID "{workbook_id}". ')
@@ -44,7 +36,7 @@ def get_workbook_and_worksheet(workbook_id, worksheet_id=None, **kwargs):
         wb = spy.workbooks.pull(search, specific_worksheet_ids=specific_worksheet_ids,
                                 include_referenced_workbooks=False, include_annotations=False,
                                 include_images=False, include_inventory=False,
-                                include_rendered_content=False, **kwargs)[0]
+                                include_rendered_content=False, quiet=True, **kwargs)[0]
     except Exception as e:
         raise SPyRuntimeError(str(e))
 

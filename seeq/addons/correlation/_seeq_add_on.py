@@ -72,7 +72,7 @@ class CorrelationHeatmap:
                 sdl_notebook_url)
             self.worksheet_url = get_worksheet_url(sdl_notebook_url)
             self.df = pull_only_signals(self.worksheet_url)
-            self.worksheet = spy.utils.get_analysis_worksheet_from_url(self.worksheet_url)
+            self.worksheet = spy.utils.pull_worksheet_via_url(self.worksheet_url, quiet=True)
             clear_output()
             self.info_message = ''
             self.info_style = ''
