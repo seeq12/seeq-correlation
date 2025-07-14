@@ -14,7 +14,7 @@ pytest==6.2.4
 pytest-xdist==2.2.1
 python-dateutil>=2.8.1
 scikit-learn>=1.0.1
-scipy==1.6.1
+scipy>=1.6.1
 seaborn==0.11.1
 seeq
 sphinx==4.2.0
