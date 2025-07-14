@@ -3,7 +3,7 @@ ipython
 ipyvuetify==1.6.2
 ipywidgets==7.6.3
 jupyter>=1.1.0
-matplotlib==3.3.4
+matplotlib>=3.3.4
 memoization==0.3.2
 myst-parser~=0.15.2
 numpy>=1.21
