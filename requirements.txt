@@ -25,3 +25,4 @@ tzlocal==2.1
 twine~=3.4.1
 wheel
 dohq-artifactory==0.8.1
+pillow>=11.3.0
