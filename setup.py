@@ -2,6 +2,8 @@
 import re
 from parver import Version, ParseError
 import setuptools
+import pathlib
+import tomllib
 
 # Use the following command from a terminal window to generate the whl with source code
 # python setup.py bdist_wheel
@@ -26,6 +28,21 @@ with open("seeq/addons/correlation/_version.py", "r+") as f:
         print(str(e))
         raise
 
+def read_requirements():
+    toml_path = pathlib.Path(__file__).with_name("pyproject.toml")
+    with toml_path.open("rb") as f:
+        data = tomllib.load(f)
+    deps = data["tool"]["poetry"]["dependencies"]
+    reqs = []
+    for pkg, spec in deps.items():
+        if pkg.lower() == "python":
+            continue
+        if isinstance(spec, str):
+            reqs.append(f"{pkg}{'' if spec == '*' else spec}")
+        elif isinstance(spec, dict) and "version" in spec:
+            reqs.append(f"{pkg}{spec['version']}")
+    return reqs
+
 setup_args = dict(
     name='seeq-correlation',
     version=version_scope['__version__'],
@@ -40,18 +57,7 @@ setup_args = dict(
     packages=setuptools.find_namespace_packages(include=[namespace]),
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        'dask>=2021.10.0',
-        'ipyvuetify>=1.5.1',
-        'matplotlib>=3.1.3',
-        'memoization>=0.2.2',
-        'numpy>=1.19.5',
-        'pandas>=2.0.0',
-        'plotly==5.24.1',
-        'python-dateutil>=2.8.1',
-        'scikit-learn>=0.22.1',
-        'seaborn>=0.10.0'
-    ],
+    install_requires=read_requirements(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: Apache Software License",
