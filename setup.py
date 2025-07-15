@@ -28,19 +28,12 @@ with open("seeq/addons/correlation/_version.py", "r+") as f:
         print(str(e))
         raise
 
-def read_requirements():
+def read_toml_requirements():
     toml_path = pathlib.Path(__file__).with_name("pyproject.toml")
     with toml_path.open("rb") as f:
         data = tomllib.load(f)
-    deps = data["tool"]["poetry"]["dependencies"]
-    reqs = []
-    for pkg, spec in deps.items():
-        if pkg.lower() == "python":
-            continue
-        if isinstance(spec, str):
-            reqs.append(f"{pkg}{'' if spec == '*' else spec}")
-        elif isinstance(spec, dict) and "version" in spec:
-            reqs.append(f"{pkg}{spec['version']}")
+    # For uv style .toml
+    reqs = data["project"]["dependencies"]
     return reqs
 
 setup_args = dict(
@@ -57,7 +50,7 @@ setup_args = dict(
     packages=setuptools.find_namespace_packages(include=[namespace]),
     include_package_data=True,
     zip_safe=False,
-    install_requires=read_requirements(),
+    install_requires=read_toml_requirements(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: Apache Software License",
