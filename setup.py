@@ -32,9 +32,7 @@ def read_toml_requirements():
     toml_path = pathlib.Path(__file__).with_name("pyproject.toml")
     with toml_path.open("rb") as f:
         data = tomllib.load(f)
-    # For uv style .toml
-    reqs = data["project"]["dependencies"]
-    return reqs
+    return data["project"]["dependencies"]
 
 setup_args = dict(
     name='seeq-correlation',
