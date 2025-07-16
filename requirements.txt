@@ -1,7 +1,7 @@
 dask>=2021.10.0
 ipython
-ipyvuetify==1.6.2
-ipywidgets==7.6.3
+ipyvuetify>=1.6.2
+ipywidgets>=7.6.3
 jupyter>=1.1.0
 matplotlib>=3.3.4
 memoization==0.3.2
@@ -25,5 +25,4 @@ traitlets>=5.1.1
 tzlocal==2.1
 twine~=3.4.1
 wheel>=0.38.0
-dohq-artifactory==0.8.1
 pillow>=11.3.0
