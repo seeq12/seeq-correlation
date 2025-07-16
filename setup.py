@@ -2,8 +2,6 @@
 import re
 from parver import Version, ParseError
 import setuptools
-import pathlib
-import tomllib
 
 # Use the following command from a terminal window to generate the whl with source code
 # python setup.py bdist_wheel
@@ -27,12 +25,6 @@ with open("seeq/addons/correlation/_version.py", "r+") as f:
     except ParseError as e:
         print(str(e))
         raise
-
-def read_toml_requirements():
-    toml_path = pathlib.Path(__file__).with_name("pyproject.toml")
-    with toml_path.open("rb") as f:
-        data = tomllib.load(f)
-    return data["project"]["dependencies"]
 
 setup_args = dict(
     name='seeq-correlation',
