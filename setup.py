@@ -39,7 +39,6 @@ setup_args = dict(
     version=version_scope['__version__'],
     author="Seeq Corporation",
     author_email="applied.research@seeq.com",
-    license='Apache License 2.0',
     platforms=["Linux", "Windows"],
     description="Correlation analysis of time series data in Seeq",
     long_description=long_description,
@@ -48,7 +47,6 @@ setup_args = dict(
     packages=setuptools.find_namespace_packages(include=[namespace]),
     include_package_data=True,
     zip_safe=False,
-    install_requires=read_toml_requirements(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: Apache Software License",

@@ -2,26 +2,25 @@
 name = "seeq-correlation"
 version = "0.3.4"
 description = "Correlation analysis of time series data in Seeq"
-authors = [{ name = "Seeq Corporation" }]
+authors = [{ name = "Seeq Corporation", email = "applied.research@seeq.com" }]
 readme = "README.md"
-license = { text = "Apache License 2.0" }
-classifiers=[
-    "Programming Language :: Python :: 3.7",
-    "License :: OSI Approved :: Apache Software License",
-    "Operating System :: OS Independent",
-]
+license = "Apache-2.0"
 requires-python = ">=3.7,<4.0"
+classifiers = [
+    "Programming Language :: Python :: 3.7",
+    "Operating System :: OS Independent"
+]
 dependencies = [
-    'dask>=2021.10.0',
-    'ipyvuetify>=1.5.1',
-    'matplotlib>=3.1.3',
-    'memoization>=0.2.2',
-    'numpy>=1.19.5',
-    'pandas>=2.0.0',
-    'plotly==5.24.1',
-    'python-dateutil>=2.8.1',
-    'scikit-learn>=0.22.1',
-    'seaborn>=0.10.0'
+    "dask>=2021.10.0",
+    "ipyvuetify>=1.5.1",
+    "matplotlib>=3.1.3",
+    "memoization>=0.2.2",
+    "numpy>=1.19.5",
+    "pandas>=2.0.0",
+    "plotly==5.24.1",
+    "python-dateutil>=2.8.1",
+    "scikit-learn>=0.22.1",
+    "seaborn>=0.10.0"
 ]
 
 [project.optional-dependencies]
@@ -45,6 +44,14 @@ dev = [
     "wheel",
     "dohq-artifactory==0.8.1"
 ]
+
+[tool.setuptools.packages.find]
+include = ["seeq.*"]
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+platforms = ["Linux", "Windows"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
