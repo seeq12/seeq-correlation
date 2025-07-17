@@ -42,11 +42,17 @@ dev = [
     "tzlocal==2.1",
     "twine~=3.4.1",
     "wheel",
-    "dohq-artifactory==0.8.1"
+    "dohq-artifactory==0.8.1",
+    "setuptools>=80.9.0",
+    "build==1.2.2"
 ]
 
 [tool.setuptools.packages.find]
 include = ["seeq.*"]
+
+[project.urls]
+Homepage = "https://github.com/seeq12/seeq-correlation"
+Source = "https://github.com/seeq12/seeq-correlation"
 
 [tool.setuptools]
 zip-safe = false
@@ -54,5 +60,5 @@ include-package-data = true
 platforms = ["Linux", "Windows"]
 
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=80.9.0"]
 build-backend = "setuptools.build_meta"

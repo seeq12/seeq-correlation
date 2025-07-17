@@ -53,7 +53,7 @@ following the steps below.
 
 The backend of **seeq-correlation** requires **Python 3.7** or later.
 
-See [`requirements.txt`](https://github.com/seeq12/seeq-correlation/tree/master/requirements.txt) file for a list of
+See [`pyproject.toml`](https://github.com/seeq12/seeq-correlation/tree/master/pyproject.toml) file for a list of
 dependencies and versions. Additionally, you will need to install the `seeq` module with the appropriate version that
 matches your Seeq server. For more information on the `seeq` module see [seeq at pypi](https://pypi.org/project/seeq/)
 
@@ -104,7 +104,7 @@ look [here](https://docs.python.org/3.8/tutorial/venv.html)
 Once your virtual environment is activated, you can install **seeq-correlation** from source with:
 
 ```shell
-python setup.py install
+python addon.py -a
 ```
 
 ## Testing
