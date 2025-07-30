@@ -51,7 +51,7 @@ following the steps below.
 
 ### Dependencies
 
-The backend of **seeq-correlation** requires **Python 3.7** or later.
+The backend of **seeq-correlation** requires **Python 3.11** or later.
 
 See [`pyproject.toml`](https://github.com/seeq12/seeq-correlation/tree/master/pyproject.toml) file for a list of
 dependencies and versions. Additionally, you will need to install the `seeq` module with the appropriate version that
@@ -97,14 +97,26 @@ git clone git@github.com:seeq12/seeq-correlation.git
 
 ## Installation from source
 
-For development work, it is highly recommended creating a python virtual environment and install the package in that
+For development work, it is highly recommended creating a python virtual environment and installing the package in that
 working environment. If you are not familiar with python virtual environments, you can take a
-look [here](https://docs.python.org/3.8/tutorial/venv.html)
+look [here](https://docs.python.org/3.8/tutorial/venv.html).
 
-Once your virtual environment is activated, you can install **seeq-correlation** from source with:
+Once your virtual environment is activated, you must install the project dependencies. For example, if using a `uv`
+virtual environment, you can install the dependencies with:
+```shell    
+uv pip install ".[dev]"
+```
+
+After installing the dependencies, you can build the `.whl`, `.addon`, and `.addonmeta` for **seeq-correlation** from source with:
 
 ```shell
-python addon.py -a
+python addon.py
+```
+
+**Note:** If you do not have `build` installed, installing **seeq-correlation** will fail. You may need to install it in 
+your environment using:
+```shell
+pip install build
 ```
 
 ## Testing

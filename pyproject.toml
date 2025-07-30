@@ -1,6 +1,6 @@
 [project]
 name = "seeq-correlation"
-version = "0.3.4"
+version = "0.4.0"
 description = "Correlation analysis of time series data in Seeq"
 authors = [{ name = "Seeq Corporation" }]
 readme = "README.md"
@@ -17,7 +17,7 @@ dependencies = [
     "memoization==0.4.0",
     "numpy==2.3.2",
     "pandas==2.3.1",
-    "plotly==6.2.0",
+    "plotly==5.24.1",
     "python-dateutil==2.9.0.post0",
     "scikit-learn==1.7.1",
     "seaborn==0.13.2",
