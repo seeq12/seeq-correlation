@@ -2,53 +2,50 @@
 name = "seeq-correlation"
 version = "0.3.4"
 description = "Correlation analysis of time series data in Seeq"
-authors = [{ name = "Seeq Corporation", email = "applied.research@seeq.com" }]
+authors = [{ name = "Seeq Corporation" }]
 readme = "README.md"
 license = "Apache-2.0"
-requires-python = ">=3.7,<4.0"
+requires-python = ">=3.11"
 classifiers = [
-    "Programming Language :: Python :: 3.7",
-    "Operating System :: OS Independent"
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
 ]
 dependencies = [
-    "dask>=2021.10.0",
-    "ipyvuetify>=1.5.1",
-    "matplotlib>=3.1.3",
-    "memoization>=0.2.2",
-    "numpy>=1.19.5",
-    "pandas>=2.0.0",
-    "plotly==5.24.1",
-    "python-dateutil>=2.8.1",
-    "scikit-learn>=0.22.1",
-    "seaborn>=0.10.0"
+    "dask==2025.7.0",
+    "ipyvuetify==1.11.3",
+    "matplotlib==3.10.3",
+    "memoization==0.4.0",
+    "numpy==2.3.2",
+    "pandas==2.3.1",
+    "plotly==6.2.0",
+    "python-dateutil==2.9.0.post0",
+    "scikit-learn==1.7.1",
+    "seaborn==0.13.2",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "ipython",
-    "ipywidgets==7.6.3",
-    "jupyter>=1.1.0",
-    "myst-parser~=0.15.2",
-    "parver==0.3.1",
-    "pytest==6.2.4",
-    "pytest-xdist==2.2.1",
-    "scipy==1.6.1",
-    "seeq",
-    "sphinx==4.2.0",
-    "sphinx-rtd-theme==1.0.0",
-    "statsmodels==0.12.2",
-    "setuptools",
-    "traitlets==5.1.1",
-    "tzlocal==2.1",
-    "twine~=3.4.1",
-    "wheel",
-    "dohq-artifactory==0.8.1",
-    "setuptools>=80.9.0",
-    "build==1.2.2"
+    "ipython==9.4.0",
+    "ipywidgets==8.1.7",
+    "jupyter==1.1.1",
+    "myst-parser==4.0.1",
+    "parver==0.5",
+    "pytest==8.4.1",
+    "pytest-xdist==3.8.0",
+    "scipy==1.16.1",
+    "seeq==66.30.4.20250729",
+    "sphinx==8.2.3",
+    "sphinx-rtd-theme==3.0.2",
+    "statsmodels==0.14.5",
+    "setuptools==80.9.0",
+    "traitlets==5.14.3",
+    "tzlocal==5.3.1",
+    "twine==6.1.0",
+    "wheel==0.45.1",
+    "dohq-artifactory==1.0.1",
+    "setuptools==80.9.0",
+    "build==1.2.2.post1",
 ]
-
-[tool.setuptools.packages.find]
-include = ["seeq.*"]
 
 [project.urls]
 Homepage = "https://github.com/seeq12/seeq-correlation"
@@ -57,8 +54,18 @@ Source = "https://github.com/seeq12/seeq-correlation"
 [tool.setuptools]
 zip-safe = false
 include-package-data = true
-platforms = ["Linux", "Windows"]
+platforms = [
+    "Linux",
+    "Windows",
+]
+
+[tool.setuptools.packages.find]
+include = [
+    "seeq.*",
+]
 
 [build-system]
-requires = ["setuptools>=80.9.0"]
+requires = [
+    "setuptools>=80.9.0",
+]
 build-backend = "setuptools.build_meta"
