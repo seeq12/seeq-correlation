@@ -33,7 +33,7 @@ dev = [
     "pytest==8.4.1",
     "pytest-xdist==3.8.0",
     "scipy==1.16.1",
-    "seeq==66.30.4.20250729",
+    "seeq",
     "sphinx==8.2.3",
     "sphinx-rtd-theme==3.0.2",
     "statsmodels==0.14.5",
