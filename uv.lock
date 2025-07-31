@@ -2517,7 +2517,7 @@ wheels = [
 
 [[package]]
 name = "seeq-correlation"
-version = "0.3.4"
+version = "0.4.0"
 source = { editable = "." }
 dependencies = [
     { name = "dask" },
@@ -2577,7 +2577,7 @@ requires-dist = [
     { name = "scikit-learn", specifier = "==1.7.1" },
     { name = "scipy", marker = "extra == 'dev'", specifier = "==1.16.1" },
     { name = "seaborn", specifier = "==0.13.2" },
-    { name = "seeq", marker = "extra == 'dev'", specifier = "==66.30.4.20250729" },
+    { name = "seeq", marker = "extra == 'dev'" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = "==80.9.0" },
     { name = "sphinx", marker = "extra == 'dev'", specifier = "==8.2.3" },
     { name = "sphinx-rtd-theme", marker = "extra == 'dev'", specifier = "==3.0.2" },
