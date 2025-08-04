@@ -123,6 +123,9 @@ your environment using:
 pip install build
 ```
 
+**Updating lock file:** When dependencies in the `pyproject.toml` file are modified, run `uv lock` to update the
+`uv.lock` file.
+
 ## Testing
 
 There are several types of testing available for **seeq-correlation**
