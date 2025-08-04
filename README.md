@@ -107,17 +107,24 @@ virtual environment, you can install the dependencies with:
 uv pip install ".[dev]"
 ```
 
-After installing the dependencies, you can build the `.whl`, `.addon`, and `.addonmeta` for **seeq-correlation** from source with:
+After installing the dependencies, you can build the `.whl` for **seeq-correlation** using:
+```shell
+python -m build
+```
 
+You can build the `.addon`, and `.addonmeta` for **seeq-correlation** from source with:
 ```shell
 python addon.py
 ```
 
-**Note:** If you do not have `build` installed, installing **seeq-correlation** will fail. You may need to install it in 
+**Note:** If you do not have `build` installed, building **seeq-correlation** will fail. You may need to install it in 
 your environment using:
 ```shell
 pip install build
 ```
+
+**Updating lock file:** When dependencies in the `pyproject.toml` file are modified, run `uv lock` to update the
+`uv.lock` file.
 
 ## Testing
 
