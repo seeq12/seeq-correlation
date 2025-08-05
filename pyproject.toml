@@ -1,6 +1,6 @@
 [project]
 name = "seeq-correlation"
-version = "0.4.0"
+dynamic = ["version"]
 description = "Correlation analysis of time series data in Seeq"
 authors = [{ name = "Seeq Corporation" }]
 readme = "README.md"
@@ -59,6 +59,9 @@ platforms = [
     "Linux",
     "Windows",
 ]
+
+[tool.setuptools.dynamic]
+version = {attr = "seeq.addons.correlation._version.__version__"}
 
 [tool.setuptools.packages.find]
 include = [
