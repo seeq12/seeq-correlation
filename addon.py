@@ -26,7 +26,7 @@ version = source_wheel_name.split('-')[1]
 
 addon_manager_artifacts = []
 name = 'correlation'
-print(f'Creating {name}.addon')
+print(f'Creating {name}-{version}.addon')
 # Ensure output folder exists
 bin = os.path.join(os.getcwd(), 'bin')
 if not os.path.exists(bin):
@@ -56,7 +56,7 @@ with zipfile.ZipFile(addon, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel
         z.write(file)
     addon_manager_artifacts.append(addon)
 # Build addonmeta
-print(f'Creating {name}.addonmeta')
+print(f'Creating {name}-{version}.addonmeta')
 with zipfile.ZipFile(addon_meta, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
     with z.open("addon.json", "w") as c:
         c.write(json.dumps(parsed_json, indent=2).encode("utf-8"))
