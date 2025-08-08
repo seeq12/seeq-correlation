@@ -44,6 +44,8 @@ dev = [
     "dohq-artifactory==1.0.1",
     "setuptools==80.9.0",
     "build==1.2.2.post1",
+    "seeq",
+    "seeq-spy",
 ]
 
 [project.urls]
