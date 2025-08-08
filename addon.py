@@ -36,8 +36,8 @@ with open('addon.json') as json_file:
     parsed_json = json.load(json_file)
 parsed_json['version'] = version
 
-addon = os.path.join(bin, f'{name}.addon')
-addon_meta = os.path.join(bin, f'{name}.addonmeta')
+addon = os.path.join(bin, f'{name}-{version}.addon')
+addon_meta = os.path.join(bin, f'{name}-{version}.addonmeta')
 
 # Build addon
 with zipfile.ZipFile(addon, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
