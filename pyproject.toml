@@ -1,0 +1,74 @@
+[project]
+name = "seeq-correlation"
+dynamic = ["version"]
+description = "Correlation analysis of time series data in Seeq"
+authors = [{ name = "Seeq Corporation" }]
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "dask==2025.7.0",
+    "ipyvuetify==1.11.3",
+    "ipywidgets==8.1.7",
+    "matplotlib==3.10.3",
+    "memoization==0.4.0",
+    "numpy==2.3.2",
+    "pandas==2.3.1",
+    "plotly==5.24.1",
+    "pillow==11.3.0",
+    "python-dateutil==2.9.0.post0",
+    "scikit-learn==1.7.1",
+    "scipy==1.16.1",
+    "seaborn==0.13.2",
+    "seeq",
+    "statsmodels==0.14.5",
+    "traitlets==5.14.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "myst-parser==4.0.1",
+    "parver==0.5",
+    "pytest==8.4.1",
+    "pytest-xdist==3.8.0",
+    "sphinx==8.2.3",
+    "sphinx-rtd-theme==3.0.2",
+    "setuptools==80.9.0",
+    "tzlocal==5.3.1",
+    "twine==6.1.0",
+    "wheel==0.45.1",
+    "dohq-artifactory==1.0.1",
+    "build==1.2.2.post1",
+    "seeq",
+    "seeq-spy",
+]
+
+[project.urls]
+Homepage = "https://github.com/seeq12/seeq-correlation"
+Source = "https://github.com/seeq12/seeq-correlation"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+platforms = [
+    "Linux",
+    "Windows",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "seeq.addons.correlation._version.__version__"}
+
+[tool.setuptools.packages.find]
+include = [
+    "seeq.*",
+]
+
+[build-system]
+requires = [
+    "setuptools>=80.9.0",
+]
+build-backend = "setuptools.build_meta"
