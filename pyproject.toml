@@ -25,6 +25,8 @@ dependencies = [
     "scipy==1.16.1",
     "seaborn==0.13.2",
     "seeq",
+    "statsmodels==0.14.5",
+    "traitlets==5.14.3",
 ]
 
 [project.optional-dependencies]
@@ -35,14 +37,11 @@ dev = [
     "pytest-xdist==3.8.0",
     "sphinx==8.2.3",
     "sphinx-rtd-theme==3.0.2",
-    "statsmodels==0.14.5",
     "setuptools==80.9.0",
-    "traitlets==5.14.3",
     "tzlocal==5.3.1",
     "twine==6.1.0",
     "wheel==0.45.1",
     "dohq-artifactory==1.0.1",
-    "setuptools==80.9.0",
     "build==1.2.2.post1",
     "seeq",
     "seeq-spy",
