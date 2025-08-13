@@ -208,8 +208,10 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         cmap = 'RdBu'
     center = 0
 
-    # Figure
-    fig, ax = plt.subplots(figsize=(max(6, len(plot_df)*0.45), max(4, len(plot_df)*0.45)))
+    # Figure - fixed size calculation to prevent growth
+    num_signals = len(plot_df)
+    base_size = max(4, min(8, num_signals * 0.35))
+    fig, ax = plt.subplots(figsize=(base_size, base_size), facecolor='white')
 
     # Heatmap
     sns.heatmap(
@@ -247,4 +249,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         sel.annotation.get_bbox_patch().set(alpha=0.9)
 
     fig.tight_layout()
+
+    # Prevent automatic display
+    plt.ioff()
     return fig

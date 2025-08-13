@@ -392,12 +392,20 @@ class CorrelationHeatmap:
             self.graph.layout.height = min_size
 
     def create_displayed_fig(self, heatmap_fig):
-        # Close previous figure to free resources
+        # Close previous figure and output widget to free resources
+        if hasattr(self, '_mpl_out') and self._mpl_out is not None:
+            self._mpl_out.clear_output(wait=True)
+            self._mpl_out.close()
+
         if getattr(self, 'fig_widget', None) is not None:
             try:
                 plt.close(self.fig_widget)
             except Exception:
                 pass
+            self.fig_widget = None
+
+        # Clear all matplotlib figures to prevent accumulation
+        plt.close('all')
 
         if heatmap_fig is None:
             self.visualization.children = [v.Html(tag='div', children=[self.no_data_message])]
@@ -409,12 +417,37 @@ class CorrelationHeatmap:
         # Keep a ref and display it into the Output (DOMWidget) only
         self.fig_widget = heatmap_fig
         with self._mpl_out:
-            from IPython.display import clear_output, display
             clear_output(wait=True)
-            display(self.fig_widget)  # ipympl renders interactive canvas here only
+            # Force non-interactive display to prevent duplicate rendering
+            from matplotlib.backends.backend_agg import FigureCanvasAgg
+            heatmap_fig.canvas = FigureCanvasAgg(heatmap_fig)
+            display(self.fig_widget)
 
-        # Put the Output widget into the wrapper
-        self.visualization.children = [self._mpl_out]
+        # Put the Output widget into the wrapper with centering styles
+        centered_container = v.Html(
+            tag='div',
+            class_='d-flex justify-center align-center',
+            style_='width: 100%; padding: 20px;',
+            children=[self._mpl_out]
+        )
+        self.visualization.children = [centered_container]
+
+    def cleanup_visualization(self):
+        """Clean up matplotlib figures and widgets to prevent memory leaks"""
+        if hasattr(self, '_mpl_out') and self._mpl_out is not None:
+            self._mpl_out.clear_output(wait=True)
+            self._mpl_out.close()
+            self._mpl_out = None
+
+        if getattr(self, 'fig_widget', None) is not None:
+            try:
+                plt.close(self.fig_widget)
+            except Exception:
+                pass
+            self.fig_widget = None
+
+        # Clear any matplotlib figures to prevent accumulation
+        plt.close('all')
 
     def table_widget(self, df, time_shift_plot):
         if df.empty:
@@ -458,6 +491,10 @@ class CorrelationHeatmap:
         return boolean_df
 
     def update_display(self):
+        # Clean up previous visualizations first
+        if self.output_type_toggle.v_model == 0:
+            self.cleanup_visualization()
+
         # get output_values
         boolean_df = self.get_boolean_df()  # type: pd.DataFrame
         # noinspection PyArgumentList
