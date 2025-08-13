@@ -9,6 +9,13 @@ from ._config import _cache_max_items
 from . import default_preprocessing_wrapper
 from . import lags_coeffs
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+import mplcursors
+import base64
+from io import BytesIO
+
 
 def heatmap(df, max_time_shift='auto', output_values='coeffs', output_type='plot', time_output_unit='auto',
             bypass_preprocessing=False):
@@ -165,83 +172,79 @@ def rename_signals(signal_list, max_label_chars):
 
 
 @cached(max_size=_cache_max_items)
-def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str, lags_plot=False, boolean_df=None,
-                  max_label_chars=30):
+def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str,
+                  lags_plot=False, boolean_df=None, max_label_chars=30):
     primary_df = pickle.loads(primary_df_serialized)
     secondary_df = pickle.loads(secondary_df_serialized)
     if primary_df.empty:
-        return go.Figure()
+        return None
 
-    signal_list = list(primary_df.columns)
-    new_names = rename_signals(signal_list, max_label_chars)
+    # Names
+    new_names = rename_signals(list(primary_df.columns), max_label_chars)
 
-    if boolean_df is not None and isinstance(boolean_df, pd.DataFrame):
-        primary_array = primary_df[boolean_df].values
+    # Primary for colors
+    if isinstance(boolean_df, pd.DataFrame):
+        plot_df = primary_df[boolean_df].copy()
+        primary_array = plot_df.values
     else:
-        primary_array = primary_df.values
+        plot_df = primary_df.copy()
+        primary_array = plot_df.values
+    plot_df.index = new_names
+    plot_df.columns = new_names
 
-    x = signal_list
-    x_names = new_names
-    y = signal_list[::-1]
-    y_names = new_names[::-1]
-    z = np.flipud(primary_array)
-    p_label = np.flipud(primary_df.values)
-    s_label = np.flipud(secondary_df.values)
+    # Secondary for tooltips
+    sec = secondary_df.loc[primary_df.index, primary_df.columns]
+    secondary_plot_df = (sec[boolean_df].copy() if isinstance(boolean_df, pd.DataFrame) else sec.copy())
+    secondary_plot_df.index = new_names
+    secondary_plot_df.columns = new_names
+
+    # Visuals
     if lags_plot:
         flat = primary_array.flatten()
-        limit = max(np.nanmax(flat), np.abs(np.nanmin(flat)))
-        title = "Time (" + time_unit + ")"
+        limit = max(np.nanmax(flat), abs(np.nanmin(flat)))
+        cmap = 'RdBu'
     else:
         limit = 1.0
-        title = 'Correlation Coefficient'
+        cmap = 'RdBu'
+    center = 0
 
-    hovertext = list()
-    for yi, yy in enumerate(y):
-        hovertext.append(list())
-        for xi, xx in enumerate(x):
-            if lags_plot:
-                hovertext[-1].append(
-                    f'Shifted signal: {xx}<br>'
-                    f'Signal: {yy} <br>'
-                    f'<b>Time shifted ({time_unit}): {p_label[yi][xi]:.1f}</b> '
-                    f'<br>Coefficient: {s_label[yi][xi]:.2f}')
+    # Figure
+    fig, ax = plt.subplots(figsize=(max(6, len(plot_df)*0.45), max(4, len(plot_df)*0.45)))
 
-            else:
-                hovertext[-1].append(
-                    f'Shifted signal: {xx}<br>Signal: {yy} <br><b>Coefficient: {p_label[yi][xi]:.2f}</b> '
-                    f'<br>Time shifted ({time_unit}): {s_label[yi][xi]:.1f}')
+    # Heatmap
+    sns.heatmap(
+        plot_df, annot=False, fmt='.2f', cmap=cmap, center=center,
+        vmin=-limit, vmax=limit, square=True, linewidths=0.5,
+        cbar_kws={"shrink": 0.8}, ax=ax
+    )
 
-    colorscale = [[0.0, '#992542'],
-                  [0.111, '#C00000'],
-                  [0.222, '#FF0000'],
-                  [0.333, '#f77e7e'],
-                  [0.444, '#ffd1d1'],
-                  [0.5, '#D3D3D3'],
-                  [0.666, '#9cbbd1'],
-                  [0.777, '#6c9ec1'],
-                  [0.888, '#4791c6'],
-                  [0.999, '#1f7fc4'],
-                  [1.0, '#0070C0']]
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
 
-    # create the raw corr heatmap
-    data = go.Heatmap(z=z,
-                      # needs to be flipped in order for diagonal to have correct orientation in plotly
-                      x=x_names, y=y_names,
-                      hoverinfo='text',
-                      text=hovertext,
-                      colorscale=colorscale, colorbar=dict(title=title), zmin=-limit, zmax=limit, name=''
-                      )
+    # Hover tooltips
+    quadmesh = ax.collections[0]
+    cursor = mplcursors.cursor(quadmesh, hover=True)
 
-    fig = go.Figure(data=data)
-    fig.layout.paper_bgcolor = 'rgba(0,0,0,0)'
-    fig.layout.plot_bgcolor = 'rgba(0,0,0,0)'
-    fig.layout.dragmode = "select"
-    fig.layout.modebar = {
-        'bgcolor': 'rgba(0, 0, 0, 0)',
-        'color': 'rgba(221, 221, 221, 1)',
-        'activecolor': 'rgba(0, 121, 96, 1)'
-        }
-    # this ensures a square plot
-    fig.layout.xaxis = {'constrain': 'domain', 'scaleanchor': 'y'}
-    fig.layout.yaxis = {'constrain': 'domain'}
+    def _fmt_num(x, d): return "NA" if pd.isna(x) else f"{x:.{d}f}"
+
+    @cursor.connect("add")
+    def _on_add(sel):
+        ncols = plot_df.shape[1]
+        r, c = divmod(sel.index, ncols)
+        row_label, col_label = plot_df.index[r], plot_df.columns[c]
+        primary_val = plot_df.iloc[r, c]
+        secondary_val = secondary_plot_df.iloc[r, c]
+        if lags_plot:
+            text = (f"Shifted signal: {row_label}\n"
+                    f"Signal: {col_label}\n"
+                    f"Time shifted ({time_unit}): {_fmt_num(primary_val,1)}\n"
+                    f"Coefficient: {_fmt_num(secondary_val,2)}")
+        else:
+            text = (f"Shifted signal: {row_label}\n"
+                    f"Signal: {col_label}\n"
+                    f"Coefficient: {_fmt_num(primary_val,2)}\n"
+                    f"Time shifted ({time_unit}): {_fmt_num(secondary_val,1)}")
+        sel.annotation.set_text(text)
+        sel.annotation.get_bbox_patch().set(alpha=0.9)
+
+    fig.tight_layout()
     return fig

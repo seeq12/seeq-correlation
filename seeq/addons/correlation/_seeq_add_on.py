@@ -15,6 +15,11 @@ from seeq.addons.correlation._config import _user_guide, _github_issues
 from . import default_preprocessing_wrapper
 from . import _heatmap_plot, lags_coeffs, worksheet_with_lagged_signals, worksheet_corrs_and_time_shifts
 
+import matplotlib
+import matplotlib.pyplot as plt
+import ipywidgets as widgets
+from IPython.display import HTML, display, clear_output, Javascript
+
 warnings.filterwarnings('ignore')
 
 
@@ -109,11 +114,12 @@ class CorrelationHeatmap:
         self.current_df = self.df_processed.copy()
         self.current_signals = list(self.current_df.columns)
         self.coeffs_time_shifts_calc(self.max_time_str, self.time_output_unit)
+        plt.ioff()
         correlation_fig = _heatmap_plot(pickle.dumps(self.coeffs_df), pickle.dumps(self.time_shifts_df),
                                         time_unit=self.time_unit, lags_plot=False)
 
-        self.graph = go.FigureWidget()
-        self.create_displayed_fig(correlation_fig)
+        self.graph = None
+        self.fig_widget = None
 
         # App layout
         self.hamburger_menu = HamburgerMenu()
@@ -283,12 +289,15 @@ class CorrelationHeatmap:
                                          self.plot_table_container, self.filters_container, self.button_box,
                                          self.save_dialog, self.signals_created])
 
-        # Visualization container
-        self.visualization = v.Html(tag='div', id='plotly-heatmap',
-                                    # class_='d-flex flex-row justify-center align-center',
-                                    style_=f"background-color: {self.colors['visualization_background']};"
-                                           f"border:2px solid {self.colors['controls_background']};",
-                                    children=[self.graph])
+        # Visualization container (wrapper that will hold the live canvas or table/spinner)
+        self.visualization = v.Html(
+            tag='div', id='matplotlib-heatmap',
+            style_=f"background-color: {self.colors['visualization_background']};"
+                   f"border:2px solid {self.colors['controls_background']};",
+            children=[]
+        )
+        self.create_displayed_fig(correlation_fig)
+
 
         self.progress = v.Html(tag='div', style_=f"height: 200px;",
                                class_='d-flex flex-row justify-center align-center',
@@ -383,15 +392,29 @@ class CorrelationHeatmap:
             self.graph.layout.height = min_size
 
     def create_displayed_fig(self, heatmap_fig):
-        # First, clear previous plots
-        self.graph = go.FigureWidget()
-        self.graph.data = []
-        if len(heatmap_fig.data) == 0:
-            self.graph = self.no_data_message
+        # Close previous figure to free resources
+        if getattr(self, 'fig_widget', None) is not None:
+            try:
+                plt.close(self.fig_widget)
+            except Exception:
+                pass
+
+        if heatmap_fig is None:
+            self.visualization.children = [v.Html(tag='div', children=[self.no_data_message])]
             return
-        self.graph.add_trace(heatmap_fig.data[0])
-        self.graph.layout = heatmap_fig.layout
-        self.resize_plot()
+
+        # Make a fresh Output widget each render to avoid lingering content
+        self._mpl_out = widgets.Output()
+
+        # Keep a ref and display it into the Output (DOMWidget) only
+        self.fig_widget = heatmap_fig
+        with self._mpl_out:
+            from IPython.display import clear_output, display
+            clear_output(wait=True)
+            display(self.fig_widget)  # ipympl renders interactive canvas here only
+
+        # Put the Output widget into the wrapper
+        self.visualization.children = [self._mpl_out]
 
     def table_widget(self, df, time_shift_plot):
         if df.empty:
@@ -469,7 +492,6 @@ class CorrelationHeatmap:
             heatmap_fig = _heatmap_plot(pickle.dumps(primary_df), pickle.dumps(secondary_df),
                                         time_unit=self.time_unit, lags_plot=time_shift_plot, boolean_df=boolean_df)
             self.create_displayed_fig(heatmap_fig)
-            self.visualization.children = [self.graph]
         if self.output_type_toggle.v_model == 1:
             # let's try to keep the same signal order as in the heatmap
             signals_ordered = [x for x in primary_df.columns if x in table_df.columns]
@@ -614,6 +636,15 @@ class CorrelationHeatmap:
         self.signals_created.v_model = False
 
     def run(self):
+        # Configure interactive Matplotlib backend so hover works
+        try:
+            import ipympl
+            matplotlib.use("module://ipympl.backend_nbagg")
+        except Exception:
+            matplotlib.use("nbagg")
+        # Keep interactive mode OFF to avoid duplicate auto-renders
+        plt.ioff()
+
         # noinspection PyTypeChecker
         display(HTML("<style>.container { width:100% !important; }</style>"))
         display(HTML(self.additional_styles))
