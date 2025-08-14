@@ -265,13 +265,40 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     cell_w_pct = ax_width_pct  / cols
     cell_h_pct = ax_height_pct / rows
 
+    # Convert a time-shift value (in 'time_unit') to minutes for the tooltip
+    def _to_minutes(val, unit):
+        u = (unit or "").lower()
+        factors = {
+            "s": 1/60, "sec": 1/60, "secs": 1/60, "second": 1/60, "seconds": 1/60,
+            "m": 1, "min": 1, "mins": 1, "minute": 1, "minutes": 1,
+            "h": 60, "hr": 60, "hrs": 60, "hour": 60, "hours": 60,
+            "d": 1440, "day": 1440, "days": 1440,
+            "y": 525600, "yr": 525600, "yrs": 525600, "year": 525600, "years": 525600,
+        }
+        # Default to minutes if unit is unknown
+        return float(val) * factors.get(u, 1.0)
+
     # Build tooltip overlays
     overlays_html = []
     for i in range(rows):
         for j in range(cols):
             left = ax_left_pct + j * cell_w_pct
             top  = ax_top_pct  + i * cell_h_pct
-            tip  = f"{plot_df.index[i]} × {plot_df.columns[j]}<br>value: {plot_df.iat[i,j]:.3f}".replace('"', '&quot;')
+            if lags_plot:
+                coeff_val = float(secondary_plot_df.iat[i, j])               # coeffs in secondary
+                shift_min = _to_minutes(plot_df.iat[i, j], time_unit)        # shifts in primary
+            else:
+                coeff_val = float(plot_df.iat[i, j])                         # coeffs in primary
+                shift_min = _to_minutes(secondary_plot_df.iat[i, j], time_unit)
+
+            tip = (
+                f"Shifted signal: {plot_df.columns[j]}\n"
+                f"Signal: {plot_df.index[i]}\n"
+                f"Coefficient: {coeff_val:.2f}\n"
+                f"Time shifted (minutes): {shift_min:.1f}"
+            )
+            tip = tip.replace('"', '&quot;')
+
             overlays_html.append(
                 f'<div class="cell-overlay" data-tip="{tip}" '
                 f'style="left:{left:.6f}%; top:{top:.6f}%; '
@@ -305,7 +332,8 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
             color: white;
             padding: 6px 8px;
             border-radius: 6px;
-            white-space: nowrap;
+            white-space: pre;
+            text-align: left;
             font: 12px/1.2 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
             pointer-events: none;
             z-index: 9999;
