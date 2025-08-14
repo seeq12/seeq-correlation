@@ -180,10 +180,10 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     if primary_df.empty:
         return None
 
-    # Names
+    # Names used for display
     new_names = rename_signals(list(primary_df.columns), max_label_chars)
 
-    # Primary for colors
+    # --- Data used to DRAW (masked if a boolean_df is provided) ---
     if isinstance(boolean_df, pd.DataFrame):
         plot_df = primary_df[boolean_df].copy()
         primary_array = plot_df.values
@@ -193,11 +193,19 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     plot_df.index = new_names
     plot_df.columns = new_names
 
-    # Secondary for tooltips
     sec = secondary_df.loc[primary_df.index, primary_df.columns]
     secondary_plot_df = (sec[boolean_df].copy() if isinstance(boolean_df, pd.DataFrame) else sec.copy())
     secondary_plot_df.index = new_names
     secondary_plot_df.columns = new_names
+
+    # --- Unmasked copies used ONLY for TOOLTIP values ---
+    primary_vals = primary_df.copy()
+    primary_vals.index = new_names
+    primary_vals.columns = new_names
+
+    secondary_vals = secondary_df.loc[primary_df.index, primary_df.columns].copy()
+    secondary_vals.index = new_names
+    secondary_vals.columns = new_names
 
     # Color limits
     if lags_plot:
@@ -214,7 +222,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     base_size = max(4, min(8, num_signals * 0.35))
     fig, ax = plt.subplots(figsize=(base_size, base_size), facecolor='white')
 
-    # Heatmap
+    # Heatmap (no cbar here; add one that shares the height)
     sns.heatmap(
         plot_df, annot=False, fmt='.2f', cmap=cmap, center=center,
         vmin=-limit, vmax=limit, square=True, linewidths=0.5,
@@ -224,49 +232,48 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     ax.tick_params(axis='x', labelsize=8, pad=6)
     ax.tick_params(axis='y', labelsize=8, pad=4)
 
-    # Colorbar matches heatmap height
+    # Colorbar axis that matches heatmap height
     divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="4%", pad=0.10)  # tweak pad/size as desired
+    cax = divider.append_axes("right", size="4%", pad=0.10)
     fig.colorbar(ax.collections[0], cax=cax)
 
+    # ---- Tight save + overlay geometry relative to cropped image ----
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
 
-    # Build a tight bbox that includes ALL text (y labels, cbar ticks, etc.)
     pad_inches = 0.02
-    tight = fig.get_tightbbox(renderer)  # in inches
+    tight = fig.get_tightbbox(renderer)  # inches
     x0, y0, x1, y1 = tight.extents
     tight_padded = Bbox.from_extents(x0 - pad_inches, y0 - pad_inches,
                                      x1 + pad_inches, y1 + pad_inches)
 
-    # Compute overlay geometry relative to the image
     dpi = fig.dpi
     img_w = tight_padded.width  * dpi
     img_h = tight_padded.height * dpi
 
-    # Axes bbox in screen pixels (relative to full canvas)
+    # Axes bbox (in pixels) in full canvas, then offset by crop origin
     ab = ax.get_window_extent(renderer=renderer)
     ax_x0_full, ax_y0_full, ax_w_px, ax_h_px = ab.x0, ab.y0, ab.width, ab.height
-
-    # Offset by the tight-crop origin (in pixels)
     crop_left_px   = tight_padded.x0 * dpi
     crop_bottom_px = tight_padded.y0 * dpi
     ax_x0 = ax_x0_full - crop_left_px
     ax_y0 = ax_y0_full - crop_bottom_px
 
-    # Percentages relative to the PNG
+    # Axes rectangle as percentages of the CROPPED image
     ax_left_pct   = 100.0 * (ax_x0 / img_w)
-    ax_top_pct    = 100.0 * ((img_h - (ax_y0 + ax_h_px)) / img_h)  # invert Y
+    ax_top_pct    = 100.0 * ((img_h - (ax_y0 + ax_h_px)) / img_h)
     ax_width_pct  = 100.0 * (ax_w_px / img_w)
     ax_height_pct = 100.0 * (ax_h_px / img_h)
 
-    # Per-cell overlay sizes inside the axes rectangle
+    # Per-cell overlay sizes
     rows, cols = plot_df.shape
     cell_w_pct = ax_width_pct  / cols
     cell_h_pct = ax_height_pct / rows
 
-    # Convert a time-shift value (in 'time_unit') to minutes for the tooltip
+    # Minutes converter
     def _to_minutes(val, unit):
+        if pd.isna(val):
+            return np.nan
         u = (unit or "").lower()
         factors = {
             "s": 1/60, "sec": 1/60, "secs": 1/60, "second": 1/60, "seconds": 1/60,
@@ -275,44 +282,49 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
             "d": 1440, "day": 1440, "days": 1440,
             "y": 525600, "yr": 525600, "yrs": 525600, "year": 525600, "years": 525600,
         }
-        # Default to minutes if unit is unknown
         return float(val) * factors.get(u, 1.0)
 
-    # Build tooltip overlays
+    # Build tooltip overlays: values from UNMASKED frames so they never show 'nan' due to filtering
     overlays_html = []
     for i in range(rows):
         for j in range(cols):
-            left = ax_left_pct + j * cell_w_pct
-            top  = ax_top_pct  + i * cell_h_pct
+            # read true values (unmasked) for tooltip
             if lags_plot:
-                coeff_val = float(secondary_plot_df.iat[i, j])               # coeffs in secondary
-                shift_min = _to_minutes(plot_df.iat[i, j], time_unit)        # shifts in primary
+                # time-shifts view: primary = shifts, secondary = coeffs
+                shift_val = secondary_vals.iat[i, j] if False else primary_vals.iat[i, j]
+                coeff_val = secondary_vals.iat[i, j]
             else:
-                coeff_val = float(plot_df.iat[i, j])                         # coeffs in primary
-                shift_min = _to_minutes(secondary_plot_df.iat[i, j], time_unit)
+                # coefficients view: primary = coeffs, secondary = shifts
+                coeff_val = primary_vals.iat[i, j]
+                shift_val = secondary_vals.iat[i, j]
+
+            coeff_txt = "—" if pd.isna(coeff_val) else f"{float(coeff_val):.2f}"
+            shift_m   = _to_minutes(shift_val, time_unit)
+            shift_txt = "—" if pd.isna(shift_m) else f"{float(shift_m):.1f}"
 
             tip = (
                 f"Shifted signal: {plot_df.columns[j]}\n"
                 f"Signal: {plot_df.index[i]}\n"
-                f"Coefficient: {coeff_val:.2f}\n"
-                f"Time shifted (minutes): {shift_min:.1f}"
-            )
-            tip = tip.replace('"', '&quot;')
+                f"Coefficient: {coeff_txt}\n"
+                f"Time shifted (minutes): {shift_txt}"
+            ).replace('"', '&quot;')
 
+            left = ax_left_pct + j * cell_w_pct
+            top  = ax_top_pct  + i * cell_h_pct
             overlays_html.append(
                 f'<div class="cell-overlay" data-tip="{tip}" '
                 f'style="left:{left:.6f}%; top:{top:.6f}%; '
                 f'width:{cell_w_pct:.6f}%; height:{cell_h_pct:.6f}%;"></div>'
             )
 
-    # Save the figure to PNG with tight bbox
+    # Save cropped PNG
     buf = BytesIO()
     fig.savefig(buf, format="png", bbox_inches=tight_padded)
     plt.close(fig)
     buf.seek(0)
     png_b64 = base64.b64encode(buf.read()).decode("ascii")
 
-    # HTML wrapper
+    # HTML wrapper + CSS (newline-respecting tooltips)
     html = f"""
     <div style="display:inline-block; position:relative; margin:0; padding:0; max-width:100%; overflow-x:hidden;">
       <img src="data:image/png;base64,{png_b64}" style="display:block; width:auto; max-width:100%; height:auto; z-index:1; margin:0; padding:0;">
