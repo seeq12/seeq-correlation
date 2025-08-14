@@ -183,7 +183,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     # Names used for display
     new_names = rename_signals(list(primary_df.columns), max_label_chars)
 
-    # --- Data used to DRAW (masked if a boolean_df is provided) ---
+    # Data used to draw the heatmap
     if isinstance(boolean_df, pd.DataFrame):
         plot_df = primary_df[boolean_df].copy()
         primary_array = plot_df.values
@@ -198,7 +198,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     secondary_plot_df.index = new_names
     secondary_plot_df.columns = new_names
 
-    # --- Unmasked copies used ONLY for TOOLTIP values ---
+    # Values for tooltips
     primary_vals = primary_df.copy()
     primary_vals.index = new_names
     primary_vals.columns = new_names
@@ -222,7 +222,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     base_size = max(4, min(8, num_signals * 0.35))
     fig, ax = plt.subplots(figsize=(base_size, base_size), facecolor='white')
 
-    # Heatmap (no cbar here; add one that shares the height)
+    # Heatmap
     sns.heatmap(
         plot_df, annot=False, fmt='.2f', cmap=cmap, center=center,
         vmin=-limit, vmax=limit, square=True, linewidths=0.5,
@@ -242,11 +242,9 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         cbar.set_label("Time (minutes)", rotation=270, labelpad=12)
     else:
         cbar.set_label("Correlation Coefficient", rotation=270, labelpad=12)
-    # Optional styling to match axis labels:
     cbar.ax.yaxis.label.set_size(10)
     cbar.ax.yaxis.label.set_weight('bold')
 
-    # ---- Tight save + overlay geometry relative to cropped image ----
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
 
@@ -256,23 +254,25 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     tight_padded = Bbox.from_extents(x0 - pad_inches, y0 - pad_inches,
                                      x1 + pad_inches, y1 + pad_inches)
 
-    dpi = fig.dpi
-    img_w = tight_padded.width  * dpi
-    img_h = tight_padded.height * dpi
+    # Original width in pixels (for CSS)
+    orig_width_px = int(round(tight_padded.width * fig.dpi))
 
-    # Axes bbox (in pixels) in full canvas, then offset by crop origin
-    ab = ax.get_window_extent(renderer=renderer)
-    ax_x0_full, ax_y0_full, ax_w_px, ax_h_px = ab.x0, ab.y0, ab.width, ab.height
-    crop_left_px   = tight_padded.x0 * dpi
-    crop_bottom_px = tight_padded.y0 * dpi
-    ax_x0 = ax_x0_full - crop_left_px
-    ax_y0 = ax_y0_full - crop_bottom_px
+    # Axes bbox
+    ab_px = ax.get_window_extent(renderer=renderer)
+    ab_in = Bbox.from_extents(ab_px.x0/fig.dpi, ab_px.y0/fig.dpi,
+                              ab_px.x1/fig.dpi, ab_px.y1/fig.dpi)
 
-    # Axes rectangle as percentages of the CROPPED image
-    ax_left_pct   = 100.0 * (ax_x0 / img_w)
-    ax_top_pct    = 100.0 * ((img_h - (ax_y0 + ax_h_px)) / img_h)
-    ax_width_pct  = 100.0 * (ax_w_px / img_w)
-    ax_height_pct = 100.0 * (ax_h_px / img_h)
+    # Fractions of the cropped image
+    ax_left_frac   = (ab_in.x0 - tight_padded.x0) / tight_padded.width
+    ax_top_frac    = (tight_padded.y1 - ab_in.y1) / tight_padded.height
+    ax_width_frac  = ab_in.width  / tight_padded.width
+    ax_height_frac = ab_in.height / tight_padded.height
+
+    # Convert to percentages for CSS
+    ax_left_pct   = 100.0 * ax_left_frac
+    ax_top_pct    = 100.0 * ax_top_frac
+    ax_width_pct  = 100.0 * ax_width_frac
+    ax_height_pct = 100.0 * ax_height_frac
 
     # Per-cell overlay sizes
     rows, cols = plot_df.shape
@@ -296,11 +296,11 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     def _esc(s):
         return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
-    # Build tooltip overlays (HTML tooltips so we can bold the proper line)
+    # Build tooltip overlays
     overlays_html = []
     for i in range(rows):
         for j in range(cols):
-            # True (unmasked) values for tooltip
+            # True values for tooltip
             if lags_plot:
                 # time-shifts view: primary = shifts, secondary = coeffs
                 shift_val = primary_vals.iat[i, j]
@@ -314,11 +314,11 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
             shift_m   = _to_minutes(shift_val, time_unit)
             shift_txt = "—" if pd.isna(shift_m) else f"{float(shift_m):.1f}"
 
-            # Lines 1–2 are always the same
+            # First two lines of tooltip
             line1 = f"Shifted signal: {_esc(plot_df.columns[j])}"
             line2 = f"Signal: {_esc(plot_df.index[i])}"
 
-            # Lines 3–4 depend on the output mode
+            # Last two lines of tooltip
             if lags_plot:
                 # bold Time shifted line, third line; coefficient last
                 line3 = f"<strong>Time (minutes): {shift_txt}</strong>"
@@ -347,17 +347,19 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
                 f'</div>'
             )
 
-    # Save cropped PNG (nothing clipped)
+    # Export at higher DPI for sharper text
+    export_dpi = int(round(fig.dpi * 2))
     buf = BytesIO()
-    fig.savefig(buf, format="png", bbox_inches=tight_padded)
+    fig.savefig(buf, format="png", bbox_inches=tight_padded, dpi=export_dpi)
     plt.close(fig)
     buf.seek(0)
     png_b64 = base64.b64encode(buf.read()).decode("ascii")
 
-    # HTML wrapper + CSS (use HTML child for tooltip so we can style per-line)
+    # HTML wrapper + CSS
     html = f"""
     <div style="display:inline-block; position:relative; margin:0; padding:0; max-width:100%; overflow-x:hidden;">
-      <img src="data:image/png;base64,{png_b64}" style="display:block; width:auto; max-width:100%; height:auto; z-index:1; margin:0; padding:0;">
+      <img src="data:image/png;base64,{png_b64}" 
+           style="display:block; width:{orig_width_px}px; max-width:100%; height:auto; z-index:1; margin:0; padding:0;"
       <div style="position:absolute; inset:0; z-index:2;">
         <style>
           .cell-overlay {{
