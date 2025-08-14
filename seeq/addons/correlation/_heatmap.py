@@ -235,7 +235,16 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     # Colorbar axis that matches heatmap height
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size="4%", pad=0.10)
-    fig.colorbar(ax.collections[0], cax=cax)
+    cbar = fig.colorbar(ax.collections[0], cax=cax)
+
+    # Colorbar title (depends on output mode)
+    if lags_plot:
+        cbar.set_label("Time (minutes)", rotation=270, labelpad=12)
+    else:
+        cbar.set_label("Correlation Coefficient", rotation=270, labelpad=12)
+    # Optional styling to match axis labels:
+    cbar.ax.yaxis.label.set_size(10)
+    cbar.ax.yaxis.label.set_weight('bold')
 
     # ---- Tight save + overlay geometry relative to cropped image ----
     fig.canvas.draw()
@@ -284,14 +293,17 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         }
         return float(val) * factors.get(u, 1.0)
 
-    # Build tooltip overlays: values from UNMASKED frames so they never show 'nan' due to filtering
+    def _esc(s):
+        return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    # Build tooltip overlays (HTML tooltips so we can bold the proper line)
     overlays_html = []
     for i in range(rows):
         for j in range(cols):
-            # read true values (unmasked) for tooltip
+            # True (unmasked) values for tooltip
             if lags_plot:
                 # time-shifts view: primary = shifts, secondary = coeffs
-                shift_val = secondary_vals.iat[i, j] if False else primary_vals.iat[i, j]
+                shift_val = primary_vals.iat[i, j]
                 coeff_val = secondary_vals.iat[i, j]
             else:
                 # coefficients view: primary = coeffs, secondary = shifts
@@ -302,29 +314,47 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
             shift_m   = _to_minutes(shift_val, time_unit)
             shift_txt = "—" if pd.isna(shift_m) else f"{float(shift_m):.1f}"
 
-            tip = (
-                f"Shifted signal: {plot_df.columns[j]}\n"
-                f"Signal: {plot_df.index[i]}\n"
-                f"Coefficient: {coeff_txt}\n"
-                f"Time shifted (minutes): {shift_txt}"
-            ).replace('"', '&quot;')
+            # Lines 1–2 are always the same
+            line1 = f"Shifted signal: {_esc(plot_df.columns[j])}"
+            line2 = f"Signal: {_esc(plot_df.index[i])}"
+
+            # Lines 3–4 depend on the output mode
+            if lags_plot:
+                # bold Time shifted line, third line; coefficient last
+                line3 = f"<strong>Time (minutes): {shift_txt}</strong>"
+                line4 = f"Coefficient: {coeff_txt}"
+            else:
+                # bold Coefficient line, third line; time shifted last
+                line3 = f"<strong>Coefficient: {coeff_txt}</strong>"
+                line4 = f"Time (minutes): {shift_txt}"
+
+            tip_html = (
+                f'<div class="tip">'
+                f'  <div>{line1}</div>'
+                f'  <div>{line2}</div>'
+                f'  <div>{line3}</div>'
+                f'  <div>{line4}</div>'
+                f'</div>'
+            )
 
             left = ax_left_pct + j * cell_w_pct
             top  = ax_top_pct  + i * cell_h_pct
             overlays_html.append(
-                f'<div class="cell-overlay" data-tip="{tip}" '
+                f'<div class="cell-overlay" '
                 f'style="left:{left:.6f}%; top:{top:.6f}%; '
-                f'width:{cell_w_pct:.6f}%; height:{cell_h_pct:.6f}%;"></div>'
+                f'width:{cell_w_pct:.6f}%; height:{cell_h_pct:.6f}%;">'
+                f'{tip_html}'
+                f'</div>'
             )
 
-    # Save cropped PNG
+    # Save cropped PNG (nothing clipped)
     buf = BytesIO()
     fig.savefig(buf, format="png", bbox_inches=tight_padded)
     plt.close(fig)
     buf.seek(0)
     png_b64 = base64.b64encode(buf.read()).decode("ascii")
 
-    # HTML wrapper + CSS (newline-respecting tooltips)
+    # HTML wrapper + CSS (use HTML child for tooltip so we can style per-line)
     html = f"""
     <div style="display:inline-block; position:relative; margin:0; padding:0; max-width:100%; overflow-x:hidden;">
       <img src="data:image/png;base64,{png_b64}" style="display:block; width:auto; max-width:100%; height:auto; z-index:1; margin:0; padding:0;">
@@ -334,8 +364,8 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
             position:absolute;
             pointer-events: auto;
           }}
-          .cell-overlay[data-tip]:hover::after {{
-            content: attr(data-tip);
+          .cell-overlay .tip {{
+            display: none;
             position: absolute;
             left: 50%;
             top: 100%;
@@ -344,12 +374,16 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
             color: white;
             padding: 6px 8px;
             border-radius: 6px;
-            white-space: pre;
+            white-space: nowrap;
             text-align: left;
             font: 12px/1.2 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
             pointer-events: none;
             z-index: 9999;
             margin-top: 6px;
+          }}
+          /* Show on hover */
+          .cell-overlay:hover .tip {{
+            display: block;
           }}
         </style>
         {''.join(overlays_html)}
