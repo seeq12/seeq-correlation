@@ -10,9 +10,10 @@ from . import default_preprocessing_wrapper
 from . import lags_coeffs
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib.transforms import Bbox
 import seaborn as sns
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-import mplcursors
 import base64
 from io import BytesIO
 
@@ -198,7 +199,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     secondary_plot_df.index = new_names
     secondary_plot_df.columns = new_names
 
-    # Visuals
+    # Color limits
     if lags_plot:
         flat = primary_array.flatten()
         limit = max(np.nanmax(flat), abs(np.nanmin(flat)))
@@ -208,7 +209,7 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         cmap = 'RdBu'
     center = 0
 
-    # Figure - fixed size calculation to prevent growth
+    # Figure
     num_signals = len(plot_df)
     base_size = max(4, min(8, num_signals * 0.35))
     fig, ax = plt.subplots(figsize=(base_size, base_size), facecolor='white')
@@ -217,39 +218,103 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     sns.heatmap(
         plot_df, annot=False, fmt='.2f', cmap=cmap, center=center,
         vmin=-limit, vmax=limit, square=True, linewidths=0.5,
-        cbar_kws={"shrink": 0.8}, ax=ax
+        cbar=False, ax=ax
     )
-
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
+    ax.tick_params(axis='x', labelsize=8, pad=6)
+    ax.tick_params(axis='y', labelsize=8, pad=4)
 
-    # Hover tooltips
-    quadmesh = ax.collections[0]
-    cursor = mplcursors.cursor(quadmesh, hover=True)
+    # Colorbar matches heatmap height
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="4%", pad=0.10)  # tweak pad/size as desired
+    fig.colorbar(ax.collections[0], cax=cax)
 
-    def _fmt_num(x, d): return "NA" if pd.isna(x) else f"{x:.{d}f}"
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
 
-    @cursor.connect("add")
-    def _on_add(sel):
-        ncols = plot_df.shape[1]
-        r, c = divmod(sel.index, ncols)
-        row_label, col_label = plot_df.index[r], plot_df.columns[c]
-        primary_val = plot_df.iloc[r, c]
-        secondary_val = secondary_plot_df.iloc[r, c]
-        if lags_plot:
-            text = (f"Shifted signal: {row_label}\n"
-                    f"Signal: {col_label}\n"
-                    f"Time shifted ({time_unit}): {_fmt_num(primary_val,1)}\n"
-                    f"Coefficient: {_fmt_num(secondary_val,2)}")
-        else:
-            text = (f"Shifted signal: {row_label}\n"
-                    f"Signal: {col_label}\n"
-                    f"Coefficient: {_fmt_num(primary_val,2)}\n"
-                    f"Time shifted ({time_unit}): {_fmt_num(secondary_val,1)}")
-        sel.annotation.set_text(text)
-        sel.annotation.get_bbox_patch().set(alpha=0.9)
+    # Build a tight bbox that includes ALL text (y labels, cbar ticks, etc.)
+    pad_inches = 0.02
+    tight = fig.get_tightbbox(renderer)  # in inches
+    x0, y0, x1, y1 = tight.extents
+    tight_padded = Bbox.from_extents(x0 - pad_inches, y0 - pad_inches,
+                                     x1 + pad_inches, y1 + pad_inches)
 
-    fig.tight_layout()
+    # Compute overlay geometry relative to the image
+    dpi = fig.dpi
+    img_w = tight_padded.width  * dpi
+    img_h = tight_padded.height * dpi
 
-    # Prevent automatic display
-    plt.ioff()
-    return fig
+    # Axes bbox in screen pixels (relative to full canvas)
+    ab = ax.get_window_extent(renderer=renderer)
+    ax_x0_full, ax_y0_full, ax_w_px, ax_h_px = ab.x0, ab.y0, ab.width, ab.height
+
+    # Offset by the tight-crop origin (in pixels)
+    crop_left_px   = tight_padded.x0 * dpi
+    crop_bottom_px = tight_padded.y0 * dpi
+    ax_x0 = ax_x0_full - crop_left_px
+    ax_y0 = ax_y0_full - crop_bottom_px
+
+    # Percentages relative to the PNG
+    ax_left_pct   = 100.0 * (ax_x0 / img_w)
+    ax_top_pct    = 100.0 * ((img_h - (ax_y0 + ax_h_px)) / img_h)  # invert Y
+    ax_width_pct  = 100.0 * (ax_w_px / img_w)
+    ax_height_pct = 100.0 * (ax_h_px / img_h)
+
+    # Per-cell overlay sizes inside the axes rectangle
+    rows, cols = plot_df.shape
+    cell_w_pct = ax_width_pct  / cols
+    cell_h_pct = ax_height_pct / rows
+
+    # Build tooltip overlays
+    overlays_html = []
+    for i in range(rows):
+        for j in range(cols):
+            left = ax_left_pct + j * cell_w_pct
+            top  = ax_top_pct  + i * cell_h_pct
+            tip  = f"{plot_df.index[i]} × {plot_df.columns[j]}<br>value: {plot_df.iat[i,j]:.3f}".replace('"', '&quot;')
+            overlays_html.append(
+                f'<div class="cell-overlay" data-tip="{tip}" '
+                f'style="left:{left:.6f}%; top:{top:.6f}%; '
+                f'width:{cell_w_pct:.6f}%; height:{cell_h_pct:.6f}%;"></div>'
+            )
+
+    # Save the figure to PNG with tight bbox
+    buf = BytesIO()
+    fig.savefig(buf, format="png", bbox_inches=tight_padded)
+    plt.close(fig)
+    buf.seek(0)
+    png_b64 = base64.b64encode(buf.read()).decode("ascii")
+
+    # HTML wrapper
+    html = f"""
+    <div style="display:inline-block; position:relative; margin:0; padding:0; max-width:100%; overflow-x:hidden;">
+      <img src="data:image/png;base64,{png_b64}" style="display:block; width:auto; max-width:100%; height:auto; z-index:1; margin:0; padding:0;">
+      <div style="position:absolute; inset:0; z-index:2;">
+        <style>
+          .cell-overlay {{
+            position:absolute;
+            pointer-events: auto;
+          }}
+          .cell-overlay[data-tip]:hover::after {{
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 6px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+            font: 12px/1.2 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+            pointer-events: none;
+            z-index: 9999;
+            margin-top: 6px;
+          }}
+        </style>
+        {''.join(overlays_html)}
+      </div>
+    </div>
+    """
+    return html
+

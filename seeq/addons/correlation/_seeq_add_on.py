@@ -418,10 +418,10 @@ class CorrelationHeatmap:
         self.fig_widget = heatmap_fig
         with self._mpl_out:
             clear_output(wait=True)
-            # Force non-interactive display to prevent duplicate rendering
-            from matplotlib.backends.backend_agg import FigureCanvasAgg
-            heatmap_fig.canvas = FigureCanvasAgg(heatmap_fig)
-            display(self.fig_widget)
+            if isinstance(heatmap_fig, str):
+                display(HTML(heatmap_fig))
+            else:
+                display(heatmap_fig)
 
         # Put the Output widget into the wrapper with centering styles
         centered_container = v.Html(
@@ -673,15 +673,6 @@ class CorrelationHeatmap:
         self.signals_created.v_model = False
 
     def run(self):
-        # Configure interactive Matplotlib backend so hover works
-        try:
-            import ipympl
-            matplotlib.use("module://ipympl.backend_nbagg")
-        except Exception:
-            matplotlib.use("nbagg")
-        # Keep interactive mode OFF to avoid duplicate auto-renders
-        plt.ioff()
-
         # noinspection PyTypeChecker
         display(HTML("<style>.container { width:100% !important; }</style>"))
         display(HTML(self.additional_styles))
