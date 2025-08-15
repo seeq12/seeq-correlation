@@ -40,7 +40,7 @@ def pairplot(df, max_time_shift='auto', bypass_preprocessing=False):
     Returns
     -------
     -: None
-        Displays a Plotly figure in Seeq DataLab with plots arrange in a n x n
+        Displays a Matplotlib/Seaborn figure in Seeq DataLab with plots arrange in a n x n
         matrix.
 
 
@@ -82,7 +82,7 @@ def _contour_matrix_diag_hist_static(df_serialized, lags_array_serialized=None):
     :param signals_df: [dataframe] signals to plot
     :param width: [int] size of the output figure in pixels
     :param lags_array: [array] matrix (n x n) with the number of lags signals should be slided
-    :return: [obj] plotly figure object
+    :return: [obj] matplotlib/seaborn figure object
 
     """
     signals_df = pickle.loads(df_serialized)

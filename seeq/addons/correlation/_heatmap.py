@@ -1,16 +1,14 @@
 import numpy as np
 import pandas as pd
 import pickle
-import plotly.graph_objs as go
 # There is a bug that prevents to correctly memorize a pandas.DataFrame
 # Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)
 from memoization import cached
 from ._config import _cache_max_items
 from . import default_preprocessing_wrapper
 from . import lags_coeffs
-
+from ._heatmap_html import build_overlays_html, wrap_heatmap_html
 import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.transforms import Bbox
 import seaborn as sns
@@ -58,8 +56,8 @@ def heatmap(df, max_time_shift='auto', output_values='coeffs', output_type='plot
     -------
     Either one of the following
     -: None
-        Displays a Plotly figure with either Pearson's coefficients or signal
-        time shifts
+        Displays a Matplotlib/Seaborn figure with either Pearson's coefficients
+        or signal time shifts
 
     table: pandas.DataFrame
         A DataFrame with either Pearson's coefficients or times_shifts of all
@@ -171,43 +169,8 @@ def rename_signals(signal_list, max_label_chars):
         new_names = signal_list
     return new_names
 
-
-@cached(max_size=_cache_max_items)
-def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str,
-                  lags_plot=False, boolean_df=None, max_label_chars=30):
-    primary_df = pickle.loads(primary_df_serialized)
-    secondary_df = pickle.loads(secondary_df_serialized)
-    if primary_df.empty:
-        return None
-
-    # Names used for display
-    new_names = rename_signals(list(primary_df.columns), max_label_chars)
-
-    # Data used to draw the heatmap
-    if isinstance(boolean_df, pd.DataFrame):
-        plot_df = primary_df[boolean_df].copy()
-        primary_array = plot_df.values
-    else:
-        plot_df = primary_df.copy()
-        primary_array = plot_df.values
-    plot_df.index = new_names
-    plot_df.columns = new_names
-
-    sec = secondary_df.loc[primary_df.index, primary_df.columns]
-    secondary_plot_df = (sec[boolean_df].copy() if isinstance(boolean_df, pd.DataFrame) else sec.copy())
-    secondary_plot_df.index = new_names
-    secondary_plot_df.columns = new_names
-
-    # Values for tooltips
-    primary_vals = primary_df.copy()
-    primary_vals.index = new_names
-    primary_vals.columns = new_names
-
-    secondary_vals = secondary_df.loc[primary_df.index, primary_df.columns].copy()
-    secondary_vals.index = new_names
-    secondary_vals.columns = new_names
-
-    # Color limits
+def _compute_color_limits(primary_array: np.ndarray, lags_plot: bool):
+    # Compute color limits and colormap for the heatmap
     if lags_plot:
         flat = primary_array.flatten()
         limit = max(np.nanmax(flat), abs(np.nanmin(flat)))
@@ -216,13 +179,43 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
         limit = 1.0
         cmap = 'RdBu'
     center = 0
+    return limit, cmap, center
 
-    # Figure
+def _prepare_frames(primary_df_serialized, secondary_df_serialized, boolean_df, max_label_chars):
+    # Prepare the DataFrames for plotting
+    primary_df = pickle.loads(primary_df_serialized)
+    secondary_df = pickle.loads(secondary_df_serialized)
+
+    new_names = rename_signals(list(primary_df.columns), max_label_chars)
+
+    # Data used to draw (apply mask if provided)
+    if isinstance(boolean_df, pd.DataFrame):
+        plot_df = primary_df[boolean_df].copy()
+        primary_array = plot_df.values
+    else:
+        plot_df = primary_df.copy()
+        primary_array = plot_df.values
+
+    plot_df.index = new_names
+    plot_df.columns = new_names
+
+    # Tooltip values (unmasked)
+    primary_vals = primary_df.copy()
+    primary_vals.index = new_names
+    primary_vals.columns = new_names
+
+    secondary_vals = secondary_df.loc[primary_df.index, primary_df.columns].copy()
+    secondary_vals.index = new_names
+    secondary_vals.columns = new_names
+
+    return plot_df, primary_array, primary_vals, secondary_vals, new_names
+
+def _draw_heatmap(plot_df: pd.DataFrame, limit, cmap, center):
+    # Create the figure and draw the heatmap
     num_signals = len(plot_df)
     base_size = max(4, min(8, num_signals * 0.35))
     fig, ax = plt.subplots(figsize=(base_size, base_size), facecolor='white')
 
-    # Heatmap
     sns.heatmap(
         plot_df, annot=False, fmt='.2f', cmap=cmap, center=center,
         vmin=-limit, vmax=limit, square=True, linewidths=0.5,
@@ -232,41 +225,44 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     ax.tick_params(axis='x', labelsize=8, pad=6)
     ax.tick_params(axis='y', labelsize=8, pad=4)
 
-    # Colorbar axis that matches heatmap height
-    divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="4%", pad=0.10)
-    cbar = fig.colorbar(ax.collections[0], cax=cax)
+    return fig, ax
 
-    # Colorbar title (depends on output mode)
+def _add_colorbar(fig, ax, lags_plot: bool):
+    # Create colorbar
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="4%", pad=0.25)
+    cbar = fig.colorbar(ax.collections[0], cax=cax)
     if lags_plot:
         cbar.set_label("Time (minutes)", rotation=270, labelpad=12)
     else:
         cbar.set_label("Correlation Coefficient", rotation=270, labelpad=12)
     cbar.ax.yaxis.label.set_size(10)
     cbar.ax.yaxis.label.set_weight('bold')
+    return cbar
 
+def _compute_geometry_percentages(fig, ax, pad_inches: float = 0.02):
+    # Compute the geometry of the heatmap for CSS positioning
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
 
-    pad_inches = 0.02
     tight = fig.get_tightbbox(renderer)  # inches
     x0, y0, x1, y1 = tight.extents
     tight_padded = Bbox.from_extents(x0 - pad_inches, y0 - pad_inches,
                                      x1 + pad_inches, y1 + pad_inches)
 
-    # Original width in pixels (for CSS)
+    # Keep original display width so the visual size is stable in HTML
     orig_width_px = int(round(tight_padded.width * fig.dpi))
 
-    # Axes bbox
+    # Axes bbox in inches
     ab_px = ax.get_window_extent(renderer=renderer)
-    ab_in = Bbox.from_extents(ab_px.x0/fig.dpi, ab_px.y0/fig.dpi,
-                              ab_px.x1/fig.dpi, ab_px.y1/fig.dpi)
+    ab_in = Bbox.from_extents(ab_px.x0 / fig.dpi, ab_px.y0 / fig.dpi,
+                              ab_px.x1 / fig.dpi, ab_px.y1 / fig.dpi)
 
     # Fractions of the cropped image
     ax_left_frac   = (ab_in.x0 - tight_padded.x0) / tight_padded.width
     ax_top_frac    = (tight_padded.y1 - ab_in.y1) / tight_padded.height
-    ax_width_frac  = ab_in.width  / tight_padded.width
-    ax_height_frac = ab_in.height / tight_padded.height
+    ax_width_frac  =  ab_in.width                 / tight_padded.width
+    ax_height_frac =  ab_in.height                / tight_padded.height
 
     # Convert to percentages for CSS
     ax_left_pct   = 100.0 * ax_left_frac
@@ -274,123 +270,57 @@ def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str
     ax_width_pct  = 100.0 * ax_width_frac
     ax_height_pct = 100.0 * ax_height_frac
 
-    # Per-cell overlay sizes
-    rows, cols = plot_df.shape
-    cell_w_pct = ax_width_pct  / cols
-    cell_h_pct = ax_height_pct / rows
+    return tight_padded, orig_width_px, ax_left_pct, ax_top_pct, ax_width_pct, ax_height_pct
 
-    # Minutes converter
-    def _to_minutes(val, unit):
-        if pd.isna(val):
-            return np.nan
-        u = (unit or "").lower()
-        factors = {
-            "s": 1/60, "sec": 1/60, "secs": 1/60, "second": 1/60, "seconds": 1/60,
-            "m": 1, "min": 1, "mins": 1, "minute": 1, "minutes": 1,
-            "h": 60, "hr": 60, "hrs": 60, "hour": 60, "hours": 60,
-            "d": 1440, "day": 1440, "days": 1440,
-            "y": 525600, "yr": 525600, "yrs": 525600, "year": 525600, "years": 525600,
-        }
-        return float(val) * factors.get(u, 1.0)
-
-    def _esc(s):
-        return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
-    # Build tooltip overlays
-    overlays_html = []
-    for i in range(rows):
-        for j in range(cols):
-            # True values for tooltip
-            if lags_plot:
-                # time-shifts view: primary = shifts, secondary = coeffs
-                shift_val = primary_vals.iat[i, j]
-                coeff_val = secondary_vals.iat[i, j]
-            else:
-                # coefficients view: primary = coeffs, secondary = shifts
-                coeff_val = primary_vals.iat[i, j]
-                shift_val = secondary_vals.iat[i, j]
-
-            coeff_txt = "—" if pd.isna(coeff_val) else f"{float(coeff_val):.2f}"
-            shift_m   = _to_minutes(shift_val, time_unit)
-            shift_txt = "—" if pd.isna(shift_m) else f"{float(shift_m):.1f}"
-
-            # First two lines of tooltip
-            line1 = f"Shifted signal: {_esc(plot_df.columns[j])}"
-            line2 = f"Signal: {_esc(plot_df.index[i])}"
-
-            # Last two lines of tooltip
-            if lags_plot:
-                # bold Time shifted line, third line; coefficient last
-                line3 = f"<strong>Time (minutes): {shift_txt}</strong>"
-                line4 = f"Coefficient: {coeff_txt}"
-            else:
-                # bold Coefficient line, third line; time shifted last
-                line3 = f"<strong>Coefficient: {coeff_txt}</strong>"
-                line4 = f"Time (minutes): {shift_txt}"
-
-            tip_html = (
-                f'<div class="tip">'
-                f'  <div>{line1}</div>'
-                f'  <div>{line2}</div>'
-                f'  <div>{line3}</div>'
-                f'  <div>{line4}</div>'
-                f'</div>'
-            )
-
-            left = ax_left_pct + j * cell_w_pct
-            top  = ax_top_pct  + i * cell_h_pct
-            overlays_html.append(
-                f'<div class="cell-overlay" '
-                f'style="left:{left:.6f}%; top:{top:.6f}%; '
-                f'width:{cell_w_pct:.6f}%; height:{cell_h_pct:.6f}%;">'
-                f'{tip_html}'
-                f'</div>'
-            )
-
-    # Export at higher DPI for sharper text
-    export_dpi = int(round(fig.dpi * 2))
+def _export_png_base64(fig, bbox_inches, export_scale: float = 2.0):
+    # Export the figure to PNG and encode it in base64
+    export_dpi = int(round(fig.dpi * export_scale))
     buf = BytesIO()
-    fig.savefig(buf, format="png", bbox_inches=tight_padded, dpi=export_dpi)
+    fig.savefig(buf, format="png", bbox_inches=bbox_inches, dpi=export_dpi)
     plt.close(fig)
     buf.seek(0)
-    png_b64 = base64.b64encode(buf.read()).decode("ascii")
+    return base64.b64encode(buf.read()).decode("ascii")
 
-    # HTML wrapper + CSS
-    html = f"""
-    <div style="display:inline-block; position:relative; margin:0; padding:0; max-width:100%; overflow-x:hidden;">
-      <img src="data:image/png;base64,{png_b64}" 
-           style="display:block; width:{orig_width_px}px; max-width:100%; height:auto; z-index:1; margin:0; padding:0;"
-      <div style="position:absolute; inset:0; z-index:2;">
-        <style>
-          .cell-overlay {{
-            position:absolute;
-            pointer-events: auto;
-          }}
-          .cell-overlay .tip {{
-            display: none;
-            position: absolute;
-            left: 50%;
-            top: 100%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.85);
-            color: white;
-            padding: 6px 8px;
-            border-radius: 6px;
-            white-space: nowrap;
-            text-align: left;
-            font: 12px/1.2 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
-            pointer-events: none;
-            z-index: 9999;
-            margin-top: 6px;
-          }}
-          /* Show on hover */
-          .cell-overlay:hover .tip {{
-            display: block;
-          }}
-        </style>
-        {''.join(overlays_html)}
-      </div>
-    </div>
-    """
+@cached(max_size=_cache_max_items)
+def _heatmap_plot(primary_df_serialized, secondary_df_serialized, time_unit: str,
+                  lags_plot=False, boolean_df=None, max_label_chars=30):
+
+    # Prep frames
+    plot_df, primary_array, primary_vals, secondary_vals, _ = _prepare_frames(
+        primary_df_serialized, secondary_df_serialized, boolean_df, max_label_chars
+    )
+    if plot_df.empty:
+        return None
+
+    # Color scale
+    limit, cmap, center = _compute_color_limits(primary_array, lags_plot)
+
+    # Draw
+    fig, ax = _draw_heatmap(plot_df, limit, cmap, center)
+
+    # Colorbar
+    _add_colorbar(fig, ax, lags_plot)
+
+    # Geometry (DPI-agnostic percentages + original display width)
+    tight_padded, orig_width_px, ax_left_pct, ax_top_pct, ax_width_pct, ax_height_pct = \
+        _compute_geometry_percentages(fig, ax, pad_inches=0.02)
+
+    # Build tooltip overlays
+    overlays_html = build_overlays_html(
+        plot_df=plot_df,
+        primary_vals=primary_vals,
+        secondary_vals=secondary_vals,
+        time_unit=time_unit,
+        lags_plot=lags_plot,
+        ax_left_pct=ax_left_pct,
+        ax_top_pct=ax_top_pct,
+        ax_width_pct=ax_width_pct,
+        ax_height_pct=ax_height_pct,
+    )
+
+    # Export PNG
+    png_b64 = _export_png_base64(fig, bbox_inches=tight_padded, export_scale=2.0)
+
+    # Final HTML
+    html = wrap_heatmap_html(png_b64=png_b64, overlays_html=overlays_html, orig_width_px=orig_width_px)
     return html
-

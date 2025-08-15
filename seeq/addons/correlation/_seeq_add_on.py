@@ -8,17 +8,13 @@ import math
 import json
 import pickle
 import warnings
-import plotly.graph_objects as go
 from seeq import spy
 from .utils import get_worksheet_url, pull_only_signals, get_workbook_worksheet_workstep_ids, create_condition
 from seeq.addons.correlation._config import _user_guide, _github_issues
 from . import default_preprocessing_wrapper
 from . import _heatmap_plot, lags_coeffs, worksheet_with_lagged_signals, worksheet_corrs_and_time_shifts
-
-import matplotlib
 import matplotlib.pyplot as plt
 import ipywidgets as widgets
-from IPython.display import HTML, display, clear_output, Javascript
 
 warnings.filterwarnings('ignore')
 
@@ -46,7 +42,6 @@ class CorrelationHeatmap:
         <style>
         #appmode-leave {display: none;}
         .background_box { background-color:#007960 !important; } 
-        .js-plotly-plot .plotly .modebar-btn[data-title="Produced with Plotly"] {display: none;}
         .vuetify-styles .theme--light.v-list-item .v-list-item__action-text, 
         .vuetify-styles .theme--light.v-list-item .v-list-item__subtitle {color: #212529;}
         .vuetify-styles .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) 
@@ -384,13 +379,6 @@ class CorrelationHeatmap:
         self.max_time_shifts.v_model, self.max_time_str_error, self.time_output_unit = validate_units(
             self.max_time_shifts.v_model, self.time_shifts_switch.v_model)
 
-    def resize_plot(self):
-        min_size = len(self.coeffs_df) * self.heatmap_item_size
-        if min_size <= 300:  # it looks like plotly defaults to 300 px for the size of the plot
-            return
-        else:
-            self.graph.layout.height = min_size
-
     def create_displayed_fig(self, heatmap_fig):
         # Close previous figure and output widget to free resources
         if hasattr(self, '_mpl_out') and self._mpl_out is not None:
@@ -433,7 +421,6 @@ class CorrelationHeatmap:
         self.visualization.children = [centered_container]
 
     def cleanup_visualization(self):
-        """Clean up matplotlib figures and widgets to prevent memory leaks"""
         if hasattr(self, '_mpl_out') and self._mpl_out is not None:
             self._mpl_out.clear_output(wait=True)
             self._mpl_out.close()
@@ -632,10 +619,6 @@ class CorrelationHeatmap:
         self.update_display()
 
     def output_toggle_events(self, *_):
-        self.visualization.children = [self.progress]
-        self.update_display()
-
-    def output_type_events(self, *_):
         self.visualization.children = [self.progress]
         self.update_display()
 
