@@ -1,8 +1,6 @@
 import os
 import configparser
-import numpy as np
 import pandas as pd
-import plotly.graph_objs as go
 from pathlib import Path
 from seeq import spy, sdk
 from seeq.spy.workbooks import Analysis
@@ -45,16 +43,6 @@ def set_environ_variables(configfile=None):
         for option in config.options(section):
             if config.get(section, option) is not None:
                 os.environ[option] = config.get(section, option)
-
-
-def assert_contour_matrix_figure_instance(figure):
-    diagonal = np.linspace(0, len(figure.data), int(np.sqrt(len(figure.data))) + 1).astype('int')
-    for idx, item in enumerate(figure.data):
-        if idx in diagonal:
-            assert isinstance(figure.data[idx], go.Histogram)
-        else:
-            assert isinstance(figure.data[idx], go.Histogram2dContour)
-    assert isinstance(figure.layout, go.Layout)
 
 
 def create_worksheet_for_tests():
