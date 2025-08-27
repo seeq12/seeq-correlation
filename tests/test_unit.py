@@ -1,7 +1,6 @@
 import pickle
 import numpy as np
 import pandas as pd
-import plotly.graph_objs as go
 import pytest
 import seaborn as sns
 from seeq.addons import correlation
@@ -41,12 +40,21 @@ def test_lags_coeffs():
 
 @pytest.mark.plots
 @pytest.mark.unit
-def test_correlation_heatmap():
+def test_correlation_heatmap(monkeypatch):
+    # capture the matrix seaborn plots
+    last = {}
+
+    def capture_heatmap_data(*args, **kwargs):
+        data = kwargs.get("data", args[0] if args else None)
+        last["zsum"] = float(np.nansum(np.asarray(data)))
+        return heatmap(*args, **kwargs)
+
+    heatmap = sns.heatmap
+    monkeypatch.setattr(sns, "heatmap", capture_heatmap_data)
+
     def assert_figure_heatmap(figure, array):
-        assert isinstance(figure, go.Figure)
-        assert isinstance(figure.data[0], go.Heatmap)
-        assert isinstance(figure.layout, go.Layout)
-        assert figure.data[0].z.sum() == array.sum()
+        assert isinstance(figure, str)
+        assert last["zsum"] == pytest.approx(array.sum())
 
     sampling_rate = 20
     time_unit = 'seconds'
@@ -104,11 +112,9 @@ def test_pair_plot():
 @pytest.mark.plots
 @pytest.mark.unit
 def test_heatmap_wrapper():
-    fig = correlation._heatmap._heatmap(test_common.df, max_time_shift='auto', output_values='coeffs',
-                                        output_type='plot')
-    assert isinstance(fig, go.Figure)
-    assert isinstance(fig.data[0], go.Heatmap)
-    assert isinstance(fig.layout, go.Layout)
+    html = correlation._heatmap._heatmap(test_common.df, max_time_shift='auto', output_values='coeffs',
+                                         output_type='plot')
+    assert isinstance(html, str)
 
     table = correlation.heatmap(test_common.df, max_time_shift='1h', output_values='time_shifts', output_type='table')
     assert isinstance(table, pd.DataFrame)
