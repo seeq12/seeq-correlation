@@ -21,8 +21,24 @@ source_wheel = max(
     key=os.path.getctime
 )
 
+def create_requirements_from_lockfile():
+    cmd = [
+        "uv",
+        "export",
+        "--quiet",
+        "--no-dev",
+        "--no-header",
+        "--no-hashes",
+        "--no-emit-project",
+        "--format=requirements.txt",
+    ]
+    return subprocess.run(cmd, check=True, capture_output=True, shell=True).stdout.decode('ascii')
+
+
 source_wheel_name = os.path.split(source_wheel)[-1]
 version = source_wheel_name.split('-')[1]
+
+requirements = f"{create_requirements_from_lockfile()}\n./{source_wheel_name}"
 
 addon_manager_artifacts = []
 name = 'correlation'
@@ -42,7 +58,7 @@ addon_meta = os.path.join(bin, f'{name}-{version}.addonmeta')
 # Build addon
 with zipfile.ZipFile(addon, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
     z.write(source_wheel, arcname=os.path.join('data-lab-functions', source_wheel_name))
-    z.writestr('data-lab-functions/requirements.txt', f"./{source_wheel_name}")
+    z.writestr('data-lab-functions/requirements.txt', requirements)
     with z.open("addon.json", "w") as c:
         c.write(json.dumps(parsed_json, indent=2).encode("utf-8"))
     directory = pathlib.Path("./seeq/addons/correlation/deployment_notebook/")
