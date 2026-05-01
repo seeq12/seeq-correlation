@@ -32,7 +32,7 @@ def create_requirements_from_lockfile():
         "--no-emit-project",
         "--format=requirements.txt",
     ]
-    return subprocess.run(cmd, check=True, capture_output=True, shell=True).stdout.decode('ascii')
+    return subprocess.run(cmd, check=True, capture_output=True, text=True, encoding='utf-8').stdout
 
 
 source_wheel_name = os.path.split(source_wheel)[-1]
