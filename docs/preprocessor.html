@@ -1,22 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Preprocessing &mdash; seeq-correlation 0.1.96 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>Data Preprocessing &mdash; seeq-correlation 0.3.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=29d04658"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,9 +36,6 @@
             seeq-correlation
               <img src="_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.1.96
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -108,10 +105,10 @@
            <div itemprop="articleBody">
              
   <section id="module-seeq.addons.correlation._preprocessor">
-<span id="data-preprocessing"></span><h1>Data Preprocessing<a class="headerlink" href="#module-seeq.addons.correlation._preprocessor" title="Permalink to this heading"></a></h1>
+<span id="data-preprocessing"></span><h1>Data Preprocessing<a class="headerlink" href="#module-seeq.addons.correlation._preprocessor" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.attach_summary">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">attach_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#attach_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.attach_summary" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">attach_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#attach_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.attach_summary" title="Link to this definition"></a></dt>
 <dd><p>This functions adds the summary of a pre-processing operation as property
 of the DataFrame that contains the data.</p>
 <dl class="field-list simple">
@@ -137,7 +134,7 @@ pre-processing step and signal names as index.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.default_preprocessing_wrapper">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">default_preprocessing_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consecutivenans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.04</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_disparate_sampled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_ratio_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bypass_processing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#default_preprocessing_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.default_preprocessing_wrapper" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">default_preprocessing_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consecutivenans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.04</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_disparate_sampled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_ratio_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bypass_processing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#default_preprocessing_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.default_preprocessing_wrapper" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -171,7 +168,7 @@ the property <cite>dff.preprocessing.summary</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.duplicated_column_names">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">duplicated_column_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#duplicated_column_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.duplicated_column_names" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">duplicated_column_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#duplicated_column_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.duplicated_column_names" title="Link to this definition"></a></dt>
 <dd><p>Renames columns that have the same column name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -189,7 +186,7 @@ the index.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.interpolate_nans">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">interpolate_nans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consecutivenans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#interpolate_nans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.interpolate_nans" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">interpolate_nans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consecutivenans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#interpolate_nans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.interpolate_nans" title="Link to this definition"></a></dt>
 <dd><p>Interpolates invalid values (linearly) per signal only if the percentage of
 consecutive invalid values with respect to the total number of samples is
 less than the specified threshold.</p>
@@ -216,7 +213,7 @@ can be accessed in the property <cite>interpolated_df.preprocessing.summary</cit
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.remove_flat_lines">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">remove_flat_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#remove_flat_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.remove_flat_lines" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">remove_flat_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#remove_flat_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.remove_flat_lines" title="Link to this definition"></a></dt>
 <dd><p>Find signals with zero variance (flat lines) and remove them from the
 input DataFrame</p>
 <dl class="field-list simple">
@@ -238,7 +235,7 @@ can be accessed in the property <cite>df_out.preprocessing.summary</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.remove_non_numeric">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">remove_non_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#remove_non_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.remove_non_numeric" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">remove_non_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#remove_non_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.remove_non_numeric" title="Link to this definition"></a></dt>
 <dd><p>Removes non-numeric signals from the input DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -263,7 +260,7 @@ can be accessed in the property <cite>dff.preprocessing.summary</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.remove_signals_with_missing_data">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">remove_signals_with_missing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#remove_signals_with_missing_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.remove_signals_with_missing_data" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">remove_signals_with_missing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#remove_signals_with_missing_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.remove_signals_with_missing_data" title="Link to this definition"></a></dt>
 <dd><p>Removes columns from the dataframe that have a high percentage of missing
 data.</p>
 <dl class="field-list simple">
@@ -290,7 +287,7 @@ can be accessed in the property <cite>dff.preprocessing.summary</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.sampling_info">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">sampling_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_ratio_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#sampling_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.sampling_info" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">sampling_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_ratio_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#sampling_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.sampling_info" title="Link to this definition"></a></dt>
 <dd><p>Attaches sampling period information if available and removes or tags
 signals that have a high or low ratio of sampling period to gridded period.</p>
 <dl class="field-list simple">
@@ -316,7 +313,7 @@ sampling_ratio_threshold) from the median of sampling rates.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seeq.addons.correlation._preprocessor.standardization">
-<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">standardization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#standardization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.standardization" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">seeq.addons.correlation._preprocessor.</span></span><span class="sig-name descname"><span class="pre">standardization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seeq/addons/correlation/_preprocessor.html#standardization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seeq.addons.correlation._preprocessor.standardization" title="Link to this definition"></a></dt>
 <dd><p>Scales the data in the DataFrame to zero mean and unit variance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

@@ -1,18 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation.__main__ &mdash; seeq-correlation 0.1.9 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>seeq.addons.correlation.__main__ &mdash; seeq-correlation 0.3.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=29d04658"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -23,14 +26,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            seeq-correlation
+              <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.1.9
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -62,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>seeq.addons.correlation.__main__</li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">seeq.addons.correlation.__main__</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,30 +79,30 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seeq.addons.correlation.__main__</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
-<span class="kn">from</span> <span class="nn">seeq</span> <span class="kn">import</span> <span class="n">sdk</span><span class="p">,</span> <span class="n">spy</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">getpass</span><span class="w"> </span><span class="kn">import</span> <span class="n">getpass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">seeq</span><span class="w"> </span><span class="kn">import</span> <span class="n">sdk</span><span class="p">,</span> <span class="n">spy</span>
 <span class="c1"># noinspection PyProtectedMember</span>
-<span class="kn">from</span> <span class="nn">seeq.spy._errors</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">seeq.spy._errors</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="c1"># noinspection PyProtectedMember</span>
-<span class="kn">from</span> <span class="nn">seeq.spy</span> <span class="kn">import</span> <span class="n">_url</span>
-<span class="kn">from</span> <span class="nn">._copy</span> <span class="kn">import</span> <span class="n">copy</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">get_user_group</span><span class="p">,</span> <span class="n">get_seeq_url</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">correlation_udfs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">seeq.spy</span><span class="w"> </span><span class="kn">import</span> <span class="n">_url</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_seeq_url</span><span class="p">,</span> <span class="n">DEFAULT_GROUP</span><span class="p">,</span> <span class="n">DEFAULT_USERS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_udfs</span>
 
 <span class="n">NB_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;widgetsnbextension&#39;</span><span class="p">,</span> <span class="s1">&#39;ipyvuetify&#39;</span><span class="p">,</span> <span class="s1">&#39;ipyvue&#39;</span><span class="p">]</span>
 <span class="n">DEPLOYMENT_FOLDER</span> <span class="o">=</span> <span class="s1">&#39;deployment&#39;</span>
 <span class="n">CORRELATION_NOTEBOOK</span> <span class="o">=</span> <span class="s2">&quot;correlation_analysis_master.ipynb&quot;</span>
-<span class="n">DEFAULT_GROUP</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Everyone&#39;</span><span class="p">]</span>
-<span class="n">DEFAULT_USERS</span> <span class="o">=</span> <span class="p">[]</span>
 
 
-<div class="viewcode-block" id="install_app"><a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.install_app">[docs]</a><span class="k">def</span> <span class="nf">install_app</span><span class="p">(</span><span class="n">sdl_url_</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sort_key</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">permissions_group</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">permissions_users</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="install_app">
+<a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.install_app">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">install_app</span><span class="p">(</span><span class="n">sdl_url_</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sort_key</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">permissions_group</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">permissions_users</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Installs Correlation as an Add-on Tool in Seeq Workbench</span>
 
@@ -143,7 +148,10 @@
     <span class="n">spy</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">add_on_details</span><span class="p">,</span> <span class="n">include_workbook_parameters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update_tool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update_permissions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="install_nbextensions"><a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.install_nbextensions">[docs]</a><span class="k">def</span> <span class="nf">install_nbextensions</span><span class="p">():</span>
+
+<div class="viewcode-block" id="install_nbextensions">
+<a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.install_nbextensions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">install_nbextensions</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Installs the Jupyter nbextensions required to render the Add-on</span>
 
@@ -158,7 +166,10 @@
                        <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="logging_attempts"><a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.logging_attempts">[docs]</a><span class="k">def</span> <span class="nf">logging_attempts</span><span class="p">(</span><span class="n">_user</span><span class="p">):</span>
+
+<div class="viewcode-block" id="logging_attempts">
+<a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.logging_attempts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">logging_attempts</span><span class="p">(</span><span class="n">_user</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allows user to re-enter credentials multiple times in the event of</span>
 <span class="sd">    authentication failure</span>
@@ -198,52 +209,9 @@
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Number of login attempts exceeded&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_udfs"><a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.create_udfs">[docs]</a><span class="k">def</span> <span class="nf">create_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">permissions_groups</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">permissions_users</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Creates the required Formula UDFs for the Correlation app</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    api_client: seeq.sdk.api_client.ApiClient</span>
-<span class="sd">        The seeq.sdk API client that handles the client-server</span>
-<span class="sd">        communication</span>
-<span class="sd">    permissions_groups: list</span>
-<span class="sd">        Names of the Seeq groups that will have access to each tool</span>
-<span class="sd">    permissions_users: list</span>
-<span class="sd">        Names of Seeq users that will have access to each tool</span>
-<span class="sd">    Returns</span>
-<span class="sd">    --------</span>
-<span class="sd">    -: None</span>
-<span class="sd">        The Correlation UDFs will be available in Seeq Workbench</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">permissions_groups</span> <span class="o">=</span> <span class="n">permissions_groups</span> <span class="k">if</span> <span class="n">permissions_groups</span> <span class="k">else</span> <span class="n">DEFAULT_GROUP</span>
-    <span class="n">permissions_users</span> <span class="o">=</span> <span class="n">permissions_users</span> <span class="k">if</span> <span class="n">permissions_users</span> <span class="k">else</span> <span class="n">DEFAULT_USERS</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Creating CrossCorrelation UDFs...&quot;</span><span class="p">)</span>
-    <span class="n">user_groups_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">UserGroupsApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-    <span class="n">users_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">UsersApi</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
-    <span class="n">items_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">ItemsApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-    <span class="n">pkg_id</span> <span class="o">=</span> <span class="n">correlation_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-
-    <span class="c1"># assign group permissions</span>
-    <span class="k">for</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="n">permissions_groups</span><span class="p">:</span>
-        <span class="n">group</span> <span class="o">=</span> <span class="n">get_user_group</span><span class="p">(</span><span class="n">group_name</span><span class="p">,</span> <span class="n">user_groups_api</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
-            <span class="n">ace_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">AceInputV1</span><span class="p">(</span><span class="n">identity_id</span><span class="o">=</span><span class="n">group</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="n">sdk</span><span class="o">.</span><span class="n">PermissionsV1</span><span class="p">(</span><span class="n">read</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-            <span class="n">items_api</span><span class="o">.</span><span class="n">add_access_control_entry</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">ace_input</span><span class="p">)</span>
-
-    <span class="c1"># assign user permissions</span>
-    <span class="k">for</span> <span class="n">user_name</span> <span class="ow">in</span> <span class="n">permissions_users</span><span class="p">:</span>
-        <span class="n">current_user</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">(</span><span class="n">user_name</span><span class="p">,</span> <span class="n">users_api</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">current_user</span><span class="p">:</span>
-            <span class="n">ace_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">AceInputV1</span><span class="p">(</span><span class="n">identity_id</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                                       <span class="n">permissions</span><span class="o">=</span><span class="n">sdk</span><span class="o">.</span><span class="n">PermissionsV1</span><span class="p">(</span><span class="n">read</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-            <span class="n">items_api</span><span class="o">.</span><span class="n">add_access_control_entry</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">ace_input</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DONE&quot;</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="cli_interface"><a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.cli_interface">[docs]</a><span class="k">def</span> <span class="nf">cli_interface</span><span class="p">():</span>
+<div class="viewcode-block" id="cli_interface">
+<a class="viewcode-back" href="../../../../add_on_installation.html#seeq.addons.correlation.__main__.cli_interface">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cli_interface</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Command line utility to install the Correlation Add-on Tool &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Install Correlation as a Seeq Add-on Tool&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--nbextensions_only&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
@@ -263,6 +231,7 @@
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;List of the Seeq groups to will have access to the Correlation Add-on Tool, &quot;</span>
                              <span class="s2">&quot;default: </span><span class="si">%(default)s</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span></div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
