@@ -1,5 +1,9 @@
 # Changelog
 
+v0.3.7
+---
+Generate requirements.txt from the uv lockfile
+
 v0.3.0
 ---
 Bundled the formula package element in the add-on package
