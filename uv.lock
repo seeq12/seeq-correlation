@@ -1700,7 +1700,6 @@ dependencies = [
     { name = "scikit-learn" },
     { name = "scipy" },
     { name = "seaborn" },
-    { name = "seeq" },
     { name = "statsmodels" },
     { name = "traitlets" },
 ]
@@ -1744,7 +1743,6 @@ requires-dist = [
     { name = "scikit-learn", specifier = "==1.7.1" },
     { name = "scipy", specifier = "==1.16.1" },
     { name = "seaborn", specifier = "==0.13.2" },
-    { name = "seeq" },
     { name = "seeq", marker = "extra == 'dev'" },
     { name = "seeq-spy", marker = "extra == 'dev'" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = "==80.9.0" },

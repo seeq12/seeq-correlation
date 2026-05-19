@@ -24,7 +24,6 @@ dependencies = [
     "scikit-learn==1.7.1",
     "scipy==1.16.1",
     "seaborn==0.13.2",
-    "seeq",
     "statsmodels==0.14.5",
     "traitlets==5.14.3",
 ]
