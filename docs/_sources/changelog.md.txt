@@ -1,4 +1,9 @@
 # Changelog
+
+v0.3.0
+---
+Bundled the formula package element in the add-on package
+
 v0.1.96
 ---
 Bug fix for long signal name leading to duplicates dropped in heatmap plot
@@ -9,7 +14,7 @@ Minor updates to addon manager packaging
 
 v0.1.9
 ---
-Fucntions to package Correlation for use in addon manager
+Functions to package Correlation for use in addon manager
 
 v0.1.8
 ---

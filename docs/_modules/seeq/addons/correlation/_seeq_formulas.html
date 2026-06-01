@@ -1,18 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._seeq_formulas &mdash; seeq-correlation 0.1.9 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>seeq.addons.correlation._seeq_formulas &mdash; seeq-correlation 0.3.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=29d04658"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -23,14 +26,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            seeq-correlation
+              <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.1.9
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -62,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>seeq.addons.correlation._seeq_formulas</li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">seeq.addons.correlation._seeq_formulas</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,9 +79,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seeq.addons.correlation._seeq_formulas</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">textwrap</span>
-<span class="kn">from</span> <span class="nn">seeq</span> <span class="kn">import</span> <span class="n">sdk</span>
-<span class="kn">from</span> <span class="nn">seeq.sdk.rest</span> <span class="kn">import</span> <span class="n">ApiException</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">seeq</span><span class="w"> </span><span class="kn">import</span> <span class="n">sdk</span><span class="p">,</span> <span class="n">spy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">seeq.sdk.rest</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiException</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_udf_package</span><span class="p">,</span> <span class="n">get_user_group</span><span class="p">,</span> <span class="n">get_user</span><span class="p">,</span> <span class="n">DEFAULT_USERS</span><span class="p">,</span> <span class="n">DEFAULT_GROUP</span>
 
 <span class="n">pearson_formula</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -139,6 +147,7 @@
 
 <span class="n">formulas_info</span> <span class="o">=</span> <span class="p">[</span>
     <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;correlationCoefficient&#39;</span><span class="p">,</span>
+         <span class="n">data_id</span><span class="o">=</span><span class="s2">&quot;f253c5ca-6eed-43e0-993e-5696ecd441ea&quot;</span><span class="p">,</span> <span class="c1"># Must match the IDs in formula_package.json</span>
          <span class="n">formula</span><span class="o">=</span><span class="n">pearson_formula</span><span class="p">,</span>
          <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input1</span><span class="p">,</span> <span class="n">signal_input2</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">],</span>
          <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
@@ -156,6 +165,7 @@
          <span class="p">]</span>
          <span class="p">),</span>
     <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;correlationCoefficientWithTimeShifts&#39;</span><span class="p">,</span>
+         <span class="n">data_id</span><span class="o">=</span><span class="s2">&quot;d32366ff-b9f0-494f-8c8e-cced58386968&quot;</span><span class="p">,</span>
          <span class="n">formula</span><span class="o">=</span><span class="n">pearson_timeshifted_formula</span><span class="p">,</span>
          <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input</span><span class="p">,</span> <span class="n">goal_input</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">,</span> <span class="n">corr_thrs_input</span><span class="p">,</span> <span class="n">maxtimeshift_input</span><span class="p">],</span>
          <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
@@ -188,6 +198,7 @@
          <span class="p">],</span>
          <span class="p">),</span>
     <span class="nb">dict</span><span class="p">(</span><span class="n">function_name</span><span class="o">=</span><span class="s1">&#39;timeShifts&#39;</span><span class="p">,</span>
+         <span class="n">data_id</span><span class="o">=</span><span class="s2">&quot;3ff61fcb-bfb2-45e0-b5e5-586c7858ca17&quot;</span><span class="p">,</span>
          <span class="n">formula</span><span class="o">=</span><span class="n">time_shifts_formula</span><span class="p">,</span>
          <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">signal_input</span><span class="p">,</span> <span class="n">goal_input</span><span class="p">,</span> <span class="n">window_input</span><span class="p">,</span> <span class="n">period_input</span><span class="p">,</span> <span class="n">corr_thrs_input</span><span class="p">,</span> <span class="n">maxtimeshift_input</span><span class="p">],</span>
          <span class="n">description</span><span class="o">=</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
@@ -218,7 +229,9 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="correlation_udfs"><a class="viewcode-back" href="../../../../seeq_server_interactions.html#seeq.addons.correlation._seeq_formulas.correlation_udfs">[docs]</a><span class="k">def</span> <span class="nf">correlation_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">):</span>
+<div class="viewcode-block" id="correlation_udfs">
+<a class="viewcode-back" href="../../../../seeq_server_interactions.html#seeq.addons.correlation._seeq_formulas.correlation_udfs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">correlation_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function creates Cross Correlation package of User Defined Functions</span>
 <span class="sd">    in the Seeq server. Once installed, these formula functions can be used</span>
@@ -238,43 +251,55 @@
     <span class="n">package_name</span> <span class="o">=</span> <span class="s1">&#39;CrossCorrelationAddOn&#39;</span>
     <span class="n">creator_name</span> <span class="o">=</span> <span class="s1">&#39;Seeq Corporation&#39;</span>
     <span class="n">creator_contact_info</span> <span class="o">=</span> <span class="s1">&#39;support@seeq.com&#39;</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">_version</span><span class="o">.</span><span class="n">__version__</span>
     <span class="n">formulas_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">pkg</span> <span class="o">=</span> <span class="n">formulas_api</span><span class="o">.</span><span class="n">get_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">package_name</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overwriting CrossCorrelation package&quot;</span><span class="p">)</span>
-            <span class="n">formulas_api</span><span class="o">.</span><span class="n">delete_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">ApiException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s1">&#39;not found&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-            <span class="k">pass</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">e</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="n">check_udf_package</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">api_client</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overwriting CrossCorrelation package&quot;</span><span class="p">)</span>
+        <span class="n">formulas_api</span><span class="o">.</span><span class="n">delete_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">)</span>
 
-    <span class="c1"># Create the Formula Package</span>
-    <span class="n">package_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaPackageInputV1</span><span class="p">(</span><span class="n">creator_name</span><span class="o">=</span><span class="n">creator_name</span><span class="p">,</span> <span class="n">creator_contact_info</span><span class="o">=</span><span class="n">creator_contact_info</span><span class="p">)</span>
-    <span class="n">package_output</span> <span class="o">=</span> <span class="n">formulas_api</span><span class="o">.</span><span class="n">put_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">package_input</span><span class="p">)</span>
+    <span class="c1"># Define the Formula Package</span>
+    <span class="n">import_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaPackageImportInputV1</span><span class="p">()</span>
+    <span class="n">import_input</span><span class="o">.</span><span class="n">formula_package</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaPackageInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span>
+                                                             <span class="n">creator_name</span><span class="o">=</span><span class="n">creator_name</span><span class="p">,</span>
+                                                             <span class="n">creator_contact_info</span><span class="o">=</span><span class="n">creator_contact_info</span><span class="p">,</span>
+                                                             <span class="n">version_string</span><span class="o">=</span><span class="n">version</span><span class="p">)</span>
 
-    <span class="c1"># Create the individual formulas</span>
+    <span class="c1"># Define the individual formulas</span>
+    <span class="n">import_input</span><span class="o">.</span><span class="n">functions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas_info</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating formula </span><span class="si">{</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">create_udf_formulas</span><span class="p">(</span><span class="n">formulas_api</span><span class="p">,</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">],</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">])</span>
+        <span class="n">udf_input</span> <span class="o">=</span> <span class="n">create_udf_formulas</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">],</span>
+                                        <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;data_id&#39;</span><span class="p">],</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">])</span>
+        <span class="n">import_input</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">udf_input</span><span class="p">)</span>
 
-    <span class="c1"># Create the formula docs</span>
-    <span class="n">formula_pkg_docs</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">formulas_api</span><span class="p">)</span>
+    <span class="c1"># Define the formula docs for the top-level and for each function</span>
+    <span class="n">import_input</span><span class="o">.</span><span class="n">docs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">pkg_doc_input</span> <span class="o">=</span> <span class="n">formula_pkg_doc</span><span class="p">(</span><span class="n">package_name</span><span class="p">)</span>
+    <span class="n">import_input</span><span class="o">.</span><span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pkg_doc_input</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas_info</span><span class="p">:</span>
+        <span class="n">formula_doc_input</span> <span class="o">=</span> <span class="n">formula_doc</span><span class="p">(</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">],</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+                                        <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleListInputV1</span><span class="p">(</span><span class="n">examples</span><span class="o">=</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;examples&#39;</span><span class="p">]))</span>
+        <span class="n">import_input</span><span class="o">.</span><span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula_doc_input</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">package_output</span><span class="o">.</span><span class="n">id</span></div>
+    <span class="c1"># Actually create everything</span>
+    <span class="n">package_output</span> <span class="o">=</span> <span class="n">formulas_api</span><span class="o">.</span><span class="n">import_package</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">import_input</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">package_output</span><span class="o">.</span><span class="n">formula_package</span><span class="o">.</span><span class="n">id</span></div>
 
 
-<span class="k">def</span> <span class="nf">create_udf_formulas</span><span class="p">(</span><span class="n">formulas_api</span><span class="p">,</span> <span class="n">pkg_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_udf_formulas</span><span class="p">(</span><span class="n">pkg_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">data_id</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="n">udf_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FunctionInputV1</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">pkg_name</span><span class="p">,</span>
                                     <span class="n">name</span><span class="o">=</span><span class="n">function_name</span><span class="p">,</span>
+                                    <span class="n">data_id</span><span class="o">=</span><span class="n">data_id</span><span class="p">,</span>
                                     <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;UserDefinedFormulaFunction&#39;</span><span class="p">,</span>
                                     <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
                                     <span class="n">parameters</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
-    <span class="n">formulas_api</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">udf_input</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">udf_input</span>
 
 
-<span class="k">def</span> <span class="nf">formula_pkg_docs</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">formulas_api</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">formula_pkg_doc</span><span class="p">(</span><span class="n">package_name</span><span class="p">):</span>
     <span class="c1"># Create formula docs</span>
     <span class="n">index_title</span> <span class="o">=</span> <span class="s1">&#39;Cross Correlation&#39;</span>
     <span class="n">index_description</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
@@ -283,32 +308,23 @@
 <span class="sd">        cross-correlation</span>
 <span class="sd">        &quot;&quot;&quot;</span><span class="p">)</span>
     <span class="n">index_doc_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocInputV1</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="n">index_title</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="n">index_description</span><span class="p">,</span>
         <span class="n">search_keywords</span><span class="o">=</span><span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocKeywordListInputV1</span><span class="p">(</span><span class="n">keywords</span><span class="o">=</span><span class="p">[</span>
             <span class="s1">&#39;cross-correlation&#39;</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">,</span> <span class="s1">&#39;Pearson&#39;</span><span class="p">,</span> <span class="s1">&#39;offset&#39;</span><span class="p">,</span> <span class="s1">&#39;time shifts&#39;</span><span class="p">]))</span>
-    <span class="n">formulas_api</span><span class="o">.</span><span class="n">put_formula_doc</span><span class="p">(</span>
-        <span class="n">package_name</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span>
-        <span class="n">doc_name</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>
-        <span class="n">body</span><span class="o">=</span><span class="n">index_doc_input</span><span class="p">)</span>
-
-    <span class="c1"># Create the docs for each formula</span>
-    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas_info</span><span class="p">:</span>
-        <span class="n">formula_docs</span><span class="p">(</span><span class="n">package_name</span><span class="p">,</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;function_name&#39;</span><span class="p">],</span> <span class="n">formula</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
-                     <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleListInputV1</span><span class="p">(</span><span class="n">examples</span><span class="o">=</span><span class="n">formula</span><span class="p">[</span><span class="s1">&#39;examples&#39;</span><span class="p">]),</span> <span class="n">formulas_api</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">index_doc_input</span>
 
 
-<span class="k">def</span> <span class="nf">formula_docs</span><span class="p">(</span><span class="n">pkg_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">examples</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleListInputV1</span><span class="p">,</span>
-                 <span class="n">formulas_api</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">formula_doc</span><span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">examples</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocExampleListInputV1</span><span class="p">):</span>
     <span class="c1"># Examples are the best way to demonstrate using the UDF.</span>
-    <span class="n">doc_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocInputV1</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+    <span class="n">doc_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulaDocInputV1</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">function_name</span><span class="p">,</span>
+                                      <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
                                       <span class="n">examples</span><span class="o">=</span><span class="n">examples</span><span class="p">)</span>
-    <span class="n">formulas_api</span><span class="o">.</span><span class="n">put_formula_doc</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">pkg_name</span><span class="p">,</span>
-                                 <span class="n">doc_name</span><span class="o">=</span><span class="n">function_name</span><span class="p">,</span>
-                                 <span class="n">body</span><span class="o">=</span><span class="n">doc_input</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">doc_input</span>
 
 
-<span class="k">def</span> <span class="nf">signals_from_formula</span><span class="p">(</span><span class="n">signal1_id</span><span class="p">,</span> <span class="n">signal_ref_id</span><span class="p">,</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="n">formula_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_signal_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">signals_from_formula</span><span class="p">(</span><span class="n">signal1_id</span><span class="p">,</span> <span class="n">signal_ref_id</span><span class="p">,</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="n">formula_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_signal_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">api_client</span><span class="p">:</span> <span class="n">sdk</span><span class="o">.</span><span class="n">api_client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">signals_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">SignalsApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">formula_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -366,6 +382,54 @@
                    <span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">signals_api</span><span class="o">.</span><span class="n">create_signal_with_http_info</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">payload</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">r</span>
+
+
+<div class="viewcode-block" id="create_udfs">
+<a class="viewcode-back" href="../../../../seeq_server_interactions.html#seeq.addons.correlation._seeq_formulas.create_udfs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">permissions_groups</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">permissions_users</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the required Formula UDFs for the Correlation app</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    api_client: seeq.sdk.api_client.ApiClient</span>
+<span class="sd">        The seeq.sdk API client that handles the client-server</span>
+<span class="sd">        communication</span>
+<span class="sd">    permissions_groups: list</span>
+<span class="sd">        Names of the Seeq groups that will have access to each tool</span>
+<span class="sd">    permissions_users: list</span>
+<span class="sd">        Names of Seeq users that will have access to each tool</span>
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    -: None</span>
+<span class="sd">        The Correlation UDFs will be available in Seeq Workbench</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">permissions_groups</span> <span class="o">=</span> <span class="n">permissions_groups</span> <span class="k">if</span> <span class="n">permissions_groups</span> <span class="k">else</span> <span class="n">DEFAULT_GROUP</span>
+    <span class="n">permissions_users</span> <span class="o">=</span> <span class="n">permissions_users</span> <span class="k">if</span> <span class="n">permissions_users</span> <span class="k">else</span> <span class="n">DEFAULT_USERS</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Creating CrossCorrelationAddOn UDFs...&quot;</span><span class="p">)</span>
+    <span class="n">user_groups_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">UserGroupsApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
+    <span class="n">users_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">UsersApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
+    <span class="n">items_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">ItemsApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
+    <span class="n">pkg_id</span> <span class="o">=</span> <span class="n">correlation_udfs</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
+
+    <span class="c1"># assign group permissions</span>
+    <span class="k">for</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="n">permissions_groups</span><span class="p">:</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">get_user_group</span><span class="p">(</span><span class="n">group_name</span><span class="p">,</span> <span class="n">user_groups_api</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
+            <span class="n">ace_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">AceInputV1</span><span class="p">(</span><span class="n">identity_id</span><span class="o">=</span><span class="n">group</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="n">sdk</span><span class="o">.</span><span class="n">PermissionsV1</span><span class="p">(</span><span class="n">read</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="n">items_api</span><span class="o">.</span><span class="n">add_access_control_entry</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">ace_input</span><span class="p">)</span>
+
+    <span class="c1"># assign user permissions</span>
+    <span class="k">for</span> <span class="n">user_name</span> <span class="ow">in</span> <span class="n">permissions_users</span><span class="p">:</span>
+        <span class="n">current_user</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">(</span><span class="n">user_name</span><span class="p">,</span> <span class="n">users_api</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current_user</span><span class="p">:</span>
+            <span class="n">ace_input</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">AceInputV1</span><span class="p">(</span><span class="n">identity_id</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                                       <span class="n">permissions</span><span class="o">=</span><span class="n">sdk</span><span class="o">.</span><span class="n">PermissionsV1</span><span class="p">(</span><span class="n">read</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="n">items_api</span><span class="o">.</span><span class="n">add_access_control_entry</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">ace_input</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DONE&quot;</span><span class="p">)</span></div>
+
 </pre></div>
 
            </div>

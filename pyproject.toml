@@ -19,7 +19,6 @@ dependencies = [
     "memoization==0.4.0",
     "numpy==2.3.2",
     "pandas==2.3.1",
-    "pillow==11.3.0",
     "python-dateutil==2.9.0.post0",
     "scikit-learn==1.7.1",
     "scipy==1.16.1",
@@ -28,7 +27,12 @@ dependencies = [
     "traitlets==5.14.3",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
+
+cves = [
+    "pillow>=12.2.0",
+]
+
 dev = [
     "myst-parser==4.0.1",
     "parver==0.5",

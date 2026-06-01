@@ -1,18 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._preprocessor &mdash; seeq-correlation 0.1.9 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>seeq.addons.correlation._preprocessor &mdash; seeq-correlation 0.3.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=29d04658"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -23,14 +26,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> seeq-correlation
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            seeq-correlation
+              <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.1.9
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -62,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>seeq.addons.correlation._preprocessor</li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">seeq.addons.correlation._preprocessor</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,17 +79,17 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seeq.addons.correlation._preprocessor</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">types</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">memoization</span> <span class="kn">import</span> <span class="n">cached</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">memoization</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached</span>
 <span class="c1"># There is a bug that prevents to correctly memorize a pandas.DataFrame</span>
 <span class="c1"># Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)</span>
-<span class="kn">from</span> <span class="nn">._config</span> <span class="kn">import</span> <span class="n">_cache_max_items</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._config</span><span class="w"> </span><span class="kn">import</span> <span class="n">_cache_max_items</span>
 
 <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span> <span class="o">=</span> <span class="s1">&#39;spy&#39;</span>
 <span class="n">DATAFRAME_PREPROCESSING_CONTAINER</span> <span class="o">=</span> <span class="s1">&#39;preprocessing&#39;</span>
@@ -99,7 +104,7 @@
 <span class="n">STATUS_PROP</span> <span class="o">=</span> <span class="s1">&#39;status&#39;</span>
 
 
-<span class="k">def</span> <span class="nf">_reformat_time_delta</span><span class="p">(</span><span class="n">time_delta</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_reformat_time_delta</span><span class="p">(</span><span class="n">time_delta</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">days</span> <span class="o">=</span> <span class="n">time_delta</span><span class="o">.</span><span class="n">days</span>
     <span class="n">hours</span><span class="p">,</span> <span class="n">rem</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">time_delta</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
     <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">rem</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
@@ -108,7 +113,7 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">total_hours</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_validate_df</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_df</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expecting a dataframe, </span><span class="si">{}</span><span class="s2"> passed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">)))</span>
 
@@ -158,7 +163,9 @@
                              <span class="s2">&quot;time period of interest&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="attach_summary"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.attach_summary">[docs]</a><span class="k">def</span> <span class="nf">attach_summary</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">summary</span><span class="p">):</span>
+<div class="viewcode-block" id="attach_summary">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.attach_summary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">attach_summary</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">summary</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This functions adds the summary of a pre-processing operation as property</span>
 <span class="sd">    of the DataFrame that contains the data.</span>
@@ -225,8 +232,9 @@
     <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_PREPROCESSING_CONTAINER</span><span class="p">,</span> <span class="n">summary_namespace</span><span class="p">)</span></div>
 
 
+
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_pickled_standardization</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pickled_standardization</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">_pickled_non_numeric</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -249,7 +257,7 @@
 
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_pickled_interpolate</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pickled_interpolate</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -269,7 +277,7 @@
 
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_pickled_flat_lines</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pickled_flat_lines</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">):</span>
     <span class="c1"># df = pickle.loads(df_serialized)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">_pickled_non_numeric</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
@@ -288,7 +296,7 @@
 
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_pickled_gaps</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">percent_nan</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pickled_gaps</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">percent_nan</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -307,7 +315,7 @@
 
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_pickled_non_numeric</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">auto_remove</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pickled_non_numeric</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">auto_remove</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -335,7 +343,7 @@
 
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_pickled_duplicated_column_names</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pickled_duplicated_column_names</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">)</span>
     <span class="n">_validate_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
@@ -358,7 +366,7 @@
 
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_pickled_sampling_info</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pickled_sampling_info</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">keyword</span> <span class="o">=</span> <span class="s1">&#39;tagged&#39;</span>
     <span class="k">if</span> <span class="n">remove</span><span class="p">:</span>
         <span class="n">keyword</span> <span class="o">=</span> <span class="s1">&#39;removed&#39;</span>
@@ -408,7 +416,9 @@
     <span class="k">return</span> <span class="n">dff</span>
 
 
-<div class="viewcode-block" id="standardization"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.standardization">[docs]</a><span class="k">def</span> <span class="nf">standardization</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<div class="viewcode-block" id="standardization">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.standardization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">standardization</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Scales the data in the DataFrame to zero mean and unit variance</span>
 
@@ -434,7 +444,10 @@
     <span class="k">return</span> <span class="n">_pickled_standardization</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="interpolate_nans"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.interpolate_nans">[docs]</a><span class="k">def</span> <span class="nf">interpolate_nans</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+
+<div class="viewcode-block" id="interpolate_nans">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.interpolate_nans">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">interpolate_nans</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolates invalid values (linearly) per signal only if the percentage of</span>
 <span class="sd">    consecutive invalid values with respect to the total number of samples is</span>
@@ -464,7 +477,10 @@
     <span class="k">return</span> <span class="n">_pickled_interpolate</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">consecutivenans</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="remove_flat_lines"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_flat_lines">[docs]</a><span class="k">def</span> <span class="nf">remove_flat_lines</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+
+<div class="viewcode-block" id="remove_flat_lines">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_flat_lines">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_flat_lines</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find signals with zero variance (flat lines) and remove them from the</span>
 <span class="sd">    input DataFrame</span>
@@ -490,7 +506,10 @@
     <span class="k">return</span> <span class="n">_pickled_flat_lines</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="remove_signals_with_missing_data"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_signals_with_missing_data">[docs]</a><span class="k">def</span> <span class="nf">remove_signals_with_missing_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+
+<div class="viewcode-block" id="remove_signals_with_missing_data">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_signals_with_missing_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_signals_with_missing_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes columns from the dataframe that have a high percentage of missing</span>
 <span class="sd">    data.</span>
@@ -520,7 +539,10 @@
     <span class="k">return</span> <span class="n">_pickled_gaps</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">percent_nan</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="remove_non_numeric"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_non_numeric">[docs]</a><span class="k">def</span> <span class="nf">remove_non_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">auto_remove</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="remove_non_numeric">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_non_numeric">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_non_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">auto_remove</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes non-numeric signals from the input DataFrame.</span>
 
@@ -548,7 +570,10 @@
     <span class="k">return</span> <span class="n">_pickled_non_numeric</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">auto_remove</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="duplicated_column_names"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.duplicated_column_names">[docs]</a><span class="k">def</span> <span class="nf">duplicated_column_names</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+
+<div class="viewcode-block" id="duplicated_column_names">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.duplicated_column_names">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">duplicated_column_names</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Renames columns that have the same column name</span>
 
@@ -568,7 +593,10 @@
     <span class="k">return</span> <span class="n">_pickled_duplicated_column_names</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="sampling_info"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.sampling_info">[docs]</a><span class="k">def</span> <span class="nf">sampling_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="p">):</span>
+
+<div class="viewcode-block" id="sampling_info">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.sampling_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sampling_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Attaches sampling period information if available and removes or tags</span>
 <span class="sd">    signals that have a high or low ratio of sampling period to gridded period.</span>
@@ -596,7 +624,10 @@
     <span class="k">return</span> <span class="n">_pickled_sampling_info</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="default_preprocessing_wrapper"><a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.default_preprocessing_wrapper">[docs]</a><span class="k">def</span> <span class="nf">default_preprocessing_wrapper</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">remove_disparate_sampled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+<div class="viewcode-block" id="default_preprocessing_wrapper">
+<a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.default_preprocessing_wrapper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">default_preprocessing_wrapper</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">remove_disparate_sampled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                   <span class="n">sampling_ratio_threshold</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bypass_processing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters</span>
@@ -652,6 +683,7 @@
 
     <span class="n">_validate_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
+
 </pre></div>
 
            </div>

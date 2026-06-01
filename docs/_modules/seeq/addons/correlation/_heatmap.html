@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._heatmap &mdash; seeq-correlation 0.1.96 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>seeq.addons.correlation._heatmap &mdash; seeq-correlation 0.3.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=29d04658"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -33,9 +33,6 @@
             seeq-correlation
               <img src="../../../../_static/Seeq_logo_darkBlue_sm.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.1.96
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -82,19 +79,27 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seeq.addons.correlation._heatmap</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
 <span class="c1"># There is a bug that prevents to correctly memorize a pandas.DataFrame</span>
 <span class="c1"># Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)</span>
-<span class="kn">from</span> <span class="nn">memoization</span> <span class="kn">import</span> <span class="n">cached</span>
-<span class="kn">from</span> <span class="nn">._config</span> <span class="kn">import</span> <span class="n">_cache_max_items</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">default_preprocessing_wrapper</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lags_coeffs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">memoization</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._config</span><span class="w"> </span><span class="kn">import</span> <span class="n">_cache_max_items</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_preprocessing_wrapper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">lags_coeffs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._heatmap_html</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_overlays_html</span><span class="p">,</span> <span class="n">wrap_heatmap_html</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bbox</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
 
 
-<div class="viewcode-block" id="heatmap"><a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._heatmap.heatmap">[docs]</a><span class="k">def</span> <span class="nf">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">&#39;coeffs&#39;</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;plot&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="heatmap">
+<a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._heatmap.heatmap">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">&#39;coeffs&#39;</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;plot&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
             <span class="n">bypass_preprocessing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a heatmap plot of the cross-correlation coefficients between</span>
@@ -134,8 +139,8 @@
 <span class="sd">    -------</span>
 <span class="sd">    Either one of the following</span>
 <span class="sd">    -: None</span>
-<span class="sd">        Displays a Plotly figure with either Pearson&#39;s coefficients or signal</span>
-<span class="sd">        time shifts</span>
+<span class="sd">        Displays a Matplotlib/Seaborn figure with either Pearson&#39;s coefficients</span>
+<span class="sd">        or signal time shifts</span>
 
 <span class="sd">    table: pandas.DataFrame</span>
 <span class="sd">        A DataFrame with either Pearson&#39;s coefficients or times_shifts of all</span>
@@ -190,7 +195,8 @@
         <span class="k">return</span> <span class="n">heatmap_object</span></div>
 
 
-<span class="k">def</span> <span class="nf">_heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">&#39;coeffs&#39;</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;plot&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">&#39;coeffs&#39;</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;plot&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
              <span class="n">bypass_preprocessing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="c1"># We don&#39;t want to remove outliers here. Increased the outlier_sensitivity</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">default_preprocessing_wrapper</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
@@ -228,103 +234,180 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid output_values: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_type</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">rename_signals</span><span class="p">(</span><span class="n">signal_list</span><span class="p">,</span> <span class="n">max_label_chars</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rename_signals</span><span class="p">(</span><span class="n">signal_list</span><span class="p">,</span> <span class="n">max_label_chars</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">signal_list</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">max_label_chars</span><span class="p">:</span>
         <span class="n">new_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">size_</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_label_chars</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">signal_list</span><span class="p">):</span>
-            <span class="n">truncated_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="n">max_label_chars</span><span class="p">:]</span>
-            <span class="k">if</span> <span class="n">truncated_name</span> <span class="ow">in</span> <span class="n">new_names</span><span class="p">:</span>
-                <span class="n">unique_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">truncated_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_label_chars</span><span class="p">:</span>
+                <span class="n">truncated_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="n">size_</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">size_</span><span class="o">-</span><span class="mi">3</span><span class="p">):]</span>
+                <span class="k">if</span> <span class="n">truncated_name</span> <span class="ow">in</span> <span class="n">new_names</span><span class="p">:</span>
+                    <span class="n">unique_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">truncated_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">unique_name</span> <span class="o">=</span> <span class="n">truncated_name</span>
+                <span class="n">new_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unique_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">unique_name</span> <span class="o">=</span> <span class="n">truncated_name</span>
-            <span class="n">new_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unique_name</span><span class="p">)</span>
+                <span class="n">new_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">new_names</span> <span class="o">=</span> <span class="n">signal_list</span>
     <span class="k">return</span> <span class="n">new_names</span>
 
-
-<span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_heatmap_plot</span><span class="p">(</span><span class="n">primary_df_serialized</span><span class="p">,</span> <span class="n">secondary_df_serialized</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lags_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">boolean_df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">max_label_chars</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
-    <span class="n">primary_df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">primary_df_serialized</span><span class="p">)</span>
-    <span class="n">secondary_df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">secondary_df_serialized</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">primary_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
-
-    <span class="n">signal_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">primary_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-    <span class="n">new_names</span> <span class="o">=</span> <span class="n">rename_signals</span><span class="p">(</span><span class="n">signal_list</span><span class="p">,</span> <span class="n">max_label_chars</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">boolean_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">boolean_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-        <span class="n">primary_array</span> <span class="o">=</span> <span class="n">primary_df</span><span class="p">[</span><span class="n">boolean_df</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">primary_array</span> <span class="o">=</span> <span class="n">primary_df</span><span class="o">.</span><span class="n">values</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">signal_list</span>
-    <span class="n">x_names</span> <span class="o">=</span> <span class="n">new_names</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">signal_list</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">y_names</span> <span class="o">=</span> <span class="n">new_names</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">primary_array</span><span class="p">)</span>
-    <span class="n">p_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">primary_df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">s_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">secondary_df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_color_limits</span><span class="p">(</span><span class="n">primary_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">lags_plot</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="c1"># Compute color limits and colormap for the heatmap</span>
     <span class="k">if</span> <span class="n">lags_plot</span><span class="p">:</span>
         <span class="n">flat</span> <span class="o">=</span> <span class="n">primary_array</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-        <span class="n">limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">flat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">flat</span><span class="p">)))</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Time (&quot;</span> <span class="o">+</span> <span class="n">time_unit</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">flat</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">flat</span><span class="p">)))</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;RdBu&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">limit</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Correlation Coefficient&#39;</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;RdBu&#39;</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">limit</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">center</span>
 
-    <span class="n">hovertext</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">yi</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-        <span class="n">hovertext</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">())</span>
-        <span class="k">for</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">lags_plot</span><span class="p">:</span>
-                <span class="n">hovertext</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Shifted signal: </span><span class="si">{</span><span class="n">xx</span><span class="si">}</span><span class="s1">&lt;br&gt;&#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;Signal: </span><span class="si">{</span><span class="n">yy</span><span class="si">}</span><span class="s1"> &lt;br&gt;&#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;&lt;b&gt;Time shifted (</span><span class="si">{</span><span class="n">time_unit</span><span class="si">}</span><span class="s1">): </span><span class="si">{</span><span class="n">p_label</span><span class="p">[</span><span class="n">yi</span><span class="p">][</span><span class="n">xi</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&lt;/b&gt; &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;&lt;br&gt;Coefficient: </span><span class="si">{</span><span class="n">s_label</span><span class="p">[</span><span class="n">yi</span><span class="p">][</span><span class="n">xi</span><span class="p">]</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_prepare_frames</span><span class="p">(</span><span class="n">primary_df_serialized</span><span class="p">,</span> <span class="n">secondary_df_serialized</span><span class="p">,</span> <span class="n">boolean_df</span><span class="p">,</span> <span class="n">max_label_chars</span><span class="p">):</span>
+    <span class="c1"># Prepare the DataFrames for plotting</span>
+    <span class="n">primary_df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">primary_df_serialized</span><span class="p">)</span>
+    <span class="n">secondary_df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">secondary_df_serialized</span><span class="p">)</span>
 
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">hovertext</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Shifted signal: </span><span class="si">{</span><span class="n">xx</span><span class="si">}</span><span class="s1">&lt;br&gt;Signal: </span><span class="si">{</span><span class="n">yy</span><span class="si">}</span><span class="s1"> &lt;br&gt;&lt;b&gt;Coefficient: </span><span class="si">{</span><span class="n">p_label</span><span class="p">[</span><span class="n">yi</span><span class="p">][</span><span class="n">xi</span><span class="p">]</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&lt;/b&gt; &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;&lt;br&gt;Time shifted (</span><span class="si">{</span><span class="n">time_unit</span><span class="si">}</span><span class="s1">): </span><span class="si">{</span><span class="n">s_label</span><span class="p">[</span><span class="n">yi</span><span class="p">][</span><span class="n">xi</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">new_names</span> <span class="o">=</span> <span class="n">rename_signals</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">primary_df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="n">max_label_chars</span><span class="p">)</span>
 
-    <span class="n">colorscale</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;#992542&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.111</span><span class="p">,</span> <span class="s1">&#39;#C00000&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.222</span><span class="p">,</span> <span class="s1">&#39;#FF0000&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.333</span><span class="p">,</span> <span class="s1">&#39;#f77e7e&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.444</span><span class="p">,</span> <span class="s1">&#39;#ffd1d1&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;#D3D3D3&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.666</span><span class="p">,</span> <span class="s1">&#39;#9cbbd1&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.777</span><span class="p">,</span> <span class="s1">&#39;#6c9ec1&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.888</span><span class="p">,</span> <span class="s1">&#39;#4791c6&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">0.999</span><span class="p">,</span> <span class="s1">&#39;#1f7fc4&#39;</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;#0070C0&#39;</span><span class="p">]]</span>
+    <span class="c1"># Data used to draw (apply mask if provided)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">boolean_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="n">plot_df</span> <span class="o">=</span> <span class="n">primary_df</span><span class="p">[</span><span class="n">boolean_df</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">primary_array</span> <span class="o">=</span> <span class="n">plot_df</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plot_df</span> <span class="o">=</span> <span class="n">primary_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">primary_array</span> <span class="o">=</span> <span class="n">plot_df</span><span class="o">.</span><span class="n">values</span>
 
-    <span class="c1"># create the raw corr heatmap</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
-                      <span class="c1"># needs to be flipped in order for diagonal to have correct orientation in plotly</span>
-                      <span class="n">x</span><span class="o">=</span><span class="n">x_names</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_names</span><span class="p">,</span>
-                      <span class="n">hoverinfo</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">,</span>
-                      <span class="n">text</span><span class="o">=</span><span class="n">hovertext</span><span class="p">,</span>
-                      <span class="n">colorscale</span><span class="o">=</span><span class="n">colorscale</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">),</span> <span class="n">zmin</span><span class="o">=-</span><span class="n">limit</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-                      <span class="p">)</span>
+    <span class="n">plot_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_names</span>
+    <span class="n">plot_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">new_names</span>
 
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">paper_bgcolor</span> <span class="o">=</span> <span class="s1">&#39;rgba(0,0,0,0)&#39;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">plot_bgcolor</span> <span class="o">=</span> <span class="s1">&#39;rgba(0,0,0,0)&#39;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">dragmode</span> <span class="o">=</span> <span class="s2">&quot;select&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">modebar</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;bgcolor&#39;</span><span class="p">:</span> <span class="s1">&#39;rgba(0, 0, 0, 0)&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;rgba(221, 221, 221, 1)&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;activecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;rgba(0, 121, 96, 1)&#39;</span>
-        <span class="p">}</span>
-    <span class="c1"># this ensures a square plot</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;constrain&#39;</span><span class="p">:</span> <span class="s1">&#39;domain&#39;</span><span class="p">,</span> <span class="s1">&#39;scaleanchor&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">}</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;constrain&#39;</span><span class="p">:</span> <span class="s1">&#39;domain&#39;</span><span class="p">}</span>
-    <span class="k">return</span> <span class="n">fig</span>
+    <span class="c1"># Tooltip values (unmasked)</span>
+    <span class="n">primary_vals</span> <span class="o">=</span> <span class="n">primary_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">primary_vals</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_names</span>
+    <span class="n">primary_vals</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">new_names</span>
+
+    <span class="n">secondary_vals</span> <span class="o">=</span> <span class="n">secondary_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">primary_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">primary_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">secondary_vals</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_names</span>
+    <span class="n">secondary_vals</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">new_names</span>
+
+    <span class="k">return</span> <span class="n">plot_df</span><span class="p">,</span> <span class="n">primary_array</span><span class="p">,</span> <span class="n">primary_vals</span><span class="p">,</span> <span class="n">secondary_vals</span><span class="p">,</span> <span class="n">new_names</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_draw_heatmap</span><span class="p">(</span><span class="n">plot_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">center</span><span class="p">):</span>
+    <span class="c1"># Create the figure and draw the heatmap</span>
+    <span class="n">num_signals</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_df</span><span class="p">)</span>
+    <span class="n">base_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_signals</span> <span class="o">*</span> <span class="mf">0.35</span><span class="p">))</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">base_size</span><span class="p">,</span> <span class="n">base_size</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+        <span class="n">plot_df</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.2f&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=-</span><span class="n">limit</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_colorbar</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">lags_plot</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="c1"># Create colorbar</span>
+    <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;4%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lags_plot</span><span class="p">:</span>
+        <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Time (minutes)&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Correlation Coefficient&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cbar</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_geometry_percentages</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pad_inches</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">):</span>
+    <span class="c1"># Compute the geometry of the heatmap for CSS positioning</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">renderer</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_renderer</span><span class="p">()</span>
+
+    <span class="n">tight</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>  <span class="c1"># inches</span>
+    <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">tight</span><span class="o">.</span><span class="n">extents</span>
+    <span class="n">tight_padded</span> <span class="o">=</span> <span class="n">Bbox</span><span class="o">.</span><span class="n">from_extents</span><span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="n">pad_inches</span><span class="p">,</span> <span class="n">y0</span> <span class="o">-</span> <span class="n">pad_inches</span><span class="p">,</span>
+                                     <span class="n">x1</span> <span class="o">+</span> <span class="n">pad_inches</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">pad_inches</span><span class="p">)</span>
+
+    <span class="c1"># Keep original display width so the visual size is stable in HTML</span>
+    <span class="n">orig_width_px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">tight_padded</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">))</span>
+
+    <span class="c1"># Axes bbox in inches</span>
+    <span class="n">ab_px</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">renderer</span><span class="p">)</span>
+    <span class="n">ab_in</span> <span class="o">=</span> <span class="n">Bbox</span><span class="o">.</span><span class="n">from_extents</span><span class="p">(</span><span class="n">ab_px</span><span class="o">.</span><span class="n">x0</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">,</span> <span class="n">ab_px</span><span class="o">.</span><span class="n">y0</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">,</span>
+                              <span class="n">ab_px</span><span class="o">.</span><span class="n">x1</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">,</span> <span class="n">ab_px</span><span class="o">.</span><span class="n">y1</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">)</span>
+
+    <span class="c1"># Fractions of the cropped image</span>
+    <span class="n">ax_left_frac</span>   <span class="o">=</span> <span class="p">(</span><span class="n">ab_in</span><span class="o">.</span><span class="n">x0</span> <span class="o">-</span> <span class="n">tight_padded</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="n">tight_padded</span><span class="o">.</span><span class="n">width</span>
+    <span class="n">ax_top_frac</span>    <span class="o">=</span> <span class="p">(</span><span class="n">tight_padded</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">ab_in</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span> <span class="o">/</span> <span class="n">tight_padded</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">ax_width_frac</span>  <span class="o">=</span>  <span class="n">ab_in</span><span class="o">.</span><span class="n">width</span>                 <span class="o">/</span> <span class="n">tight_padded</span><span class="o">.</span><span class="n">width</span>
+    <span class="n">ax_height_frac</span> <span class="o">=</span>  <span class="n">ab_in</span><span class="o">.</span><span class="n">height</span>                <span class="o">/</span> <span class="n">tight_padded</span><span class="o">.</span><span class="n">height</span>
+
+    <span class="c1"># Convert to percentages for CSS</span>
+    <span class="n">ax_left_pct</span>   <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">ax_left_frac</span>
+    <span class="n">ax_top_pct</span>    <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">ax_top_frac</span>
+    <span class="n">ax_width_pct</span>  <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">ax_width_frac</span>
+    <span class="n">ax_height_pct</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">ax_height_frac</span>
+
+    <span class="k">return</span> <span class="n">tight_padded</span><span class="p">,</span> <span class="n">orig_width_px</span><span class="p">,</span> <span class="n">ax_left_pct</span><span class="p">,</span> <span class="n">ax_top_pct</span><span class="p">,</span> <span class="n">ax_width_pct</span><span class="p">,</span> <span class="n">ax_height_pct</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_export_png_base64</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="p">,</span> <span class="n">export_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">):</span>
+    <span class="c1"># Export the figure to PNG and encode it in base64</span>
+    <span class="n">export_dpi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">dpi</span> <span class="o">*</span> <span class="n">export_scale</span><span class="p">))</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="n">bbox_inches</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">export_dpi</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+    <span class="n">buf</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+
+<span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_heatmap_plot</span><span class="p">(</span><span class="n">primary_df_serialized</span><span class="p">,</span> <span class="n">secondary_df_serialized</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">lags_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">boolean_df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_label_chars</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+
+    <span class="c1"># Prep frames</span>
+    <span class="n">plot_df</span><span class="p">,</span> <span class="n">primary_array</span><span class="p">,</span> <span class="n">primary_vals</span><span class="p">,</span> <span class="n">secondary_vals</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_prepare_frames</span><span class="p">(</span>
+        <span class="n">primary_df_serialized</span><span class="p">,</span> <span class="n">secondary_df_serialized</span><span class="p">,</span> <span class="n">boolean_df</span><span class="p">,</span> <span class="n">max_label_chars</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">plot_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Color scale</span>
+    <span class="n">limit</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">center</span> <span class="o">=</span> <span class="n">_compute_color_limits</span><span class="p">(</span><span class="n">primary_array</span><span class="p">,</span> <span class="n">lags_plot</span><span class="p">)</span>
+
+    <span class="c1"># Draw</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">_draw_heatmap</span><span class="p">(</span><span class="n">plot_df</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">center</span><span class="p">)</span>
+
+    <span class="c1"># Colorbar</span>
+    <span class="n">_add_colorbar</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">lags_plot</span><span class="p">)</span>
+
+    <span class="c1"># Geometry (DPI-agnostic percentages + original display width)</span>
+    <span class="n">tight_padded</span><span class="p">,</span> <span class="n">orig_width_px</span><span class="p">,</span> <span class="n">ax_left_pct</span><span class="p">,</span> <span class="n">ax_top_pct</span><span class="p">,</span> <span class="n">ax_width_pct</span><span class="p">,</span> <span class="n">ax_height_pct</span> <span class="o">=</span> \
+        <span class="n">_compute_geometry_percentages</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+
+    <span class="c1"># Build tooltip overlays</span>
+    <span class="n">overlays_html</span> <span class="o">=</span> <span class="n">build_overlays_html</span><span class="p">(</span>
+        <span class="n">plot_df</span><span class="o">=</span><span class="n">plot_df</span><span class="p">,</span>
+        <span class="n">primary_vals</span><span class="o">=</span><span class="n">primary_vals</span><span class="p">,</span>
+        <span class="n">secondary_vals</span><span class="o">=</span><span class="n">secondary_vals</span><span class="p">,</span>
+        <span class="n">time_unit</span><span class="o">=</span><span class="n">time_unit</span><span class="p">,</span>
+        <span class="n">lags_plot</span><span class="o">=</span><span class="n">lags_plot</span><span class="p">,</span>
+        <span class="n">ax_left_pct</span><span class="o">=</span><span class="n">ax_left_pct</span><span class="p">,</span>
+        <span class="n">ax_top_pct</span><span class="o">=</span><span class="n">ax_top_pct</span><span class="p">,</span>
+        <span class="n">ax_width_pct</span><span class="o">=</span><span class="n">ax_width_pct</span><span class="p">,</span>
+        <span class="n">ax_height_pct</span><span class="o">=</span><span class="n">ax_height_pct</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Export PNG</span>
+    <span class="n">png_b64</span> <span class="o">=</span> <span class="n">_export_png_base64</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="n">tight_padded</span><span class="p">,</span> <span class="n">export_scale</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+
+    <span class="c1"># Final HTML</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">wrap_heatmap_html</span><span class="p">(</span><span class="n">png_b64</span><span class="o">=</span><span class="n">png_b64</span><span class="p">,</span> <span class="n">overlays_html</span><span class="o">=</span><span class="n">overlays_html</span><span class="p">,</span> <span class="n">orig_width_px</span><span class="o">=</span><span class="n">orig_width_px</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">html</span>
 </pre></div>
 
            </div>
