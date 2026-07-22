@@ -1,5 +1,9 @@
 # Changelog
 
+v0.3.9
+---
+Fix for CVEs
+
 v0.3.8
 ---
 Fix for CVEs
