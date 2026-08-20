@@ -114,14 +114,12 @@ def heatmap(df, max_time_shift='auto', output_values='coeffs', output_type='plot
 
 def _heatmap(df, max_time_shift='auto', output_values='coeffs', output_type='plot', time_output_unit='auto',
              bypass_preprocessing=False):
-    # We don't want to remove outliers here. Increased the outlier_sensitivity
-    df = default_preprocessing_wrapper(df, consecutivenans=0.04, percent_nan=0.0,
-                                       bypass_processing=bypass_preprocessing)
-
-    lags, coeffs, sampling_time, time_unit, maxlags = lags_coeffs(df, max_time_shift, time_output_unit)
-    lags_to_time = lags * sampling_time
-    coeffs_df = pd.DataFrame(data=coeffs, columns=df.columns, index=df.columns)
-    time_shifts_df = pd.DataFrame(data=lags_to_time, columns=df.columns, index=df.columns)
+    coeffs_df, time_shifts_df, time_unit = correlation_matrices(
+        df,
+        max_time_shift=max_time_shift,
+        time_output_unit=time_output_unit,
+        bypass_preprocessing=bypass_preprocessing,
+    )
 
     if output_type == 'plot':
         if output_values == 'coeffs':
@@ -148,6 +146,19 @@ def _heatmap(df, max_time_shift='auto', output_values='coeffs', output_type='plo
             raise ValueError('Invalid output_values: {}'.format(output_values))
     else:
         raise ValueError('Invalid output_values: {}'.format(output_type))
+
+
+def correlation_matrices(df, max_time_shift='auto', time_output_unit='auto', bypass_preprocessing=False):
+    """Return aligned coefficient and time-shift matrices for a signal frame."""
+    # We don't want to remove outliers here.
+    df = default_preprocessing_wrapper(df, consecutivenans=0.04, percent_nan=0.0,
+                                       bypass_processing=bypass_preprocessing)
+
+    lags, coeffs, sampling_time, time_unit, maxlags = lags_coeffs(df, max_time_shift, time_output_unit)
+    lags_to_time = lags * sampling_time
+    coeffs_df = pd.DataFrame(data=coeffs, columns=df.columns, index=df.columns)
+    time_shifts_df = pd.DataFrame(data=lags_to_time, columns=df.columns, index=df.columns)
+    return coeffs_df, time_shifts_df, time_unit
 
 
 def rename_signals(signal_list, max_label_chars):

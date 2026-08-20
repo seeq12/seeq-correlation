@@ -1682,7 +1682,7 @@ wheels = [
 ]
 
 [[package]]
-name = "seeq-correlation"
+name = "seeq-correlation-python-plotter"
 source = { editable = "." }
 dependencies = [
     { name = "dask" },

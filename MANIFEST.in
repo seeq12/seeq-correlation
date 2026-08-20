@@ -1,5 +1,6 @@
 include LICENSE
 global-exclude *.pyc
+global-exclude .DS_Store
 global-exclude .ipynb_checkpoints
 graft seeq/addons/correlation/deployment_notebook
 prune tests

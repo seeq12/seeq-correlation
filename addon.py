@@ -1,84 +1,80 @@
-import sys
-import os
 import json
-import zipfile
-import pathlib
 import shutil
 import subprocess
-
-# build the distribution
-distribution_relative_dir = 'dist'
-distribution_abs_dir = os.path.join(os.getcwd(), distribution_relative_dir)
-if os.path.isdir(distribution_abs_dir):
-    shutil.rmtree(distribution_abs_dir)
-build_command = [
-    sys.executable, '-m', 'build',
-    '--wheel',
-    '--outdir', distribution_relative_dir]
-subprocess.run(build_command, check=True)
-source_wheel = max(
-    [os.path.join(distribution_abs_dir, f) for f in os.listdir(distribution_abs_dir)],
-    key=os.path.getctime
-)
-
-def create_requirements_from_lockfile():
-    cmd = [
-        "uv",
-        "export",
-        "--quiet",
-        "--no-dev",
-        "--no-header",
-        "--no-hashes",
-        "--no-emit-project",
-        "--format=requirements.txt",
-    ]
-    return subprocess.run(cmd, check=True, capture_output=True, text=True, encoding='utf-8').stdout
+import sys
+import zipfile
+from pathlib import Path
 
 
-source_wheel_name = os.path.split(source_wheel)[-1]
-version = source_wheel_name.split('-')[1]
+ROOT = Path(__file__).resolve().parent
+DIST = ROOT / "dist"
+BIN = ROOT / "bin"
+MANIFEST = ROOT / "addon.json"
+FUNCTIONS = ROOT / "python-plotter-functions"
 
-requirements = f"{create_requirements_from_lockfile()}\n./{source_wheel_name}"
 
-addon_manager_artifacts = []
-name = 'correlation'
-print(f'Creating {name}-{version}.addon')
-# Ensure output folder exists
-bin = os.path.join(os.getcwd(), 'bin')
-if not os.path.exists(bin):
-    os.makedirs(bin)
+def build_wheel() -> Path:
+    shutil.rmtree(ROOT / "build", ignore_errors=True)
+    if DIST.exists():
+        shutil.rmtree(DIST)
+    subprocess.run(
+        [sys.executable, "-m", "build", "--wheel", "--outdir", str(DIST)],
+        cwd=ROOT,
+        check=True,
+    )
+    wheels = list(DIST.glob("*.whl"))
+    if len(wheels) != 1:
+        raise RuntimeError(f"Expected one wheel in {DIST}, found {len(wheels)}")
+    return wheels[0]
 
-with open('addon.json') as json_file:
-    parsed_json = json.load(json_file)
-parsed_json['version'] = version
 
-addon = os.path.join(bin, f'{name}-{version}.addon')
-addon_meta = os.path.join(bin, f'{name}-{version}.addonmeta')
+def package_wheel_with_functions(wheel: Path) -> Path:
+    for stale_wheel in FUNCTIONS.glob("*.whl"):
+        stale_wheel.unlink()
+    packaged_wheel = FUNCTIONS / wheel.name
+    shutil.copy2(wheel, packaged_wheel)
+    (FUNCTIONS / "requirements.txt").write_text(f"./{packaged_wheel.name}\n", encoding="utf-8")
+    return packaged_wheel
 
-# Build addon
-with zipfile.ZipFile(addon, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-    z.write(source_wheel, arcname=os.path.join('data-lab-functions', source_wheel_name))
-    z.writestr('data-lab-functions/requirements.txt', requirements)
-    with z.open("addon.json", "w") as c:
-        c.write(json.dumps(parsed_json, indent=2).encode("utf-8"))
-    directory = pathlib.Path("./seeq/addons/correlation/deployment_notebook/")
-    for file in directory.rglob('*ipynb'):
-        z.write(file, arcname=os.path.join('data-lab-functions', file.name))
-    directory = pathlib.Path("./additional_content/")
-    for file in directory.iterdir():
-        z.write(file)
-    directory = pathlib.Path("./correlation_formulas/")
-    for file in directory.iterdir():
-        z.write(file)
-    addon_manager_artifacts.append(addon)
-# Build addonmeta
-print(f'Creating {name}-{version}.addonmeta')
-with zipfile.ZipFile(addon_meta, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-    with z.open("addon.json", "w") as c:
-        c.write(json.dumps(parsed_json, indent=2).encode("utf-8"))
-    directory = pathlib.Path("./additional_content/")
-    for file in directory.iterdir():
-        z.write(file)
-    addon_manager_artifacts.append(addon_meta)
 
-print('Successfully created.')
+def write_manifest(archive: zipfile.ZipFile, manifest: dict) -> None:
+    archive.writestr("addon.json", json.dumps(manifest, indent=2))
+
+
+def build() -> tuple[Path, Path]:
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    wheel = build_wheel()
+    packaged_wheel = package_wheel_with_functions(wheel)
+    wheel_version = wheel.name.split("-")[1]
+    if manifest["version"] != wheel_version:
+        raise RuntimeError(
+            f"addon.json version {manifest['version']} does not match wheel version {wheel_version}"
+        )
+
+    BIN.mkdir(exist_ok=True)
+    artifact_base = f"{manifest['identifier']}-{manifest['version']}"
+    addon = BIN / f"{artifact_base}.addon"
+    addonmeta = BIN / f"{artifact_base}.addonmeta"
+
+    with zipfile.ZipFile(addon, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+        write_manifest(archive, manifest)
+        for source in FUNCTIONS.iterdir():
+            if source.is_file():
+                archive.write(source, f"python-plotter-functions/{source.name}")
+        for preview in manifest.get("previews", []):
+            archive.write(ROOT / preview, preview)
+
+    with zipfile.ZipFile(addonmeta, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+        write_manifest(archive, manifest)
+        for preview in manifest.get("previews", []):
+            archive.write(ROOT / preview, preview)
+
+    print(addon)
+    print(addonmeta)
+    print(packaged_wheel)
+    print(FUNCTIONS / "requirements.txt")
+    return addon, addonmeta
+
+
+if __name__ == "__main__":
+    build()

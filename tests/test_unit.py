@@ -120,6 +120,73 @@ def test_heatmap_wrapper():
     assert isinstance(table, pd.DataFrame)
 
 
+@pytest.mark.plots
+@pytest.mark.unit
+def test_python_plotter_heatmap_returns_plotly_envelope():
+    envelope = correlation.python_plotter_heatmap(
+        test_common.df,
+        config={
+            'maxTimeShift': 'none',
+            'displayValues': 'coefficients',
+            'timeOutputUnit': 'auto',
+            'showValues': True,
+        },
+        width=900,
+        height=500,
+    )
+
+    assert envelope['chartType'] == 'plotly'
+    assert envelope['width'] == 900
+    assert envelope['height'] == 500
+    assert envelope['spec']['data'][0]['type'] == 'heatmap'
+    assert np.asarray(envelope['spec']['data'][0]['z']).shape == (4, 4)
+    assert envelope['spec']['layout']['title']['text'] == 'Correlation coefficients'
+
+
+@pytest.mark.plots
+@pytest.mark.unit
+def test_python_plotter_request_uses_selected_signal_names():
+    signal_ids = ['id-a', 'id-b', 'id-c', 'id-d']
+
+    class FakeSpy:
+        @staticmethod
+        def search(signals, **kwargs):
+            assert list(signals['ID']) == signal_ids
+            return signals
+
+        @staticmethod
+        def pull(search, **kwargs):
+            pulled = test_common.df.copy()
+            pulled.columns = signal_ids
+            return pulled
+
+    body = {
+        'start': 1546300800000,
+        'end': 1546387200000,
+        'signals': [
+            {'id': signal_id, 'name': f'Signal {index}'}
+            for index, signal_id in enumerate(signal_ids, start=1)
+        ],
+        'config': {'maxTimeShift': 'none'},
+        'width': 800,
+        'height': 450,
+    }
+
+    envelope = correlation.python_plotter_plot(body, FakeSpy)
+
+    assert envelope['spec']['data'][0]['x'] == ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4']
+    assert envelope['spec']['data'][0]['y'] == ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4']
+
+
+@pytest.mark.unit
+def test_python_plotter_request_requires_two_signals():
+    with pytest.raises(ValueError, match='at least two signals'):
+        correlation.python_plotter_plot(
+            {'signals': [{'id': 'only-one'}]},
+            spy_module=None,
+        )
+
+
 @pytest.mark.unit
 @pytest.mark.utils
 def test_cache_management():

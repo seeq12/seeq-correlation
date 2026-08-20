@@ -1,7 +1,7 @@
 [project]
-name = "seeq-correlation"
+name = "seeq-correlation-python-plotter"
 dynamic = ["version"]
-description = "Correlation analysis of time series data in Seeq"
+description = "Correlation heatmaps for the Seeq Python Plotter add-on"
 authors = [{ name = "Seeq Corporation" }]
 readme = "README.md"
 license = "Apache-2.0"
