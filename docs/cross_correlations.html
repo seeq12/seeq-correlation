@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="_static/seeq-favicon.ico"/>
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=c1cae59a"></script>
+      <script src="_static/documentation_options.js?v=9f76a604"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -182,12 +182,12 @@ shifts. This lags used the opposite sign as the typical convention.</p></li>
 <p>Get the cross-correlation coefficients and lag delays to maximize
 cross-correlations for a given DataFrame allowing for automatic guess of
 maximum time shifts</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seeq</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">correlation</span><span class="o">.</span><span class="n">lags_coeffs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seeq</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">correlation</span><span class="o">.</span><span class="n">lags_coeffs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Get the cross-correlation coefficients for a given DataFrame using the
 raw data (no time shift allowed)</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seeq</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">correlation</span><span class="o">.</span><span class="n">lags_coeffs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;sec&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seeq</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">correlation</span><span class="o">.</span><span class="n">lags_coeffs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">'sec'</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

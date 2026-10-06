@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation.utils._sdl &mdash; seeq-correlation 0.3.7 documentation</title>
+  <title>seeq.addons.correlation.utils._sdl &mdash; seeq-correlation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=e59714d7" />
 
@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="../../../../../_static/seeq-favicon.ico"/>
       <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../../_static/documentation_options.js?v=29d04658"></script>
+      <script src="../../../../../_static/documentation_options.js?v=9f76a604"></script>
       <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../../_static/js/theme.js"></script>
@@ -88,8 +88,8 @@
 
 <div class="viewcode-block" id="pull_only_signals">
 <a class="viewcode-back" href="../../../../../seeq_server_interactions.html#seeq.addons.correlation.utils._sdl.pull_only_signals">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pull_only_signals</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pull_only_signals</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Pull only the signals shown in the display pane of a Seeq Analysis</span>
 <span class="sd">    Worksheet. The time range used for the pull will be taken from the</span>
 <span class="sd">    display range in the worksheet. Conditions will be disregarded.</span>
@@ -106,29 +106,29 @@
 <span class="sd">    df: pd. DataFrame</span>
 <span class="sd">        A dataframe with signal data of the worksheet</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">worksheet</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">pull_worksheet_via_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">&#39;Start&#39;</span><span class="p">]</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">&#39;End&#39;</span><span class="p">]</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">'Start'</span><span class="p">]</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">[</span><span class="s1">'End'</span><span class="p">]</span>
     <span class="n">status</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">Status</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">search_df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">estimate_sample_period</span><span class="o">=</span><span class="n">worksheet</span><span class="o">.</span><span class="n">display_range</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">search_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-    <span class="n">search_signals_df</span> <span class="o">=</span> <span class="n">search_df</span><span class="p">[</span><span class="n">search_df</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Signal&#39;</span><span class="p">)]</span>
+    <span class="n">search_signals_df</span> <span class="o">=</span> <span class="n">search_df</span><span class="p">[</span><span class="n">search_df</span><span class="p">[</span><span class="s1">'Type'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'Signal'</span><span class="p">)]</span>
 
-    <span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">search_signals_df</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">search_signals_df</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">'ID'</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;spy&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">spy</span><span class="p">,</span> <span class="s1">&#39;query_df&#39;</span><span class="p">):</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">spy</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;query_df&#39;</span><span class="p">):</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">'spy'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">spy</span><span class="p">,</span> <span class="s1">'query_df'</span><span class="p">):</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">spy</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">'Name'</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">'query_df'</span><span class="p">):</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">'Name'</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-            <span class="s2">&quot;A call to `spy.pull` was successful but the response object does not contain the `spy.query_df` property &quot;</span>
-            <span class="s2">&quot;required for `seeq.addons.correlation&quot;</span><span class="p">)</span>
+            <span class="s2">"A call to `spy.pull` was successful but the response object does not contain the `spy.query_df` property "</span>
+            <span class="s2">"required for `seeq.addons.correlation"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
 
 
@@ -141,7 +141,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_worksheet_url</span><span class="p">(</span><span class="n">jupyter_notebook_url</span><span class="p">):</span>
     <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_url</span><span class="p">(</span><span class="n">jupyter_notebook_url</span><span class="p">)</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">/workbook/</span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;workbookId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/worksheet/</span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;worksheetId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">/workbook/</span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="s1">'workbookId'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/worksheet/</span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="s1">'worksheetId'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_workbook_worksheet_workstep_ids</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
@@ -150,12 +150,12 @@
     <span class="n">workbook_id</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">worksheet_id</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">workstep_id</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="s1">&#39;workbookId&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
-        <span class="n">workbook_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;workbookId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s1">&#39;worksheetId&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
-        <span class="n">worksheet_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;worksheetId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s1">&#39;workstepId&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
-        <span class="n">workstep_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;workstepId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">'workbookId'</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">workbook_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">'workbookId'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">'worksheetId'</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">worksheet_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">'worksheetId'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">'workstepId'</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">workstep_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">'workstepId'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">workbook_id</span><span class="p">,</span> <span class="n">worksheet_id</span><span class="p">,</span> <span class="n">workstep_id</span>
 
 
@@ -169,26 +169,26 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_seeq_url</span><span class="p">():</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;public_url&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s1">'public_url'</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipv4</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">public_url</span>
 
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;private_url&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s1">'private_url'</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipv4</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">spy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">private_url</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">check_udf_package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;CrossCorrelationAddOn&quot;</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_udf_package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"CrossCorrelationAddOn"</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">api_client</span> <span class="k">if</span> <span class="n">api_client</span> <span class="k">else</span> <span class="n">spy</span><span class="o">.</span><span class="n">client</span>
     <span class="n">formulas_api</span> <span class="o">=</span> <span class="n">sdk</span><span class="o">.</span><span class="n">FormulasApi</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">formulas_api</span><span class="o">.</span><span class="n">get_package</span><span class="p">(</span><span class="n">package_name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="n">ApiException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s1">&#39;not found&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">'not found'</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>

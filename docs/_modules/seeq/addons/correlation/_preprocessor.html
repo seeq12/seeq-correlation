@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._preprocessor &mdash; seeq-correlation 0.3.7 documentation</title>
+  <title>seeq.addons.correlation._preprocessor &mdash; seeq-correlation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=29d04658"></script>
+      <script src="../../../../_static/documentation_options.js?v=9f76a604"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -91,17 +91,17 @@
 <span class="c1"># Thus, all functions that use the @cached decorator need to accept serialized dataframes (pickle is a good option)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">._config</span><span class="w"> </span><span class="kn">import</span> <span class="n">_cache_max_items</span>
 
-<span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span> <span class="o">=</span> <span class="s1">&#39;spy&#39;</span>
-<span class="n">DATAFRAME_PREPROCESSING_CONTAINER</span> <span class="o">=</span> <span class="s1">&#39;preprocessing&#39;</span>
-<span class="n">FUNC_PROP</span> <span class="o">=</span> <span class="s1">&#39;func&#39;</span>
-<span class="n">GRID_PROP</span> <span class="o">=</span> <span class="s1">&#39;grid&#39;</span>
-<span class="n">SUMMARY_PROP</span> <span class="o">=</span> <span class="s1">&#39;summary&#39;</span>
-<span class="n">QUERY_DF_PROP</span> <span class="o">=</span> <span class="s1">&#39;query_df&#39;</span>
-<span class="n">KWARGS_PROP</span> <span class="o">=</span> <span class="s1">&#39;kwargs&#39;</span>
-<span class="n">START_PROP</span> <span class="o">=</span> <span class="s1">&#39;start&#39;</span>
-<span class="n">END_PROP</span> <span class="o">=</span> <span class="s1">&#39;end&#39;</span>
-<span class="n">TZ_PROP</span> <span class="o">=</span> <span class="s1">&#39;tz_convert&#39;</span>
-<span class="n">STATUS_PROP</span> <span class="o">=</span> <span class="s1">&#39;status&#39;</span>
+<span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span> <span class="o">=</span> <span class="s1">'spy'</span>
+<span class="n">DATAFRAME_PREPROCESSING_CONTAINER</span> <span class="o">=</span> <span class="s1">'preprocessing'</span>
+<span class="n">FUNC_PROP</span> <span class="o">=</span> <span class="s1">'func'</span>
+<span class="n">GRID_PROP</span> <span class="o">=</span> <span class="s1">'grid'</span>
+<span class="n">SUMMARY_PROP</span> <span class="o">=</span> <span class="s1">'summary'</span>
+<span class="n">QUERY_DF_PROP</span> <span class="o">=</span> <span class="s1">'query_df'</span>
+<span class="n">KWARGS_PROP</span> <span class="o">=</span> <span class="s1">'kwargs'</span>
+<span class="n">START_PROP</span> <span class="o">=</span> <span class="s1">'start'</span>
+<span class="n">END_PROP</span> <span class="o">=</span> <span class="s1">'end'</span>
+<span class="n">TZ_PROP</span> <span class="o">=</span> <span class="s1">'tz_convert'</span>
+<span class="n">STATUS_PROP</span> <span class="o">=</span> <span class="s1">'status'</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_reformat_time_delta</span><span class="p">(</span><span class="n">time_delta</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -110,23 +110,23 @@
     <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">rem</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
 
     <span class="n">total_hours</span> <span class="o">=</span> <span class="n">days</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">+</span> <span class="n">hours</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">total_hours</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">total_hours</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_validate_df</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expecting a dataframe, </span><span class="si">{}</span><span class="s2"> passed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Expecting a dataframe, </span><span class="si">{}</span><span class="s2"> passed"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">)))</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dataframe is empty&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Dataframe is empty"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;There are zero signals in the dataframe&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"There are zero signals in the dataframe"</span><span class="p">)</span>
     <span class="n">is_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">))</span>
     <span class="n">col_types</span> <span class="o">=</span> <span class="n">is_number</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
     <span class="n">non_numeric_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">col_types</span><span class="p">))[</span><span class="mi">0</span><span class="p">])])</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">col_types</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All columns in dataframe must be numeric. Check columns=</span><span class="si">{</span><span class="n">non_numeric_cols</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"All columns in dataframe must be numeric. Check columns=</span><span class="si">{</span><span class="n">non_numeric_cols</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">)</span> <span class="ow">and</span> \
             <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -134,14 +134,14 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">):</span>
         <span class="n">df_spy_properties</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;grid&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">GRID_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">GRID_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;query_df&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">QUERY_DF_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">QUERY_DF_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">KWARGS_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">KWARGS_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">FUNC_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">FUNC_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">START_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">START_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">END_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">END_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;tz_convert&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">TZ_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">TZ_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">STATUS_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">STATUS_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'grid'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">GRID_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">GRID_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'query_df'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">QUERY_DF_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">QUERY_DF_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'kwargs'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">KWARGS_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">KWARGS_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'func'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">FUNC_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">FUNC_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'start'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">START_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">START_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'end'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">END_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">END_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'tz_convert'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">TZ_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">TZ_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">STATUS_PROP</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">STATUS_PROP</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
 
             <span class="p">}</span>
 
@@ -155,18 +155,18 @@
     <span class="n">namespace</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">namespace</span><span class="o">.</span><span class="n">grid</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;&#39;DataFrame&#39; object has &#39;spy.grid=None&#39;. An attempt to infer the sampling frequency will be made&quot;</span><span class="p">)</span>
+            <span class="s2">"'DataFrame' object has 'spy.grid=None'. An attempt to infer the sampling frequency will be made"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">infer_freq</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sampling period could not be inferred. &quot;</span>
-                             <span class="s2">&quot;It looks like the dataframe does not have a uniform grid. Try pulling the data using&quot;</span>
-                             <span class="s2">&quot;spy.pull with a `grid` value and make sure that there are no invalid values in the&quot;</span>
-                             <span class="s2">&quot;time period of interest&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Sampling period could not be inferred. "</span>
+                             <span class="s2">"It looks like the dataframe does not have a uniform grid. Try pulling the data using"</span>
+                             <span class="s2">"spy.pull with a `grid` value and make sure that there are no invalid values in the"</span>
+                             <span class="s2">"time period of interest"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="attach_summary">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.attach_summary">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">attach_summary</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">summary</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This functions adds the summary of a pre-processing operation as property</span>
 <span class="sd">    of the DataFrame that contains the data.</span>
 
@@ -190,7 +190,7 @@
 <span class="sd">    This function modifies the input DataFrame by adding or updating the</span>
 <span class="sd">    `preprocessing.summary` property.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
     <span class="k">else</span><span class="p">:</span>
@@ -208,7 +208,7 @@
         <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expecting a dataframe of exactly one column&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Expecting a dataframe of exactly one column"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">summary_df</span><span class="p">:</span>
         <span class="n">new_summary</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">summary_df</span><span class="p">)</span>
@@ -219,8 +219,8 @@
     <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
         <span class="n">cols</span> <span class="o">+=</span> <span class="p">[</span><span class="n">summary</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
-    <span class="n">new_summary</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">new_summary</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">new_summary</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="s1">'-'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">new_summary</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># noinspection PyProtectedMember</span>
     <span class="k">if</span> <span class="n">DATAFRAME_PREPROCESSING_CONTAINER</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">_metadata</span><span class="p">:</span>
@@ -266,10 +266,10 @@
     <span class="k">if</span> <span class="n">limit</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">interpolated_df</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">interpolated_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+        <span class="n">interpolated_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
     <span class="n">new_percentages</span> <span class="o">=</span> <span class="n">interpolated_df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">percentages</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Initial Invalid (%)&#39;</span>
-    <span class="n">new_percentages</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Invalid after Interpolation (%)&#39;</span>
+    <span class="n">percentages</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'Initial Invalid (%)'</span>
+    <span class="n">new_percentages</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'Invalid after Interpolation (%)'</span>
     <span class="n">attach_summary</span><span class="p">(</span><span class="n">interpolated_df</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">percentages</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">attach_summary</span><span class="p">(</span><span class="n">interpolated_df</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">new_percentages</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
@@ -283,14 +283,14 @@
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="c1"># dff = df.diff()</span>
-    <span class="n">keep</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">][</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-    <span class="n">remove</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">][</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'std'</span><span class="p">][</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'std'</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">remove</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'std'</span><span class="p">][</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'std'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">remove</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The signals </span><span class="si">{}</span><span class="s2"> appear to be flat lines and have been removed from the analysis&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">remove</span><span class="p">))</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"The signals </span><span class="si">{}</span><span class="s2"> appear to be flat lines and have been removed from the analysis"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">remove</span><span class="p">))</span>
     <span class="n">df_out</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
 
-    <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Yes (removed)&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">remove</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-    <span class="n">local_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Flat Signal?&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Yes (removed)"</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">remove</span> <span class="k">else</span> <span class="s2">"No"</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="n">local_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Flat Signal?'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">attach_summary</span><span class="p">(</span><span class="n">df_out</span><span class="p">,</span> <span class="n">local_summary</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df_out</span>
 
@@ -305,11 +305,11 @@
     <span class="n">cols_to_remove</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">marked_for_removal</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">dff</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">cols_to_remove</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols_to_remove</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The signals </span><span class="si">{</span><span class="n">cols_to_remove</span><span class="si">}</span><span class="s2"> have been removed from the analysis since they have &quot;</span>
-                      <span class="sa">f</span><span class="s2">&quot;more than </span><span class="si">{</span><span class="n">percent_nan</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% invalid values&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The signals </span><span class="si">{</span><span class="n">cols_to_remove</span><span class="si">}</span><span class="s2"> have been removed from the analysis since they have "</span>
+                      <span class="sa">f</span><span class="s2">"more than </span><span class="si">{</span><span class="n">percent_nan</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% invalid values"</span><span class="p">)</span>
 
-    <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Yes (removed)&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cols_to_remove</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-    <span class="n">local_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Gaps in Signal?&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Yes (removed)"</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cols_to_remove</span> <span class="k">else</span> <span class="s2">"No"</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="n">local_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Gaps in Signal?'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">attach_summary</span><span class="p">(</span><span class="n">dff</span><span class="p">,</span> <span class="n">local_summary</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dff</span>
 
@@ -321,22 +321,22 @@
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="n">types</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">infer_objects</span><span class="p">()</span><span class="o">.</span><span class="n">dtypes</span>
     <span class="n">types_dict</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-    <span class="n">non_numeric_signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">types_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">]</span>
+    <span class="n">non_numeric_signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">types_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'object'</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">auto_remove</span><span class="p">:</span>
-        <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;No (removed)&quot;</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span> <span class="k">else</span> <span class="s2">&quot;Yes&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">types_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"No (removed)"</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'object'</span> <span class="k">else</span> <span class="s2">"Yes"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">types_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
         <span class="n">dff</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">non_numeric_signals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_numeric_signals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The signals </span><span class="si">{</span><span class="n">non_numeric_signals</span><span class="si">}</span><span class="s2"> have been removed from the analysis since they are non-numeric&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">"The signals </span><span class="si">{</span><span class="n">non_numeric_signals</span><span class="si">}</span><span class="s2"> have been removed from the analysis since they are non-numeric"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;No (retained)&quot;</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span> <span class="k">else</span> <span class="s2">&quot;Yes&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">types_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"No (retained)"</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'object'</span> <span class="k">else</span> <span class="s2">"Yes"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">types_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
         <span class="n">dff</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_numeric_signals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The signals </span><span class="si">{</span><span class="n">non_numeric_signals</span><span class="si">}</span><span class="s2"> have been detected as non-numeric but have not been removed.&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Use `auto_remove=True` to remove them from the dataframe&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">"The signals </span><span class="si">{</span><span class="n">non_numeric_signals</span><span class="si">}</span><span class="s2"> have been detected as non-numeric but have not been removed."</span>
+                <span class="sa">f</span><span class="s2">"Use `auto_remove=True` to remove them from the dataframe"</span><span class="p">)</span>
 
-    <span class="n">local_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Numeric Signal?&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">local_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Numeric Signal?'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">attach_summary</span><span class="p">(</span><span class="n">dff</span><span class="p">,</span> <span class="n">local_summary</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dff</span>
@@ -351,14 +351,14 @@
     <span class="n">cols</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">dup</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">[</span><span class="n">cols</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-        <span class="n">cols</span><span class="p">[</span><span class="n">cols</span><span class="p">[</span><span class="n">cols</span> <span class="o">==</span> <span class="n">dup</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span> <span class="o">=</span> <span class="p">[</span><span class="n">dup</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dup</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+        <span class="n">cols</span><span class="p">[</span><span class="n">cols</span><span class="p">[</span><span class="n">cols</span> <span class="o">==</span> <span class="n">dup</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span> <span class="o">=</span> <span class="p">[</span><span class="n">dup</span> <span class="o">+</span> <span class="s1">'.'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dup</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
                                                          <span class="nb">range</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">cols</span> <span class="o">==</span> <span class="n">dup</span><span class="p">))]</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">):</span>
         <span class="n">namespace</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
-                <span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">&#39;New Name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cols</span>
+            <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">'Name'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+                <span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">'New Name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cols</span>
 
     <span class="c1"># rename the columns with the cols list.</span>
     <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
@@ -367,9 +367,9 @@
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_pickled_sampling_info</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">,</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="n">keyword</span> <span class="o">=</span> <span class="s1">&#39;tagged&#39;</span>
+    <span class="n">keyword</span> <span class="o">=</span> <span class="s1">'tagged'</span>
     <span class="k">if</span> <span class="n">remove</span><span class="p">:</span>
-        <span class="n">keyword</span> <span class="o">=</span> <span class="s1">&#39;removed&#39;</span>
+        <span class="n">keyword</span> <span class="o">=</span> <span class="s1">'removed'</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">df_serialized</span><span class="p">)</span>
     <span class="n">_validate_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -379,14 +379,14 @@
     <span class="n">dff</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dff</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">):</span>
         <span class="n">namespace</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DATAFRAME_METADATA_CONTAINER_FROM_SPY</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s1">&#39;items&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span> <span class="ow">or</span> <span class="s1">&#39;New Name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s1">'items'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span> <span class="ow">or</span> <span class="s1">'New Name'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">dff</span>
-        <span class="k">if</span> <span class="s1">&#39;Estimated Sample Period&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s1">'Estimated Sample Period'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">'items'</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">dff</span>
-        <span class="n">summary_sampling_period</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">][</span><span class="s1">&#39;Estimated Sample Period&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                                               <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Original Sampling Period&#39;</span><span class="p">],</span>
-                                               <span class="n">index</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">&#39;New Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-        <span class="n">summary_sampling_period</span><span class="p">[</span><span class="s1">&#39;Original Sampling Period&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">summary_sampling_period</span><span class="p">[</span><span class="s1">&#39;Original Sampling Period&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="n">summary_sampling_period</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">'items'</span><span class="p">][</span><span class="s1">'Estimated Sample Period'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                                               <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Original Sampling Period'</span><span class="p">],</span>
+                                               <span class="n">index</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">'New Name'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">summary_sampling_period</span><span class="p">[</span><span class="s1">'Original Sampling Period'</span><span class="p">]</span> <span class="o">=</span> <span class="n">summary_sampling_period</span><span class="p">[</span><span class="s1">'Original Sampling Period'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
             <span class="n">_reformat_time_delta</span><span class="p">)</span>
         <span class="n">attach_summary</span><span class="p">(</span><span class="n">dff</span><span class="p">,</span> <span class="n">summary_sampling_period</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="n">GRID_PROP</span><span class="p">):</span>
@@ -394,21 +394,21 @@
                 <span class="k">return</span> <span class="n">dff</span>
             <span class="n">grid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">namespace</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
             <span class="n">ratio_sampling_periods</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">][</span><span class="s1">&#39;Estimated Sample Period&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="n">grid</span><span class="p">,</span>
-                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ratio of sampling periods (raw/gridded)&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">&#39;New Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-            <span class="n">remove_signals</span> <span class="o">=</span> <span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">&#39;Ratio of sampling periods (raw/gridded)&#39;</span><span class="p">][</span>
-                <span class="p">(</span><span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">&#39;Ratio of sampling periods (raw/gridded)&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">sampling_ratio_threshold</span><span class="p">)</span> <span class="o">|</span>
-                <span class="p">(</span><span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">&#39;Ratio of sampling periods (raw/gridded)&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sampling_ratio_threshold</span><span class="p">)</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">'items'</span><span class="p">][</span><span class="s1">'Estimated Sample Period'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="n">grid</span><span class="p">,</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Ratio of sampling periods (raw/gridded)'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">namespace</span><span class="o">.</span><span class="n">query_df</span><span class="p">[</span><span class="s1">'New Name'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+            <span class="n">remove_signals</span> <span class="o">=</span> <span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">'Ratio of sampling periods (raw/gridded)'</span><span class="p">][</span>
+                <span class="p">(</span><span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">'Ratio of sampling periods (raw/gridded)'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">sampling_ratio_threshold</span><span class="p">)</span> <span class="o">|</span>
+                <span class="p">(</span><span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">'Ratio of sampling periods (raw/gridded)'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sampling_ratio_threshold</span><span class="p">)</span>
                 <span class="p">]</span><span class="o">.</span><span class="n">index</span>
             <span class="n">remove_signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">remove_signals</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dff</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
 
-            <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Ratio of sampling periods (raw/gridded)&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">keyword</span><span class="si">}</span><span class="s1">)&#39;</span> <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">remove_signals</span> <span class="k">else</span>
-                       <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Ratio of sampling periods (raw/gridded)&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> (previously removed)&#39;</span>
+            <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s2">"Ratio of sampling periods (raw/gridded)"</span><span class="p">]</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">keyword</span><span class="si">}</span><span class="s1">)'</span> <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">remove_signals</span> <span class="k">else</span>
+                       <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s2">"Ratio of sampling periods (raw/gridded)"</span><span class="p">]</span><span class="si">}</span><span class="s1"> (previously removed)'</span>
                        <span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dff</span><span class="o">.</span><span class="n">columns</span>
-                       <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Ratio of sampling periods (raw/gridded)&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+                       <span class="k">else</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s2">"Ratio of sampling periods (raw/gridded)"</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span>
                        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ratio_sampling_periods</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
 
-            <span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">&#39;Ratio of sampling periods (raw/gridded)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">summary</span>
+            <span class="n">ratio_sampling_periods</span><span class="p">[</span><span class="s1">'Ratio of sampling periods (raw/gridded)'</span><span class="p">]</span> <span class="o">=</span> <span class="n">summary</span>
             <span class="k">if</span> <span class="n">remove</span><span class="p">:</span>
                 <span class="n">dff</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dff</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">remove_signals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
             <span class="n">attach_summary</span><span class="p">(</span><span class="n">dff</span><span class="p">,</span> <span class="n">ratio_sampling_periods</span><span class="p">)</span>
@@ -419,7 +419,7 @@
 <div class="viewcode-block" id="standardization">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.standardization">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">standardization</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Scales the data in the DataFrame to zero mean and unit variance</span>
 
 <span class="sd">    Parameters</span>
@@ -439,7 +439,7 @@
 <span class="sd">    A summary of how this function modified or tagged signals in the dataframe</span>
 <span class="sd">    can be accessed in the property `scaled_df.preprocessing.summary`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">_pickled_standardization</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">))</span></div>
 
@@ -448,7 +448,7 @@
 <div class="viewcode-block" id="interpolate_nans">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.interpolate_nans">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">interpolate_nans</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Interpolates invalid values (linearly) per signal only if the percentage of</span>
 <span class="sd">    consecutive invalid values with respect to the total number of samples is</span>
 <span class="sd">    less than the specified threshold.</span>
@@ -472,7 +472,7 @@
 <span class="sd">    A summary of how this function modified or tagged signals in the dataframe</span>
 <span class="sd">    can be accessed in the property `interpolated_df.preprocessing.summary`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">_pickled_interpolate</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">consecutivenans</span><span class="p">)</span></div>
 
@@ -481,7 +481,7 @@
 <div class="viewcode-block" id="remove_flat_lines">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_flat_lines">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">remove_flat_lines</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Find signals with zero variance (flat lines) and remove them from the</span>
 <span class="sd">    input DataFrame</span>
 
@@ -501,7 +501,7 @@
 <span class="sd">    A summary of how this function modified or tagged signals in the dataframe</span>
 <span class="sd">    can be accessed in the property `df_out.preprocessing.summary`</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">_pickled_flat_lines</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">))</span></div>
 
@@ -510,7 +510,7 @@
 <div class="viewcode-block" id="remove_signals_with_missing_data">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_signals_with_missing_data">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">remove_signals_with_missing_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Removes columns from the dataframe that have a high percentage of missing</span>
 <span class="sd">    data.</span>
 
@@ -534,7 +534,7 @@
 <span class="sd">    A summary of how this function modified or tagged signals in the dataframe</span>
 <span class="sd">    can be accessed in the property `dff.preprocessing.summary`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">_pickled_gaps</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">percent_nan</span><span class="p">)</span></div>
 
@@ -543,7 +543,7 @@
 <div class="viewcode-block" id="remove_non_numeric">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.remove_non_numeric">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">remove_non_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">auto_remove</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Removes non-numeric signals from the input DataFrame.</span>
 
 <span class="sd">    Parameters</span>
@@ -565,7 +565,7 @@
 <span class="sd">    A summary of how this function modified or tagged signals in the dataframe</span>
 <span class="sd">    can be accessed in the property `dff.preprocessing.summary`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">_pickled_non_numeric</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">auto_remove</span><span class="p">)</span></div>
 
@@ -574,7 +574,7 @@
 <div class="viewcode-block" id="duplicated_column_names">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.duplicated_column_names">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">duplicated_column_names</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Renames columns that have the same column name</span>
 
 <span class="sd">    Parameters</span>
@@ -588,7 +588,7 @@
 <span class="sd">    dff: pandas.DataFrame</span>
 <span class="sd">        A DataFrame of the signals with unique column names</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">_pickled_duplicated_column_names</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">))</span></div>
 
@@ -597,7 +597,7 @@
 <div class="viewcode-block" id="sampling_info">
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.sampling_info">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sampling_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Attaches sampling period information if available and removes or tags</span>
 <span class="sd">    signals that have a high or low ratio of sampling period to gridded period.</span>
 
@@ -619,7 +619,7 @@
 <span class="sd">    dff: pandas.DataFrame</span>
 <span class="sd">        A DataFrame of the signals with unique column names</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">_pickled_sampling_info</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">sampling_ratio_threshold</span><span class="p">,</span> <span class="n">remove</span><span class="p">)</span></div>
 
@@ -629,7 +629,7 @@
 <a class="viewcode-back" href="../../../../preprocessor.html#seeq.addons.correlation._preprocessor.default_preprocessing_wrapper">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">default_preprocessing_wrapper</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">remove_disparate_sampled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                   <span class="n">sampling_ratio_threshold</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bypass_processing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    df: pandas.DataFrame</span>
@@ -663,7 +663,7 @@
 <span class="sd">    A summary of how this function modified or tagged signals in the dataframe can be accessed in</span>
 <span class="sd">    the property `dff.preprocessing.summary`</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
