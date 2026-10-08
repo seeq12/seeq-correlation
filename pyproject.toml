@@ -20,11 +20,13 @@ dependencies = [
     "numpy==2.3.2",
     "pandas==2.3.1",
     "python-dateutil==2.9.0.post0",
+    "pytz==2026.5",
     "scikit-learn==1.7.1",
     "scipy==1.16.1",
     "seaborn==0.13.2",
     "statsmodels==0.14.5",
     "traitlets==5.14.3",
+    "tzdata==2026.5",
 ]
 
 [dependency-groups]
@@ -41,7 +43,7 @@ dev = [
     "sphinx==8.2.3",
     "sphinx-rtd-theme==3.0.2",
     "setuptools==80.9.0",
-    "tzlocal==5.3.1",
+    "tzlocal==5.4.4",
     "twine==6.1.0",
     "wheel==0.45.1",
     "dohq-artifactory==1.0.1",

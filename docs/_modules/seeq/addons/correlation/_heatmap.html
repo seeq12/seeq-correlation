@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>seeq.addons.correlation._heatmap &mdash; seeq-correlation 0.3.7 documentation</title>
+  <title>seeq.addons.correlation._heatmap &mdash; seeq-correlation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="../../../../_static/seeq-favicon.ico"/>
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=29d04658"></script>
+      <script src="../../../../_static/documentation_options.js?v=9f76a604"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -99,9 +99,9 @@
 
 <div class="viewcode-block" id="heatmap">
 <a class="viewcode-back" href="../../../../user_interface.html#seeq.addons.correlation._heatmap.heatmap">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">&#39;coeffs&#39;</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;plot&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">'coeffs'</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">'plot'</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span>
             <span class="n">bypass_preprocessing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Creates a heatmap plot of the cross-correlation coefficients between</span>
 <span class="sd">    signals. The signals can be allowed to shift in time to find the</span>
 <span class="sd">    maximum cross-correlation between signals.</span>
@@ -114,20 +114,20 @@
 <span class="sd">    df: pandas.DataFrame</span>
 <span class="sd">        A DataFrame that contains a set of signals as columns and date-time as</span>
 <span class="sd">        the index.</span>
-<span class="sd">    max_time_shift: {&#39;auto&#39;, str, None}, default &#39;auto&#39;</span>
-<span class="sd">        Maximum time (e.g. &#39;15s&#39;, or &#39;1min&#39;) that the signals are allowed to</span>
+<span class="sd">    max_time_shift: {'auto', str, None}, default 'auto'</span>
+<span class="sd">        Maximum time (e.g. '15s', or '1min') that the signals are allowed to</span>
 <span class="sd">        slide in order to maximize cross-correlation. For times specified as a</span>
-<span class="sd">        str, normal time units are accepted.If &#39;auto&#39; is selected, a default</span>
+<span class="sd">        str, normal time units are accepted.If 'auto' is selected, a default</span>
 <span class="sd">        maximum time shift is calculated based on the number of samples. If</span>
 <span class="sd">        None, the raw signals are used and no time shifts are calculated.</span>
-<span class="sd">    output_values: {&#39;coeffs&#39;, &#39;time_shifts&#39;}, default &#39;coeffs&#39;</span>
-<span class="sd">        Values to plot in the heatmap. Either the Pearson&#39;s coefficients or</span>
+<span class="sd">    output_values: {'coeffs', 'time_shifts'}, default 'coeffs'</span>
+<span class="sd">        Values to plot in the heatmap. Either the Pearson's coefficients or</span>
 <span class="sd">        the time shifts that the signals were shifted to maximize</span>
 <span class="sd">        cross-correlation.</span>
-<span class="sd">    output_type: {&#39;plot&#39;, &#39;table&#39;}, default &#39;plot&#39;</span>
+<span class="sd">    output_type: {'plot', 'table'}, default 'plot'</span>
 <span class="sd">        The heatmap can be outputted either as an (interactive) plot or as a</span>
 <span class="sd">        DataFrame</span>
-<span class="sd">    time_output_unit: {&#39;auto&#39;, str} default &#39;auto&#39;</span>
+<span class="sd">    time_output_unit: {'auto', str} default 'auto'</span>
 <span class="sd">        Specifies the time unit used to display the time shifts. Valid units</span>
 <span class="sd">        are the ones accepted by pd.Timedelta</span>
 <span class="sd">    bypass_preprocessing: bool, default False</span>
@@ -139,11 +139,11 @@
 <span class="sd">    -------</span>
 <span class="sd">    Either one of the following</span>
 <span class="sd">    -: None</span>
-<span class="sd">        Displays a Matplotlib/Seaborn figure with either Pearson&#39;s coefficients</span>
+<span class="sd">        Displays a Matplotlib/Seaborn figure with either Pearson's coefficients</span>
 <span class="sd">        or signal time shifts</span>
 
 <span class="sd">    table: pandas.DataFrame</span>
-<span class="sd">        A DataFrame with either Pearson&#39;s coefficients or times_shifts of all</span>
+<span class="sd">        A DataFrame with either Pearson's coefficients or times_shifts of all</span>
 <span class="sd">        signal pairs</span>
 
 <span class="sd">    Examples</span>
@@ -152,53 +152,53 @@
 <span class="sd">    in a DataFrame allowing for automatic guess of maximum time shifts</span>
 
 <span class="sd">    &gt;&gt;&gt; seeq.addons.correlation.heatmap(df,</span>
-<span class="sd">    &gt;&gt;&gt;                              max_time_shift=&#39;auto&#39;,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_values=&#39;coeffs&#39;,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_type=&#39;plot&#39;)</span>
+<span class="sd">    &gt;&gt;&gt;                              max_time_shift='auto',</span>
+<span class="sd">    &gt;&gt;&gt;                              output_values='coeffs',</span>
+<span class="sd">    &gt;&gt;&gt;                              output_type='plot')</span>
 
 <span class="sd">    Create a heatmap plot of the cross-correlation coefficients for the signals</span>
 <span class="sd">    in a DataFrame specifying a maximum time shift between signals of 1 hour</span>
 
 <span class="sd">    &gt;&gt;&gt; seeq.addons.correlation.heatmap(df,</span>
-<span class="sd">    &gt;&gt;&gt;                              max_time_shift=&#39;1h&#39;,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_values=&#39;coeffs&#39;,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_type=&#39;plot&#39;)</span>
+<span class="sd">    &gt;&gt;&gt;                              max_time_shift='1h',</span>
+<span class="sd">    &gt;&gt;&gt;                              output_values='coeffs',</span>
+<span class="sd">    &gt;&gt;&gt;                              output_type='plot')</span>
 
 <span class="sd">    Create a table of the time shifts to maximize cross-correlation of the</span>
 <span class="sd">    signals in a DataFrame specifying a maximum time shift between signals</span>
 <span class="sd">    of 1 hour</span>
 
 <span class="sd">    &gt;&gt;&gt; seeq.addons.correlation.heatmap(df,</span>
-<span class="sd">    &gt;&gt;&gt;                              max_time_shift=&#39;1h&#39;,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_values=&#39;time_shifts&#39;,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_type=&#39;table&#39;)</span>
+<span class="sd">    &gt;&gt;&gt;                              max_time_shift='1h',</span>
+<span class="sd">    &gt;&gt;&gt;                              output_values='time_shifts',</span>
+<span class="sd">    &gt;&gt;&gt;                              output_type='table')</span>
 
 <span class="sd">    Create a table of the cross-correlation coefficients for the signals in a</span>
 <span class="sd">    DataFrame using the raw data (no time shift allowed)</span>
 
 <span class="sd">    &gt;&gt;&gt; seeq.addons.correlation.heatmap(df,</span>
 <span class="sd">    &gt;&gt;&gt;                              max_time_shift=None,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_values=&#39;coeffs&#39;,</span>
-<span class="sd">    &gt;&gt;&gt;                              output_type=&#39;table&#39;)</span>
+<span class="sd">    &gt;&gt;&gt;                              output_values='coeffs',</span>
+<span class="sd">    &gt;&gt;&gt;                              output_type='table')</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">time_output_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;time_output_unit cannot be None. Please specify a valid pd.Timedelta unit&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'time_output_unit cannot be None. Please specify a valid pd.Timedelta unit'</span><span class="p">)</span>
 
     <span class="n">heatmap_object</span> <span class="o">=</span> <span class="n">_heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="n">max_time_shift</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="n">output_values</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="n">output_type</span><span class="p">,</span>
                               <span class="n">time_output_unit</span><span class="o">=</span><span class="n">time_output_unit</span><span class="p">,</span> <span class="n">bypass_preprocessing</span><span class="o">=</span><span class="n">bypass_preprocessing</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;plot&#39;</span><span class="p">:</span>
-        <span class="n">heatmap_object</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;displaylogo&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;displayModeBar&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">'plot'</span><span class="p">:</span>
+        <span class="n">heatmap_object</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">'displaylogo'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">'displayModeBar'</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">heatmap_object</span></div>
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">&#39;coeffs&#39;</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;plot&#39;</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">max_time_shift</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span> <span class="n">output_values</span><span class="o">=</span><span class="s1">'coeffs'</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">'plot'</span><span class="p">,</span> <span class="n">time_output_unit</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span>
              <span class="n">bypass_preprocessing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="c1"># We don&#39;t want to remove outliers here. Increased the outlier_sensitivity</span>
+    <span class="c1"># We don't want to remove outliers here. Increased the outlier_sensitivity</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">default_preprocessing_wrapper</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">consecutivenans</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">percent_nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                                        <span class="n">bypass_processing</span><span class="o">=</span><span class="n">bypass_preprocessing</span><span class="p">)</span>
 
@@ -207,31 +207,31 @@
     <span class="n">coeffs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">time_shifts_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">lags_to_time</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;plot&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">&#39;coeffs&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">'plot'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">'coeffs'</span><span class="p">:</span>
             <span class="n">fig</span> <span class="o">=</span> <span class="n">_heatmap_plot</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">coeffs_df</span><span class="p">),</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">time_shifts_df</span><span class="p">),</span>
                                 <span class="n">time_unit</span><span class="o">=</span><span class="n">time_unit</span><span class="p">,</span> <span class="n">lags_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">&#39;time_shifts&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">'time_shifts'</span><span class="p">:</span>
             <span class="n">fig</span> <span class="o">=</span> <span class="n">_heatmap_plot</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">time_shifts_df</span><span class="p">),</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">coeffs_df</span><span class="p">),</span>
                                 <span class="n">time_unit</span><span class="o">=</span><span class="n">time_unit</span><span class="p">,</span> <span class="n">lags_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid output_type: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_values</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Invalid output_type: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_values</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">fig</span>
 
-    <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;table&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s1">'table'</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">&#39;coeffs&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">'coeffs'</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">coeffs_df</span>
 
-        <span class="k">elif</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">&#39;time_shifts&#39;</span><span class="p">:</span>
-            <span class="n">time_shifts_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">time_unit</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">time_shifts_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">output_values</span> <span class="o">==</span> <span class="s1">'time_shifts'</span><span class="p">:</span>
+            <span class="n">time_shifts_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">time_unit</span><span class="si">}</span><span class="s2">)"</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">time_shifts_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">time_shifts_df</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid output_values: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_values</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Invalid output_values: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_values</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid output_values: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_type</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Invalid output_values: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_type</span><span class="p">))</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">rename_signals</span><span class="p">(</span><span class="n">signal_list</span><span class="p">,</span> <span class="n">max_label_chars</span><span class="p">):</span>
@@ -240,9 +240,9 @@
         <span class="n">size_</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_label_chars</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">signal_list</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_label_chars</span><span class="p">:</span>
-                <span class="n">truncated_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="n">size_</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">size_</span><span class="o">-</span><span class="mi">3</span><span class="p">):]</span>
+                <span class="n">truncated_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="n">size_</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"..."</span> <span class="o">+</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">size_</span><span class="o">-</span><span class="mi">3</span><span class="p">):]</span>
                 <span class="k">if</span> <span class="n">truncated_name</span> <span class="ow">in</span> <span class="n">new_names</span><span class="p">:</span>
-                    <span class="n">unique_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">truncated_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">unique_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">truncated_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">unique_name</span> <span class="o">=</span> <span class="n">truncated_name</span>
                 <span class="n">new_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unique_name</span><span class="p">)</span>
@@ -258,10 +258,10 @@
     <span class="k">if</span> <span class="n">lags_plot</span><span class="p">:</span>
         <span class="n">flat</span> <span class="o">=</span> <span class="n">primary_array</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
         <span class="n">limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">flat</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">flat</span><span class="p">)))</span>
-        <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;RdBu&#39;</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="s1">'RdBu'</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">limit</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;RdBu&#39;</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="s1">'RdBu'</span>
     <span class="n">center</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">return</span> <span class="n">limit</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">center</span>
 
@@ -298,30 +298,30 @@
     <span class="c1"># Create the figure and draw the heatmap</span>
     <span class="n">num_signals</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_df</span><span class="p">)</span>
     <span class="n">base_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_signals</span> <span class="o">*</span> <span class="mf">0.35</span><span class="p">))</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">base_size</span><span class="p">,</span> <span class="n">base_size</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">base_size</span><span class="p">,</span> <span class="n">base_size</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">)</span>
 
     <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
-        <span class="n">plot_df</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.2f&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">,</span>
+        <span class="n">plot_df</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'.2f'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">,</span>
         <span class="n">vmin</span><span class="o">=-</span><span class="n">limit</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span>
     <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_add_colorbar</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">lags_plot</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
     <span class="c1"># Create colorbar</span>
     <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;4%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">"4%"</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
     <span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">lags_plot</span><span class="p">:</span>
-        <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Time (minutes)&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">"Time (minutes)"</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Correlation Coefficient&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">"Correlation Coefficient"</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="s1">'bold'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cbar</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_compute_geometry_percentages</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pad_inches</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">):</span>
@@ -360,10 +360,10 @@
     <span class="c1"># Export the figure to PNG and encode it in base64</span>
     <span class="n">export_dpi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">dpi</span> <span class="o">*</span> <span class="n">export_scale</span><span class="p">))</span>
     <span class="n">buf</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="n">bbox_inches</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">export_dpi</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"png"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="n">bbox_inches</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">export_dpi</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
     <span class="n">buf</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">)</span>
 
 <span class="nd">@cached</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="n">_cache_max_items</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_heatmap_plot</span><span class="p">(</span><span class="n">primary_df_serialized</span><span class="p">,</span> <span class="n">secondary_df_serialized</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
