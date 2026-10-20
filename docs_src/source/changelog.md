@@ -1,5 +1,9 @@
 # Changelog
 
+v0.3.11
+---
+Fix for CVEs (fsspec CVE-2026-104851)
+
 v0.3.10
 ---
 Upgrade bundled IANA time-zone data to TZDB 2026e for the Alberta, Northwest Territories and Manitoba permanent-standard-time changes effective 2026-11-01
