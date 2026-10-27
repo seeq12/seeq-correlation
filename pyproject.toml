@@ -32,7 +32,7 @@ dependencies = [
 [dependency-groups]
 
 cves = [
-    "pillow>=12.3.0",
+    "pillow>=13.0.0",
 ]
 
 dev = [
